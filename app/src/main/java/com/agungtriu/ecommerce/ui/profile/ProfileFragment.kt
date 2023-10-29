@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProfile
 import com.agungtriu.ecommerce.core.remote.model.response.DataProfile
@@ -183,7 +182,6 @@ class ProfileFragment : Fragment() {
 
                 is ViewState.Success<DataProfile> -> {
                     binding.pbProfile.visibility = View.GONE
-                    findNavController().navigate(R.id.action_profileFragment_to_mainFragment)
                 }
 
                 is ViewState.Error -> {

@@ -35,25 +35,12 @@ class LoginFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkOnBoarding()
-        checkLoginStatus()
     }
 
     private fun checkOnBoarding() {
         if (!viewModel.getOnBoardingStatus()) {
             findNavController().navigate(R.id.action_loginFragment_to_onBoardingFragment)
         }
-    }
-
-    private fun checkLoginStatus() {
-        val dataLogin = viewModel.getLoginStatus()
-        if (dataLogin.isLogin) {
-            if (dataLogin.userName != "") {
-                findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
-            } else {
-                findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
-            }
-        }
-
     }
 
     override fun onCreateView(
@@ -79,11 +66,6 @@ class LoginFragment : Fragment() {
 
                 is ViewState.Success<DataLogin> -> {
                     binding.pbLogin.visibility = View.GONE
-                    if (it.data.userName != "") {
-                        findNavController().navigate(R.id.action_loginFragment_to_mainFragment)
-                    } else {
-                        findNavController().navigate(R.id.action_loginFragment_to_profileFragment)
-                    }
                 }
 
                 is ViewState.Error -> {

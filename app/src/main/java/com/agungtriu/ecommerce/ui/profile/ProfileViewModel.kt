@@ -29,10 +29,4 @@ class ProfileViewModel @Inject constructor(private val repositoryImp: Repository
             }
         }
     }
-
-    fun getLoginStatus(): LoginModel {
-        return runBlocking {
-            repositoryImp.getLoginStatus().first()
-        }
-    }
 }

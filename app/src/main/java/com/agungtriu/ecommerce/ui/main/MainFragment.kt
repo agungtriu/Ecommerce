@@ -20,6 +20,7 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
     private val viewModel: MainViewModel by viewModels()
 
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -36,21 +37,20 @@ class MainFragment : Fragment() {
         binding.bnvMainFragment.setupWithNavController(navController)
 
         checkLoginStatus()
-        listener()
     }
-    private fun checkLoginStatus(){
+
+    private fun checkLoginStatus() {
         viewModel.getLoginStatus().observe(viewLifecycleOwner) {
-            if (!it.isLogin) {
-                findNavController().navigate(R.id.action_mainFragment_to_loginFragment)
-            } else {
-                binding.tvHomeUsername.text = it.userName
+            if (it.isLogin) {
+                if (it.userName != "") {
+                    binding.tvHomeUsername.text = it.userName
+                } else {
+                    findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
+                }
             }
         }
     }
 
-    private fun listener(){
-
-    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
