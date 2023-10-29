@@ -1,3 +1,32 @@
 <resources>
     <string name="app_name">ecommerce</string>
+    <string name="btn_onboarding_join">Gabung Sekarang</string>
+    <string name="btn_onboarding_skip">Lewati</string>
+    <string name="btn_onboarding_next">Selanjutnya</string>
+    <string name="all_login">Masuk</string>
+    <string name="all_email">Email</string>
+    <string name="all_password">Password</string>
+    <string name="all_password_state">Minimal 8 karakter</string>
+    <string name="all_email_example">Contoh: test@gmail.com</string>
+    <string name="login_separate">atau daftar dengan</string>
+    <string name="all_register">Daftar</string>
+    <string name="all_agreement"><![CDATA[Dengan masuk disini, kamu menyetujui Syarat & Ketentuan serta Kebijakan Privasi TokoPhincon.]]></string>
+    <string name="all_terms_conditions"><![CDATA[Syarat & Ketentuan]]></string>
+    <string name="all_privacy_policy">Kebijakan Privasi</string>
+    <string name="all_email_not_valid">Email tidak valid</string>
+    <string name="all_password_not_valid">Password tidak valid</string>
+    <string name="all_profil">Profil</string>
+    <string name="profile_name">Nama</string>
+    <string name="profile_finish">Selesai</string>
+    <string name="dialog_title">Pilih Gambar</string>
+    <string name="dialog_profile_camera">Kamera</string>
+    <string name="dialog_profile_gallery">Galeri</string>
+    <string name="all_home">Home</string>
+    <string name="all_store">Store</string>
+    <string name="all_wishlist">Wishlist</string>
+    <string name="all_transaction">Transaction</string>
+    <string name="all_permission_denied">Permission denied</string>
+    <string name="register_separate">atau masuk dengan</string>
+    <string name="all_coming_soon">Coming soon ...</string>
+    <string name="all_logout">Logout</string>
 </resources>

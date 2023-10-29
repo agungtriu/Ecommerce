@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.prelogin.login.LoginFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar_login"
+        style="@style/Widget.Material3.Toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            style="@style/TextAppearance.Material3.TitleLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_400"
+            android:text="@string/all_login"
+            android:textAlignment="center"
+            android:textColor="?attr/colorOnSurface" />
+    </androidx.appcompat.widget.Toolbar>
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_login_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/toolbar_login" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_login_email"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/all_email"
+        app:hintTextAppearance="@style/TextAppearance.Material3.BodySmall"
+        app:hintTextColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintTop_toBottomOf="@id/divider_login_toolbar">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiet_login_email"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_400"
+            android:inputType="textEmailAddress"
+            android:textColor="?attr/colorOnSurface" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_login_state_email"
+        style="@style/TextAppearance.Material3.BodySmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_400"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="4dp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintEnd_toEndOf="@id/til_login_email"
+        app:layout_constraintStart_toStartOf="@id/til_login_email"
+        app:layout_constraintTop_toBottomOf="@id/til_login_email" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_login_password"
+        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="16dp"
+        android:hint="@string/all_password"
+        app:hintTextAppearance="@style/TextAppearance.Material3.BodySmall"
+        app:hintTextColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintTop_toBottomOf="@id/til_login_email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiet_login_password"
+            style="@style/TextAppearance.Material3.BodyLarge"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_400"
+            android:inputType="textPassword"
+            android:textColor="?attr/colorOnSurface" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/tv_login_state_password"
+        style="@style/TextAppearance.Material3.BodySmall"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_400"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="4dp"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintEnd_toEndOf="@id/til_login_password"
+        app:layout_constraintStart_toStartOf="@id/til_login_password"
+        app:layout_constraintTop_toBottomOf="@id/til_login_password" />
+
+    <Button
+        android:id="@+id/btn_login"
+        style="@style/Widget.Material3.Button.IconButton.Filled"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="44dp"
+        android:enabled="false"
+        android:fontFamily="@font/poppins_500"
+        android:text="@string/all_login"
+        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+        android:textColor="?attr/colorOnPrimary"
+        app:layout_constraintTop_toBottomOf="@id/til_login_password" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_login_before"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_login_separate"
+        app:layout_constraintEnd_toStartOf="@id/tv_login_separate"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tv_login_separate" />
+
+    <TextView
+        android:id="@+id/tv_login_separate"
+        style="@style/TextAppearance.Material3.BodySmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppins_400"
+        android:text="@string/login_separate"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintEnd_toStartOf="@id/divider_login_after"
+        app:layout_constraintStart_toEndOf="@id/divider_login_before"
+        app:layout_constraintTop_toBottomOf="@id/btn_login" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/divider_login_after"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        app:layout_constraintBottom_toBottomOf="@id/tv_login_separate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_login_separate"
+        app:layout_constraintTop_toTopOf="@id/tv_login_separate" />
+
+    <Button
+        android:id="@+id/btn_login_register"
+        style="@style/Widget.Material3.Button.IconButton.Outlined"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/poppins_500"
+        android:text="@string/all_register"
+        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+        app:layout_constraintTop_toBottomOf="@id/tv_login_separate" />
+
+    <TextView
+        android:id="@+id/tv_login_agreement"
+        style="@style/TextAppearance.Material3.BodySmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginVertical="24dp"
+        android:fontFamily="@font/poppins_400"
+        android:text="@string/all_agreement"
+        android:textAlignment="center"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_login_register"
+        app:layout_constraintVertical_bias="0" />
+
+    <ProgressBar
+        android:id="@+id/pb_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+</androidx.constraintlayout.widget.ConstraintLayout>

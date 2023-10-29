@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ecommerce</string>
+    <string name="btn_onboarding_join">Join Now</string>
+    <string name="btn_onboarding_skip">Skip</string>
+    <string name="btn_onboarding_next">Next</string>
+    <string name="all_login">Login</string>
+    <string name="all_email">Email</string>
+    <string name="all_password">Password</string>
+    <string name="all_password_state">Minimum 8 characters</string>
+    <string name="all_email_example">Example: test@gmail.com</string>
+    <string name="login_separate">or register with</string>
+    <string name="all_register">Register</string>
+    <string name="all_agreement"><![CDATA[By entering here, you agree to the Terms & Conditions and the TokoPhincon Privacy Policy.]]></string>
+    <string name="all_terms_conditions"><![CDATA[Terms & Conditions]]></string>
+    <string name="all_privacy_policy">Privacy Policy</string>
+    <string name="all_email_not_valid">Invalid email</string>
+    <string name="all_password_not_valid">Invalid password</string>
+    <string name="all_profil">Profile</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_finish">Finish</string>
+    <string name="dialog_title">Select Image</string>
+    <string name="dialog_profile_camera">Camera</string>
+    <string name="dialog_profile_gallery">Gallery</string>
+    <string name="all_home">Home</string>
+    <string name="all_store">Store</string>
+    <string name="all_wishlist">Wishlist</string>
+    <string name="all_transaction">Transaction</string>
+    <string name="all_permission_denied">Permission denied</string>
+    <string name="register_separate">or login with</string>
+    <string name="all_coming_soon">Coming soon ...</string>
+</resources>

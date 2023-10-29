@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bnv_navigation"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.agungtriu.ecommerce.ui.main.home.HomeFragment"
+        android:label="@string/all_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/storeFragment"
+        android:name="com.agungtriu.ecommerce.ui.main.store.StoreFragment"
+        android:label="@string/all_store"
+        tools:layout="@layout/fragment_store" />
+    <fragment
+        android:id="@+id/wishlistFragment"
+        android:name="com.agungtriu.ecommerce.ui.main.wishlist.WishlistFragment"
+        android:label="@string/all_wishlist"
+        tools:layout="@layout/fragment_wishlish" />
+    <fragment
+        android:id="@+id/transactionFragment"
+        android:name="com.agungtriu.ecommerce.ui.main.transaction.TransactionFragment"
+        android:label="@string/all_transaction"
+        tools:layout="@layout/fragment_transaction" />
+</navigation>
