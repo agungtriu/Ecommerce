@@ -5,13 +5,11 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.distinctUntilChanged
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

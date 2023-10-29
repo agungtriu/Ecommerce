@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.agungtriu.ecommerce.core.datastore.model.LoginModel
 import com.agungtriu.ecommerce.core.remote.model.request.RequestLogin
 import com.agungtriu.ecommerce.core.remote.model.response.DataLogin
 import com.agungtriu.ecommerce.data.RepositoryImp

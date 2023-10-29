@@ -2,15 +2,12 @@ package com.agungtriu.ecommerce.ui.profile
 
 import android.net.Uri
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProfile
@@ -20,6 +17,7 @@ import com.agungtriu.ecommerce.helper.Extension.makeLinks
 import com.agungtriu.ecommerce.helper.PhotoUriManager
 import com.agungtriu.ecommerce.helper.Utils.closeSoftKeyboard
 import com.agungtriu.ecommerce.helper.ViewState
+import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
@@ -31,31 +29,17 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
 @AndroidEntryPoint
-class ProfileFragment : Fragment() {
-    private var _binding: FragmentProfileBinding? = null
-    private val binding get() = _binding!!
+class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate) {
     private lateinit var galleryResultLauncher: ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var takePictureLauncher: ActivityResultLauncher<Uri>
     private var nameState = false
     private val viewModel: ProfileViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentProfileBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerActivityResult()
         listener()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private var imageUri: Uri? = null

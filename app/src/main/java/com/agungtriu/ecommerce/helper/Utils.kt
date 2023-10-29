@@ -1,19 +1,9 @@
 package com.agungtriu.ecommerce.helper
 
 import android.content.Context
-import android.net.Uri
-import android.text.Selection
-import android.text.Spannable
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.TextPaint
-import android.text.method.LinkMovementMethod
-import android.text.style.ClickableSpan
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.TextView
 import androidx.core.content.ContextCompat
-import java.io.File
 
 object Utils {
     fun getColorAttribute(context: Context, attrResId: Int): Int {
