@@ -25,12 +25,6 @@ class LoginViewModel @Inject constructor(private val repository: RepositoryImp) 
         }
     }
 
-    fun getLoginStatus(): LoginModel {
-        return runBlocking {
-            repository.getLoginStatus().first()
-        }
-    }
-
     private val _resultLogin = MutableLiveData<ViewState<DataLogin>>()
     val resultLogin: LiveData<ViewState<DataLogin>> get() = _resultLogin
 

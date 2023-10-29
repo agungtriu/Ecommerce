@@ -36,8 +36,9 @@ class RegisterFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        listener()
+
         observeData()
+        listener()
     }
 
     private fun listener() {
@@ -125,7 +126,6 @@ class RegisterFragment : Fragment() {
 
                 is ViewState.Success<DataRegister> -> {
                     binding.pbRegister.visibility = View.GONE
-                    findNavController().navigate(R.id.action_registerFragment_to_profileFragment)
                 }
 
                 is ViewState.Error -> {
