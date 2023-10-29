@@ -4,15 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.agungtriu.ecommerce.core.datastore.model.LoginModel
-import com.agungtriu.ecommerce.core.remote.model.response.DataProfile
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProfile
+import com.agungtriu.ecommerce.core.remote.model.response.DataProfile
 import com.agungtriu.ecommerce.data.RepositoryImp
 import com.agungtriu.ecommerce.helper.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
