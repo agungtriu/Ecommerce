@@ -68,7 +68,6 @@
 
     <Button
         android:id="@+id/btn_profile_finish"
-        style="@style/TextAppearance.Material3.LabelLarge"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -81,7 +80,6 @@
 
     <TextView
         android:id="@+id/tv_profile_agreement"
-        style="@style/TextAppearance.Material3.BodySmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
@@ -89,7 +87,6 @@
         android:fontFamily="@font/poppins_400"
         android:text="@string/all_agreement"
         android:textAlignment="center"
-        android:textColor="?attr/colorOnSurfaceVariant"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_profile_finish"
         app:layout_constraintVertical_bias="0" />
@@ -103,4 +100,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

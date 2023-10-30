@@ -8,5 +8,4 @@ object FormValidation {
     fun isPasswordValid(text: String): Boolean {
         return text.length >= 8
     }
-
 }

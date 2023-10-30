@@ -9,8 +9,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(private val repository: RepositoryImp) : ViewModel() {
+
     fun saveOnBoardingStatus() {
-        runBlocking(Dispatchers.IO) {
+        runBlocking {
             repository.saveOnboarding()
         }
     }

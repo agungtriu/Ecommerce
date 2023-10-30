@@ -11,7 +11,6 @@
 
     <style name="Theme.Ecommerce.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenAnimatedIcon">@mipmap/ic_splashscreen</item>
-        <item name="windowSplashScreenAnimationDuration">200</item>
         <item name="postSplashScreenTheme">@style/Theme.Ecommerce</item>
     </style>
 

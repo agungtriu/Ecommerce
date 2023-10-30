@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import androidx.core.content.ContextCompat
+import com.google.android.material.color.MaterialColors
 
 object Utils {
     fun getColorAttribute(context: Context, attrResId: Int): Int {
