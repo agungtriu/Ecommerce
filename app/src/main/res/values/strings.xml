@@ -10,7 +10,8 @@
     <string name="all_email_example">Contoh: test@gmail.com</string>
     <string name="login_separate">atau daftar dengan</string>
     <string name="all_register">Daftar</string>
-    <string name="all_agreement"><![CDATA[Dengan masuk disini, kamu menyetujui Syarat & Ketentuan serta Kebijakan Privasi TokoPhincon.]]></string>
+    <string name="all_agreement_login"><![CDATA[Dengan masuk disini, kamu menyetujui Syarat & Ketentuan serta Kebijakan Privasi TokoPhincon.]]></string>
+    <string name="all_agreement_register"><![CDATA[Dengan daftar disini, kamu menyetujui Syarat & Ketentuan serta Kebijakan Privasi TokoPhincon.]]></string>
     <string name="all_terms_conditions"><![CDATA[Syarat & Ketentuan]]></string>
     <string name="all_privacy_policy">Kebijakan Privasi</string>
     <string name="all_email_not_valid">Email tidak valid</string>
@@ -25,9 +26,7 @@
     <string name="all_store">Store</string>
     <string name="all_wishlist">Wishlist</string>
     <string name="all_transaction">Transaksi</string>
-    <string name="all_permission_denied">Permission denied</string>
     <string name="register_separate">atau masuk dengan</string>
-    <string name="all_coming_soon">Coming soon ...</string>
     <string name="all_logout">Keluar</string>
     <string name="home_en" translatable="false">EN</string>
     <string name="home_id" translatable="false">ID</string>

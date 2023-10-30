@@ -11,7 +11,8 @@
     <string name="all_email_example">Example: test@gmail.com</string>
     <string name="login_separate">or register with</string>
     <string name="all_register">Register</string>
-    <string name="all_agreement"><![CDATA[By entering here, you agree to the Terms & Conditions and the TokoPhincon Privacy Policy.]]></string>
+    <string name="all_agreement_login"><![CDATA[By entering here, you agree to the Terms & Conditions and the TokoPhincon Privacy Policy.]]></string>
+    <string name="all_agreement_register"><![CDATA[By registering here, you agree to the Terms & Conditions and the TokoPhincon Privacy Policy.]]></string>
     <string name="all_terms_conditions"><![CDATA[Terms & Conditions]]></string>
     <string name="all_privacy_policy">Privacy Policy</string>
     <string name="all_email_not_valid">Invalid email</string>
@@ -26,9 +27,7 @@
     <string name="all_store">Store</string>
     <string name="all_wishlist">Wishlist</string>
     <string name="all_transaction">Transaction</string>
-    <string name="all_permission_denied">Permission denied</string>
     <string name="register_separate">or login with</string>
-    <string name="all_coming_soon">Coming soon ...</string>
     <string name="all_logout">Logout</string>
     <string name="home_dark">Dark</string>
     <string name="home_light">Light</string>

@@ -15,8 +15,8 @@
             android:id="@+id/lottie_home_hallo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toTopOf="parent"
             android:layout_marginHorizontal="82dp"
+            app:layout_constraintTop_toTopOf="parent"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/animation_hello" />
@@ -29,7 +29,6 @@
             android:fontFamily="@font/poppins_500"
             android:paddingHorizontal="32dp"
             android:text="@string/all_logout"
-            android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/lottie_home_hallo" />
@@ -40,9 +39,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:fontFamily="@font/poppins_400"
             android:text="@string/home_en"
-            android:textColor="?attr/colorOnSurface"
             app:layout_constraintBottom_toBottomOf="@id/switch_home_lang"
             app:layout_constraintEnd_toStartOf="@id/switch_home_lang"
             app:layout_constraintTop_toTopOf="@id/switch_home_lang" />
@@ -62,9 +59,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/poppins_400"
             android:text="@string/home_id"
-            android:textColor="?attr/colorOnSurface"
             app:layout_constraintBottom_toBottomOf="@id/switch_home_lang"
             app:layout_constraintStart_toEndOf="@id/switch_home_lang"
             app:layout_constraintTop_toTopOf="@id/switch_home_lang" />
@@ -75,9 +70,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:fontFamily="@font/poppins_400"
             android:text="@string/home_light"
-            android:textColor="?attr/colorOnSurface"
             app:layout_constraintBottom_toBottomOf="@id/switch_home_theme"
             app:layout_constraintEnd_toStartOf="@id/switch_home_theme"
             app:layout_constraintTop_toTopOf="@id/switch_home_theme" />
@@ -99,9 +92,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:fontFamily="@font/poppins_400"
             android:text="@string/home_dark"
-            android:textColor="?attr/colorOnSurface"
             app:layout_constraintBottom_toBottomOf="@id/switch_home_theme"
             app:layout_constraintStart_toEndOf="@id/switch_home_theme"
             app:layout_constraintTop_toTopOf="@id/switch_home_theme" />

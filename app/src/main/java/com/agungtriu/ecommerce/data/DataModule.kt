@@ -13,6 +13,12 @@ abstract class DataModule {
     @Singleton
     @Binds
     abstract fun bindRepository(
-        repositoryImp: RepositoryImp
-    ): Repository
+        mainRepositoryImp: MainRepositoryImp
+    ): MainRepository
+
+    @Singleton
+    @Binds
+    abstract fun bindPreLoginRepository(
+        preLoginRepositoryImp: PreLoginRepositoryImp
+    ): PreLoginRepository
 }

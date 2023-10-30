@@ -16,11 +16,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
     private val viewModel: MainViewModel by viewModels()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        checkLoginStatus()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,14 +23,14 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             childFragmentManager.findFragmentById(R.id.fcv_main_fragment) as NavHostFragment
         val navController = navHostFragment.findNavController()
         binding.bnvMainFragment.setupWithNavController(navController)
-
+        checkLoginStatus()
     }
 
     private fun checkLoginStatus() {
         viewModel.getLoginStatus().observe(viewLifecycleOwner) {
             if (it.isLogin) {
                 if (it.userName != "") {
-                    binding.tvHomeUsername.text = it.userName
+                    binding.tvHomeUsername.title = it.userName
                 } else {
                     findNavController().navigate(R.id.action_mainFragment_to_profileFragment)
                 }

@@ -2,31 +2,23 @@ package com.agungtriu.ecommerce.data
 
 import com.agungtriu.ecommerce.core.datastore.DataStoreManager
 import com.agungtriu.ecommerce.core.datastore.model.LoginModel
-import com.agungtriu.ecommerce.core.datastore.model.RegisterProfileModel
-import com.agungtriu.ecommerce.core.datastore.model.ThemeLangModel
-import com.agungtriu.ecommerce.core.datastore.model.TokenModel
 import com.agungtriu.ecommerce.core.remote.ApiService
 import com.agungtriu.ecommerce.core.remote.model.request.RequestLogin
-import com.agungtriu.ecommerce.core.remote.model.request.RequestProfile
 import com.agungtriu.ecommerce.core.remote.model.request.RequestRegister
 import com.agungtriu.ecommerce.core.remote.model.response.DataLogin
-import com.agungtriu.ecommerce.core.remote.model.response.DataProfile
 import com.agungtriu.ecommerce.core.remote.model.response.DataRegister
-import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
+import com.agungtriu.ecommerce.helper.Utils.getApiErrorMessage
 import com.agungtriu.ecommerce.helper.ViewState
-import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import retrofit2.HttpException
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class RepositoryImp @Inject constructor(
+class PreLoginRepositoryImp @Inject constructor(
     private val dataStoreManager: DataStoreManager,
     private val apiService: ApiService
-) : Repository {
-
+) : PreLoginRepository {
     override fun getOnboardingStatus(): Flow<Boolean> {
         return dataStoreManager.getOnboardingStatus()
     }
@@ -43,30 +35,6 @@ class RepositoryImp @Inject constructor(
         dataStoreManager.saveLoginStatus(
             loginModel = loginModel
         )
-    }
-
-    override suspend fun updateLoginStatus(registerProfileModel: RegisterProfileModel) {
-        return dataStoreManager.updateLoginStatus(registerProfileModel = registerProfileModel)
-    }
-
-    override suspend fun refreshToken(refreshTokenModel: TokenModel) {
-        return dataStoreManager.refreshToken(refreshTokenModel = refreshTokenModel)
-    }
-
-    override suspend fun changeTheme(isDark: Boolean) {
-        dataStoreManager.changeTheme(isDark = isDark)
-    }
-
-    override suspend fun changeLang(language: String) {
-        dataStoreManager.changeLanguage(language = language)
-    }
-
-    override fun getThemeLang(): Flow<ThemeLangModel> {
-        return dataStoreManager.getThemeLang()
-    }
-
-    override suspend fun deleteLoginStatus() {
-        return dataStoreManager.deleteLoginStatus()
     }
 
     override suspend fun doRegister(requestRegister: RequestRegister): Flow<ViewState<DataRegister>> =
@@ -92,8 +60,7 @@ class RepositoryImp @Inject constructor(
                     throw Exception("Data register not found")
                 }
             } catch (e: Throwable) {
-                val message = getApiErrorMessage(e)
-                emit(ViewState.Error(message.toString()))
+                emit(ViewState.Error(getApiErrorMessage(e)))
             }
         }
 
@@ -120,47 +87,8 @@ class RepositoryImp @Inject constructor(
                     throw Exception("Data login not found")
                 }
             } catch (e: Throwable) {
-                val message = getApiErrorMessage(e)
-                emit(ViewState.Error(message.toString()))
+                emit(ViewState.Error(getApiErrorMessage(e)))
             }
         }
 
-    override suspend fun registerProfile(requestProfile: RequestProfile): Flow<ViewState<DataProfile>> =
-        flow {
-            emit(ViewState.Loading)
-            try {
-                val result = apiService.registerProfile(
-                    requestProfile.userName,
-                    requestProfile.userImage
-                )
-                val dataRegister = result.data
-                if (dataRegister != null) {
-                    dataStoreManager.updateLoginStatus(
-                        RegisterProfileModel(
-                            userName = dataRegister.userName,
-                            userImage = dataRegister.userImage,
-                        )
-                    )
-                    emit(ViewState.Success(dataRegister))
-                } else {
-                    throw Exception("Data register profile not found")
-                }
-            } catch (e: Throwable) {
-                val message = getApiErrorMessage(e)
-                emit(ViewState.Error(message.toString()))
-            }
-        }
-
-    private fun getApiErrorMessage(e: Throwable): String? {
-        var message = e.message
-        if (e is HttpException) {
-            val errorResponse =
-                Gson().fromJson(
-                    e.response()?.errorBody()?.string(),
-                    ResponseError::class.java
-                ) ?: ResponseError()
-            errorResponse.message?.let { message = it }
-        }
-        return message
-    }
 }

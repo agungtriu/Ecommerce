@@ -15,11 +15,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.getThemeLang().observe(viewLifecycleOwner) {
-            binding.switchHomeTheme.isChecked = it.isDark
-            binding.switchHomeLang.isChecked = it.language == Language.id.name
-        }
+        observeData()
+        listener()
+    }
 
+    private fun listener() {
         binding.btnHomeLogout.setOnClickListener {
             viewModel.doLogout()
         }
@@ -34,6 +34,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
             } else {
                 viewModel.changeLanguage(Language.en.name)
             }
+        }
+    }
+
+    private fun observeData() {
+        viewModel.getThemeLang().observe(viewLifecycleOwner) {
+            binding.switchHomeTheme.isChecked = it.isDark
+            binding.switchHomeLang.isChecked = it.language == Language.id.name
         }
     }
 }
