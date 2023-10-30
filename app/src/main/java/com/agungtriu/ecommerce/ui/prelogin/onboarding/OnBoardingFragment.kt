@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class OnBoardingFragment :
     BaseFragment<FragmentOnBoardingBinding>(FragmentOnBoardingBinding::inflate) {
+
     private lateinit var adapter: OnboardingAdapter
     private val listOfImage = listOf(
         R.mipmap.ic_onboarding_one,

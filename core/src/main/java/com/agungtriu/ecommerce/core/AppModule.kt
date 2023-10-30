@@ -20,6 +20,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
+
     @Provides
     fun provideAuthInterceptor(dataStoreManager: DataStoreManager): AuthInterceptor =
         AuthInterceptor(dataStoreManager)

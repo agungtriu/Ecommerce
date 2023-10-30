@@ -6,23 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".ui.prelogin.register.RegisterFragment">
 
-    <androidx.appcompat.widget.Toolbar
+    <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/toolbar_register"
-        style="@style/Widget.Material3.Toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            style="@style/TextAppearance.Material3.TitleLarge"
+        <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_400"
-            android:text="@string/all_register"
-            android:textAlignment="center"
-            android:textColor="?attr/colorOnSurface" />
-    </androidx.appcompat.widget.Toolbar>
+            app:title="@string/all_register"
+            app:titleCentered="true" />
+
+    </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider_register_toolbar"
@@ -39,18 +35,14 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/all_email"
-        app:hintTextAppearance="@style/TextAppearance.Material3.BodySmall"
-        app:hintTextColor="?attr/colorOnSurfaceVariant"
         app:layout_constraintTop_toBottomOf="@id/divider_register_toolbar">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_register_email"
-            style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_400"
-            android:inputType="textEmailAddress"
-            android:textColor="?attr/colorOnSurface" />
+            android:inputType="textEmailAddress" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -106,15 +98,12 @@
 
     <Button
         android:id="@+id/btn_register"
-        style="@style/Widget.Material3.Button.IconButton.Filled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="44dp"
         android:enabled="false"
-        android:fontFamily="@font/poppins_500"
         android:text="@string/all_register"
-        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
         android:textColor="?attr/colorOnPrimary"
         app:layout_constraintTop_toBottomOf="@id/til_register_password" />
 
@@ -136,7 +125,6 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_400"
         android:text="@string/register_separate"
-        android:textColor="?attr/colorOnSurfaceVariant"
         android:textSize="12sp"
         app:layout_constraintEnd_toStartOf="@id/divider_register_after"
         app:layout_constraintStart_toEndOf="@id/divider_register_before"
@@ -189,4 +177,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
