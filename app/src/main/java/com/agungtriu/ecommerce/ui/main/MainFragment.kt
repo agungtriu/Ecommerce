@@ -16,6 +16,12 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
     private val viewModel: MainViewModel by viewModels()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        checkLoginStatus()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val navHostFragment =
@@ -23,7 +29,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         val navController = navHostFragment.findNavController()
         binding.bnvMainFragment.setupWithNavController(navController)
 
-        checkLoginStatus()
     }
 
     private fun checkLoginStatus() {

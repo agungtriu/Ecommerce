@@ -26,8 +26,7 @@
                 android:padding="10dp"
                 android:src="@drawable/ic_account_outline_circle"
                 app:layout_constraintEnd_toStartOf="@id/tv_home_username"
-                app:layout_constraintStart_toStartOf="parent"
-                app:tint="?attr/colorOnSurface" />
+                app:layout_constraintStart_toStartOf="parent" />
 
             <TextView
                 android:id="@+id/tv_home_username"
@@ -50,8 +49,7 @@
                 android:padding="10dp"
                 android:src="@drawable/ic_notifications"
                 app:layout_constraintEnd_toStartOf="@id/btn_home_shopping_cart"
-                app:layout_constraintStart_toEndOf="@id/tv_home_username"
-                app:tint="?attr/colorOnSurface" />
+                app:layout_constraintStart_toEndOf="@id/tv_home_username" />
 
             <ImageButton
                 android:id="@+id/btn_home_shopping_cart"
@@ -61,8 +59,7 @@
                 android:padding="10dp"
                 android:src="@drawable/ic_shopping_cart"
                 app:layout_constraintEnd_toStartOf="@id/btn_home_menu"
-                app:layout_constraintStart_toEndOf="@id/btn_home_notification"
-                app:tint="?attr/colorOnSurface" />
+                app:layout_constraintStart_toEndOf="@id/btn_home_notification" />
 
             <ImageButton
                 android:id="@+id/btn_home_menu"
@@ -72,8 +69,7 @@
                 android:padding="10dp"
                 android:src="@drawable/ic_menu"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_home_shopping_cart"
-                app:tint="?attr/colorOnSurface" />
+                app:layout_constraintStart_toEndOf="@id/btn_home_shopping_cart" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.appcompat.widget.Toolbar>
 
@@ -103,18 +99,14 @@
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bnv_main_fragment"
-        style="@style/TextAppearance.Material3.LabelMedium"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:itemBackground="?attr/colorSurface"
-        app:itemIconTint="?attr/colorOnSurface"
-        app:itemTextAppearanceActive="@style/Widget.BottomNavigationView"
-        app:itemTextAppearanceInactive="@style/Widget.BottomNavigationView"
-        app:itemTextColor="@color/bottom_nav_color"
         app:labelVisibilityMode="labeled"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fcv_main_fragment"
         app:menu="@menu/bottom_nav_menu" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

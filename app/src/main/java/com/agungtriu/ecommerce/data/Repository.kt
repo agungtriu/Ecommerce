@@ -14,6 +14,7 @@ import com.agungtriu.ecommerce.helper.ViewState
 import kotlinx.coroutines.flow.Flow
 
 interface Repository {
+
     fun getOnboardingStatus(): Flow<Boolean>
     suspend fun saveOnboarding()
     fun getLoginStatus(): Flow<LoginModel>
@@ -29,5 +30,4 @@ interface Repository {
     suspend fun doRegister(requestRegister: RequestRegister): Flow<ViewState<DataRegister>>
     suspend fun doLogin(requestLogin: RequestLogin): Flow<ViewState<DataLogin>>
     suspend fun registerProfile(requestProfile: RequestProfile): Flow<ViewState<DataProfile>>
-
 }

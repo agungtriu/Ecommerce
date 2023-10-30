@@ -15,6 +15,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
     private lateinit var binding: ActivityMainBinding
     private val viewModel: MainViewModel by viewModels()
     private lateinit var navController: NavController
@@ -50,5 +51,4 @@ class MainActivity : AppCompatActivity() {
             setLanguage(it.language)
         }
     }
-
 }

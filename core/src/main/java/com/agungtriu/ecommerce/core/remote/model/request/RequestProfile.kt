@@ -4,6 +4,6 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody
 
 data class RequestProfile(
-    val userName: RequestBody,
+    val userName: MultipartBody.Part,
     val userImage: MultipartBody.Part? = null
 )

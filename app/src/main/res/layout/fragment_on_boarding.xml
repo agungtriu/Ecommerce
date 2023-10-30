@@ -11,7 +11,7 @@
         android:id="@+id/vp_onboarding"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintBottom_toTopOf="@id/btn_onboarding_join"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -19,16 +19,13 @@
 
     <Button
         android:id="@+id/btn_onboarding_join"
-        style="@style/Widget.Material3.Button.IconButton.Filled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/poppins_500"
         android:text="@string/btn_onboarding_join"
-        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-        android:textColor="?attr/colorOnPrimary"
         app:layout_constraintBottom_toTopOf="@id/tl_onboarding"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -44,8 +41,6 @@
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/poppins_500"
         android:text="@string/btn_onboarding_skip"
-        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-        android:textColor="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_onboarding_join" />
@@ -74,10 +69,9 @@
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/poppins_500"
         android:text="@string/btn_onboarding_next"
-        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-        android:textColor="?attr/colorPrimary"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tl_onboarding"
         app:layout_constraintTop_toBottomOf="@id/btn_onboarding_join" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.agungtriu.ecommerce.core
 import com.agungtriu.ecommerce.core.datastore.DataStoreManager
 import com.agungtriu.ecommerce.core.datastore.model.TokenModel
 import com.agungtriu.ecommerce.core.remote.ApiService
+import com.agungtriu.ecommerce.core.remote.model.request.RequestRefresh
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseRefresh
 import com.agungtriu.ecommerce.core.utils.Config.API_BASE_URL
 import com.chuckerteam.chucker.api.ChuckerInterceptor
@@ -65,7 +66,6 @@ class AuthAuthenticator @Inject constructor(
             .client(client)
             .build()
         val service = retrofit.create(ApiService::class.java)
-        return service.doRefreshToken("Bearer $token")
+        return service.doRefreshToken(RequestRefresh("Bearer $token"))
     }
-
 }

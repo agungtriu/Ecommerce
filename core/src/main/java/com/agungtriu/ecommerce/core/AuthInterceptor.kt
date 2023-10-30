@@ -9,8 +9,10 @@ import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
 
-class AuthInterceptor @Inject constructor(private val dataStoreManager: DataStoreManager) :
-    Interceptor {
+class AuthInterceptor @Inject constructor(
+    private val dataStoreManager: DataStoreManager
+) : Interceptor {
+
     override fun intercept(chain: Interceptor.Chain): Response {
         val originalRequest = chain.request()
         val requestUrl = originalRequest.url.toString()
@@ -28,5 +30,4 @@ class AuthInterceptor @Inject constructor(private val dataStoreManager: DataStor
 
         return chain.proceed(requestWithAuth.build())
     }
-
 }
