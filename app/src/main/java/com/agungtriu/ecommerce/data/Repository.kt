@@ -2,6 +2,7 @@ package com.agungtriu.ecommerce.data
 
 import com.agungtriu.ecommerce.core.datastore.model.LoginModel
 import com.agungtriu.ecommerce.core.datastore.model.RegisterProfileModel
+import com.agungtriu.ecommerce.core.datastore.model.ThemeLangModel
 import com.agungtriu.ecommerce.core.datastore.model.TokenModel
 import com.agungtriu.ecommerce.core.remote.model.request.RequestLogin
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProfile
@@ -20,6 +21,9 @@ interface Repository {
     suspend fun deleteLoginStatus()
     suspend fun updateLoginStatus(registerProfileModel: RegisterProfileModel)
     suspend fun refreshToken(refreshTokenModel: TokenModel)
+    suspend fun changeTheme(isDark: Boolean)
+    suspend fun changeLang(language: String)
+    fun getThemeLang(): Flow<ThemeLangModel>
 
 
     suspend fun doRegister(requestRegister: RequestRegister): Flow<ViewState<DataRegister>>

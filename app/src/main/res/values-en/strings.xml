@@ -29,4 +29,7 @@
     <string name="all_permission_denied">Permission denied</string>
     <string name="register_separate">or login with</string>
     <string name="all_coming_soon">Coming soon ...</string>
+    <string name="all_logout">Logout</string>
+    <string name="home_dark">Dark</string>
+    <string name="home_light">Light</string>
 </resources>

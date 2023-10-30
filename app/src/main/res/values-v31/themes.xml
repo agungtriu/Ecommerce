@@ -3,11 +3,7 @@
 
     <style name="Theme.Ecommerce.Starting" parent="Theme.SplashScreen">
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splashscreen_animate</item>
-        <!-- Required for animated icons. -->
         <item name="windowSplashScreenAnimationDuration">200</item>
-
-        <!-- Set the theme of the Activity that directly follows your splash
-        screen. This is required. -->
         <item name="postSplashScreenTheme">@style/Theme.Ecommerce</item>
     </style>
 </resources>

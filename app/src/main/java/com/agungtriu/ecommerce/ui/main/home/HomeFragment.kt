@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.agungtriu.ecommerce.databinding.FragmentHomeBinding
+import com.agungtriu.ecommerce.helper.Language
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -14,8 +15,25 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getThemeLang().observe(viewLifecycleOwner) {
+            binding.switchHomeTheme.isChecked = it.isDark
+            binding.switchHomeLang.isChecked = it.language == Language.id.name
+        }
+
         binding.btnHomeLogout.setOnClickListener {
             viewModel.doLogout()
+        }
+
+        binding.switchHomeTheme.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.changeTheme(isChecked)
+        }
+
+        binding.switchHomeLang.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                viewModel.changeLanguage(Language.id.name)
+            } else {
+                viewModel.changeLanguage(Language.en.name)
+            }
         }
     }
 }

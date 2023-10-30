@@ -24,9 +24,13 @@
     <string name="all_home">Home</string>
     <string name="all_store">Store</string>
     <string name="all_wishlist">Wishlist</string>
-    <string name="all_transaction">Transaction</string>
+    <string name="all_transaction">Transaksi</string>
     <string name="all_permission_denied">Permission denied</string>
     <string name="register_separate">atau masuk dengan</string>
     <string name="all_coming_soon">Coming soon ...</string>
-    <string name="all_logout">Logout</string>
+    <string name="all_logout">Keluar</string>
+    <string name="home_en" translatable="false">EN</string>
+    <string name="home_id" translatable="false">ID</string>
+    <string name="home_dark">Gelap</string>
+    <string name="home_light">Terang</string>
 </resources>

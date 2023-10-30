@@ -3,15 +3,16 @@ package com.agungtriu.ecommerce.data
 import com.agungtriu.ecommerce.core.datastore.DataStoreManager
 import com.agungtriu.ecommerce.core.datastore.model.LoginModel
 import com.agungtriu.ecommerce.core.datastore.model.RegisterProfileModel
+import com.agungtriu.ecommerce.core.datastore.model.ThemeLangModel
 import com.agungtriu.ecommerce.core.datastore.model.TokenModel
 import com.agungtriu.ecommerce.core.remote.ApiService
 import com.agungtriu.ecommerce.core.remote.model.request.RequestLogin
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProfile
 import com.agungtriu.ecommerce.core.remote.model.request.RequestRegister
-import com.agungtriu.ecommerce.core.remote.model.request.ResponseError
 import com.agungtriu.ecommerce.core.remote.model.response.DataLogin
 import com.agungtriu.ecommerce.core.remote.model.response.DataProfile
 import com.agungtriu.ecommerce.core.remote.model.response.DataRegister
+import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
 import com.agungtriu.ecommerce.helper.ViewState
 import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
@@ -51,6 +52,18 @@ class RepositoryImp @Inject constructor(
         return dataStoreManager.refreshToken(refreshTokenModel = refreshTokenModel)
     }
 
+    override suspend fun changeTheme(isDark: Boolean) {
+        dataStoreManager.changeTheme(isDark = isDark)
+    }
+
+    override suspend fun changeLang(language: String) {
+        dataStoreManager.changeLanguage(language = language)
+    }
+
+    override fun getThemeLang(): Flow<ThemeLangModel> {
+        return dataStoreManager.getThemeLang()
+    }
+
     override suspend fun deleteLoginStatus() {
         return dataStoreManager.deleteLoginStatus()
     }
@@ -77,7 +90,7 @@ class RepositoryImp @Inject constructor(
                 } else {
                     throw Exception("Data register not found")
                 }
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 val message = getApiErrorMessage(e)
                 emit(ViewState.Error(message.toString()))
             }
@@ -105,7 +118,7 @@ class RepositoryImp @Inject constructor(
                 } else {
                     throw Exception("Data login not found")
                 }
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 val message = getApiErrorMessage(e)
                 emit(ViewState.Error(message.toString()))
             }
@@ -131,13 +144,13 @@ class RepositoryImp @Inject constructor(
                 } else {
                     throw Exception("Data register profile not found")
                 }
-            } catch (e: Exception) {
+            } catch (e: Throwable) {
                 val message = getApiErrorMessage(e)
                 emit(ViewState.Error(message.toString()))
             }
         }
 
-    private fun getApiErrorMessage(e: Exception): String? {
+    private fun getApiErrorMessage(e: Throwable): String? {
         var message = e.message
         if (e is HttpException) {
             val errorResponse =
