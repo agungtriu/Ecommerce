@@ -6,20 +6,21 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProfile
 import com.agungtriu.ecommerce.core.remote.model.response.DataProfile
-import com.agungtriu.ecommerce.data.RepositoryImp
+import com.agungtriu.ecommerce.data.MainRepository
 import com.agungtriu.ecommerce.helper.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileViewModel @Inject constructor(private val repositoryImp: RepositoryImp) : ViewModel() {
+class ProfileViewModel @Inject constructor(private val mainRepository: MainRepository) :
+    ViewModel() {
     private val _resultRegisterProfile = MutableLiveData<ViewState<DataProfile>>()
     val resultRegisterProfile: LiveData<ViewState<DataProfile>> get() = _resultRegisterProfile
 
     fun registerProfile(requestProfile: RequestProfile) {
         viewModelScope.launch {
-            repositoryImp.registerProfile(
+            mainRepository.registerProfile(
                 requestProfile = requestProfile
             ).collect {
                 _resultRegisterProfile.value = it

@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.remote.model.request.RequestLogin
 import com.agungtriu.ecommerce.core.remote.model.response.DataLogin
-import com.agungtriu.ecommerce.data.RepositoryImp
+import com.agungtriu.ecommerce.data.PreLoginRepository
 import com.agungtriu.ecommerce.helper.Config.FIREBASE_TOKEN
 import com.agungtriu.ecommerce.helper.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,10 +17,11 @@ import javax.inject.Inject
 
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(private val repository: RepositoryImp) : ViewModel() {
+class LoginViewModel @Inject constructor(private val preLoginRepository: PreLoginRepository) :
+    ViewModel() {
     fun getOnBoardingStatus(): Boolean {
         return runBlocking {
-            repository.getOnboardingStatus().first()
+            preLoginRepository.getOnboardingStatus().first()
         }
     }
 
@@ -29,7 +30,7 @@ class LoginViewModel @Inject constructor(private val repository: RepositoryImp) 
 
     fun doLogin(email: String, password: String) {
         viewModelScope.launch {
-            repository.doLogin(
+            preLoginRepository.doLogin(
                 RequestLogin(
                     email = email,
                     password = password,

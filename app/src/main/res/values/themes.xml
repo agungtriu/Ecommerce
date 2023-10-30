@@ -5,6 +5,7 @@
         <item name="android:statusBarColor">?attr/colorSurface</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="colorSurface">@color/white</item>
+        <item name="fontFamily">@font/poppins_400</item>
     </style>
 
     <style name="Theme.Ecommerce" parent="Base.Theme.Ecommerce" />

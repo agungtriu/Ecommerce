@@ -8,13 +8,13 @@ import androidx.navigation.fragment.findNavController
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.remote.model.response.DataRegister
 import com.agungtriu.ecommerce.databinding.FragmentRegisterBinding
-import com.agungtriu.ecommerce.helper.Extension.makeLinks
+import com.agungtriu.ecommerce.helper.Extension.setColor
 import com.agungtriu.ecommerce.helper.FormValidation.isEmailValid
 import com.agungtriu.ecommerce.helper.FormValidation.isPasswordValid
-import com.agungtriu.ecommerce.helper.Utils
 import com.agungtriu.ecommerce.helper.Utils.closeSoftKeyboard
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.base.BaseFragment
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,17 +29,19 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
         observeData()
         listener()
+
+        binding.tvRegisterAgreement.setColor(
+            getString(R.string.all_terms_conditions),
+            MaterialColors.getColor(requireView(), com.google.android.material.R.attr.colorPrimary)
+        )
+
+        binding.tvRegisterAgreement.setColor(
+            getString(R.string.all_privacy_policy),
+            MaterialColors.getColor(requireView(), com.google.android.material.R.attr.colorPrimary)
+        )
     }
 
     private fun listener() {
-        binding.tvRegisterAgreement.makeLinks(Pair(
-            getString(R.string.all_terms_conditions),
-            View.OnClickListener {
-                Snackbar.make(it.rootView, "Coming soon ...", Snackbar.LENGTH_LONG).show()
-            }), Pair(getString(R.string.all_privacy_policy), View.OnClickListener {
-            Snackbar.make(it.rootView, "Coming soon ...", Snackbar.LENGTH_LONG).show()
-        })
-        )
 
         binding.btnRegisterLogin.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
@@ -48,53 +50,27 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         binding.tietRegisterEmail.addTextChangedListener {
             if (isEmailValid(it.toString())) {
                 isEmailValid = true
-                binding.tvRegisterStateEmail.text = getString(R.string.all_email_example)
-                binding.tilRegisterEmail.boxStrokeColor = Utils.getColorAttribute(
-                    requireContext(), com.google.android.material.R.attr.colorPrimary
-                )
-                binding.tvRegisterStateEmail.setTextColor(
-                    Utils.getColorAttribute(
-                        requireContext(), com.google.android.material.R.attr.colorOnSurfaceVariant
-                    )
-                )
+                binding.tilRegisterEmail.error = null
             } else {
                 isEmailValid = false
-                binding.tvRegisterStateEmail.text = getString(R.string.all_email_not_valid)
-                binding.tilRegisterEmail.boxStrokeColor = Utils.getColorAttribute(
-                    requireContext(), com.google.android.material.R.attr.colorError
-                )
-                binding.tvRegisterStateEmail.setTextColor(
-                    Utils.getColorAttribute(
-                        requireContext(), com.google.android.material.R.attr.colorError
-                    )
-                )
+                binding.tilRegisterEmail.error = getString(R.string.all_email_not_valid)
             }
-
+            if (it.isNullOrBlank()) {
+                binding.tilRegisterEmail.error = null
+            }
             buttonValidation(isEmailValid, isPasswordValid)
         }
         binding.tietRegisterPassword.addTextChangedListener {
             if (isPasswordValid(it.toString())) {
                 isPasswordValid = true
-                binding.tvRegisterStatePassword.text = getString(R.string.all_password_state)
-                binding.tilRegisterPassword.boxStrokeColor = Utils.getColorAttribute(
-                    requireContext(), com.google.android.material.R.attr.colorPrimary
-                )
-                binding.tvRegisterStatePassword.setTextColor(
-                    Utils.getColorAttribute(
-                        requireContext(), com.google.android.material.R.attr.colorOnSurfaceVariant
-                    )
-                )
+                binding.tilRegisterPassword.error = null
             } else {
                 isPasswordValid = false
-                binding.tvRegisterStatePassword.text = getString(R.string.all_password_not_valid)
-                binding.tilRegisterPassword.boxStrokeColor = Utils.getColorAttribute(
-                    requireContext(), com.google.android.material.R.attr.colorError
-                )
-                binding.tvRegisterStatePassword.setTextColor(
-                    Utils.getColorAttribute(
-                        requireContext(), com.google.android.material.R.attr.colorError
-                    )
-                )
+                binding.tilRegisterPassword.error = getString(R.string.all_password_not_valid)
+            }
+
+            if (it.isNullOrBlank()) {
+                binding.tilRegisterPassword.error = null
             }
             buttonValidation(isEmailValid, isPasswordValid)
         }
@@ -120,7 +96,8 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
                 is ViewState.Error -> {
                     binding.pbRegister.visibility = View.GONE
-                    Snackbar.make(requireView(), it.message, Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(requireView(), it.error.message ?: "", Snackbar.LENGTH_LONG)
+                        .show()
                 }
             }
         }

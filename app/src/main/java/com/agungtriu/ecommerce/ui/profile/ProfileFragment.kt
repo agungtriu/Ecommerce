@@ -13,13 +13,14 @@ import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProfile
 import com.agungtriu.ecommerce.core.remote.model.response.DataProfile
 import com.agungtriu.ecommerce.databinding.FragmentProfileBinding
-import com.agungtriu.ecommerce.helper.Extension.makeLinks
+import com.agungtriu.ecommerce.helper.Extension.setColor
 import com.agungtriu.ecommerce.helper.PhotoUriManager
 import com.agungtriu.ecommerce.helper.Utils.closeSoftKeyboard
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
@@ -40,6 +41,16 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         super.onViewCreated(view, savedInstanceState)
         registerActivityResult()
         listener()
+
+        binding.tvProfileAgreement.setColor(
+            getString(R.string.all_terms_conditions),
+            MaterialColors.getColor(requireView(), com.google.android.material.R.attr.colorPrimary)
+        )
+
+        binding.tvProfileAgreement.setColor(
+            getString(R.string.all_privacy_policy),
+            MaterialColors.getColor(requireView(), com.google.android.material.R.attr.colorPrimary)
+        )
     }
 
     private var imageUri: Uri? = null
@@ -105,8 +116,9 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             closeSoftKeyboard(binding.tietProfileName, requireContext())
             observeData()
 
-            val userNamePart =
-                binding.tietProfileName.text.toString().toRequestBody(MultipartBody.FORM)
+            val textBody =
+                binding.tietProfileName.text.toString().toRequestBody("text/plain".toMediaType())
+            val userNamePart = MultipartBody.Part.createFormData("userName", null, textBody)
 
             val file = imageUri?.let { uri -> PhotoUriManager.uriToFile(requireContext(), uri) }
             val fileBody = file?.asRequestBody("image/*".toMediaType())
@@ -122,22 +134,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             )
 
         }
-        binding.tvProfileAgreement.makeLinks(
-            Pair(getString(R.string.all_terms_conditions), View.OnClickListener {
-                Snackbar.make(
-                    it.rootView,
-                    getString(R.string.all_coming_soon),
-                    Snackbar.LENGTH_LONG
-                ).show()
-            }),
-            Pair(getString(R.string.all_privacy_policy), View.OnClickListener {
-                Snackbar.make(
-                    it.rootView,
-                    getString(R.string.all_coming_soon),
-                    Snackbar.LENGTH_LONG
-                ).show()
-            })
-        )
         binding.tietProfileName.addTextChangedListener {
             nameState = it?.length!! >= 1
             buttonValidation(nameState = nameState)
@@ -170,7 +166,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
                 is ViewState.Error -> {
                     binding.pbProfile.visibility = View.GONE
-                    Snackbar.make(requireView(), it.message, Snackbar.LENGTH_LONG)
+                    Snackbar.make(requireView(), it.error.message ?: "", Snackbar.LENGTH_LONG)
                         .show()
 
                 }

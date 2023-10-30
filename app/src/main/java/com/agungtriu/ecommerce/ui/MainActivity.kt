@@ -3,12 +3,14 @@ package com.agungtriu.ecommerce.ui
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.databinding.ActivityMainBinding
+import com.agungtriu.ecommerce.helper.Utils.setLanguage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,6 +44,11 @@ class MainActivity : AppCompatActivity() {
             } else {
                 navController.navigate(R.id.action_global_to_prelogin_navigation)
             }
+        }
+
+        viewModel.getThemeLang().distinctUntilChanged().observe(this) {
+            AppCompatDelegate.setDefaultNightMode(if (it.isDark) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+            setLanguage(it.language)
         }
     }
 }

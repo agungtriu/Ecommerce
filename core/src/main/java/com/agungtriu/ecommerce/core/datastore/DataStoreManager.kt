@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.agungtriu.ecommerce.core.datastore.model.LoginModel
 import com.agungtriu.ecommerce.core.datastore.model.RegisterProfileModel
+import com.agungtriu.ecommerce.core.datastore.model.ThemeLangModel
 import com.agungtriu.ecommerce.core.datastore.model.TokenModel
 import com.agungtriu.ecommerce.core.utils.Config.DATASTORE_NAME
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -74,6 +75,28 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }
     }
 
+    suspend fun changeTheme(isDark: Boolean) {
+        dataStore.edit { preferences ->
+            preferences[THEME_KEY] = isDark
+        }
+    }
+
+    suspend fun changeLanguage(language: String) {
+        dataStore.edit { preferences ->
+            preferences[LANGUAGE_KEY] = language
+        }
+    }
+
+
+    fun getThemeLang(): Flow<ThemeLangModel> {
+        return dataStore.data.map { preferences ->
+            ThemeLangModel(
+                isDark = preferences[THEME_KEY] ?: false,
+                language = preferences[LANGUAGE_KEY] ?: "en",
+            )
+        }
+    }
+
     suspend fun updateLoginStatus(registerProfileModel: RegisterProfileModel) {
         dataStore.edit { preferences ->
             preferences[NAME_KEY] = registerProfileModel.userName ?: ""
@@ -98,5 +121,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
         private val NAME_KEY = stringPreferencesKey("name")
         private val IMAGE_KEY = stringPreferencesKey("image")
+        private val THEME_KEY = booleanPreferencesKey("theme")
+        private val LANGUAGE_KEY = stringPreferencesKey("language")
     }
 }

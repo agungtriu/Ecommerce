@@ -1,4 +1,4 @@
-package com.agungtriu.ecommerce.core.remote.model.request
+package com.agungtriu.ecommerce.core.remote.model.response
 
 import com.google.gson.annotations.SerializedName
 

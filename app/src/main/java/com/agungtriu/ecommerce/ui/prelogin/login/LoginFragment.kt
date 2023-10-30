@@ -8,13 +8,13 @@ import androidx.navigation.fragment.findNavController
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.remote.model.response.DataLogin
 import com.agungtriu.ecommerce.databinding.FragmentLoginBinding
-import com.agungtriu.ecommerce.helper.Extension.makeLinks
+import com.agungtriu.ecommerce.helper.Extension.setColor
 import com.agungtriu.ecommerce.helper.FormValidation.isEmailValid
 import com.agungtriu.ecommerce.helper.FormValidation.isPasswordValid
 import com.agungtriu.ecommerce.helper.Utils.closeSoftKeyboard
-import com.agungtriu.ecommerce.helper.Utils.getColorAttribute
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.base.BaseFragment
+import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,6 +43,16 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
         observeData()
         listener()
+
+        binding.tvLoginAgreement.setColor(
+            getString(R.string.all_terms_conditions),
+            MaterialColors.getColor(requireView(), com.google.android.material.R.attr.colorPrimary)
+        )
+
+        binding.tvLoginAgreement.setColor(
+            getString(R.string.all_privacy_policy),
+            MaterialColors.getColor(requireView(), com.google.android.material.R.attr.colorPrimary)
+        )
     }
 
     private fun observeData() {
@@ -58,21 +68,14 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
                 is ViewState.Error -> {
                     binding.pbLogin.visibility = View.GONE
-                    Snackbar.make(requireView(), it.message, Snackbar.LENGTH_LONG).show()
+                    Snackbar.make(requireView(), it.error.message ?: "", Snackbar.LENGTH_LONG)
+                        .show()
                 }
             }
         }
     }
 
     private fun listener() {
-        binding.tvLoginAgreement.makeLinks(Pair(getString(R.string.all_terms_conditions),
-            View.OnClickListener {
-                Snackbar.make(it.rootView, "Coming soon ...", Snackbar.LENGTH_LONG).show()
-            }), Pair(getString(R.string.all_privacy_policy), View.OnClickListener {
-            Snackbar.make(it.rootView, "Coming soon ...", Snackbar.LENGTH_LONG).show()
-        })
-        )
-
         binding.btnLogin.setOnClickListener {
             closeSoftKeyboard(binding.tietLoginPassword, requireContext())
             viewModel.doLogin(
@@ -87,53 +90,29 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
         binding.tietLoginEmail.addTextChangedListener {
             if (isEmailValid(it.toString())) {
-                binding.tvLoginStateEmail.text = getString(R.string.all_email_example)
                 isEmailValid = true
-                binding.tilLoginEmail.boxStrokeColor = getColorAttribute(
-                    requireContext(), com.google.android.material.R.attr.colorPrimary
-                )
-                binding.tvLoginStateEmail.setTextColor(
-                    getColorAttribute(
-                        requireContext(), com.google.android.material.R.attr.colorOnSurfaceVariant
-                    )
-                )
+                binding.tilLoginEmail.error = null
             } else {
-                binding.tvLoginStateEmail.text = getString(R.string.all_email_not_valid)
                 isEmailValid = false
-                binding.tilLoginEmail.boxStrokeColor = getColorAttribute(
-                    requireContext(), com.google.android.material.R.attr.colorError
-                )
-                binding.tvLoginStateEmail.setTextColor(
-                    getColorAttribute(
-                        requireContext(), com.google.android.material.R.attr.colorError
-                    )
-                )
+                binding.tilLoginEmail.error = getString(R.string.all_email_not_valid)
+            }
+
+            if (it.isNullOrBlank()) {
+                binding.tilLoginEmail.error = null
             }
             buttonValidation(emailState = isEmailValid, passwordState = isPasswordValid)
         }
         binding.tietLoginPassword.addTextChangedListener {
             if (isPasswordValid(it.toString())) {
                 isPasswordValid = true
-                binding.tvLoginStatePassword.text = getString(R.string.all_password_state)
-                binding.tilLoginPassword.boxStrokeColor = getColorAttribute(
-                    requireContext(), com.google.android.material.R.attr.colorPrimary
-                )
-                binding.tvLoginStatePassword.setTextColor(
-                    getColorAttribute(
-                        requireContext(), com.google.android.material.R.attr.colorOnSurfaceVariant
-                    )
-                )
+                binding.tilLoginPassword.error = null
             } else {
                 isPasswordValid = false
-                binding.tvLoginStatePassword.text = getString(R.string.all_password_not_valid)
-                binding.tilLoginPassword.boxStrokeColor = getColorAttribute(
-                    requireContext(), com.google.android.material.R.attr.colorError
-                )
-                binding.tvLoginStatePassword.setTextColor(
-                    getColorAttribute(
-                        requireContext(), com.google.android.material.R.attr.colorError
-                    )
-                )
+                binding.tilLoginPassword.error = getString(R.string.all_password_not_valid)
+            }
+
+            if (it.isNullOrBlank()) {
+                binding.tilLoginPassword.error = null
             }
             buttonValidation(emailState = isEmailValid, passwordState = isPasswordValid)
         }
