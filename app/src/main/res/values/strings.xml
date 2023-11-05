@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">ecommerce</string>
+    <string name="app_name" translatable="false">ecommerce</string>
     <string name="btn_onboarding_join">Gabung Sekarang</string>
     <string name="btn_onboarding_skip">Lewati</string>
     <string name="btn_onboarding_next">Selanjutnya</string>
     <string name="all_login">Masuk</string>
-    <string name="all_email">Email</string>
-    <string name="all_password">Password</string>
+    <string name="all_email" translatable="false">Email</string>
+    <string name="all_password" translatable="false">Password</string>
     <string name="all_password_state">Minimal 8 karakter</string>
     <string name="all_email_example">Contoh: test@gmail.com</string>
     <string name="login_separate">atau daftar dengan</string>
@@ -22,9 +22,9 @@
     <string name="dialog_title">Pilih Gambar</string>
     <string name="dialog_profile_camera">Kamera</string>
     <string name="dialog_profile_gallery">Galeri</string>
-    <string name="all_home">Home</string>
-    <string name="all_store">Store</string>
-    <string name="all_wishlist">Wishlist</string>
+    <string name="all_home" translatable="false">Home</string>
+    <string name="all_store" translatable="false">Store</string>
+    <string name="all_wishlist" translatable="false">Wishlist</string>
     <string name="all_transaction">Transaksi</string>
     <string name="register_separate">atau masuk dengan</string>
     <string name="all_logout">Keluar</string>
@@ -32,4 +32,34 @@
     <string name="home_id" translatable="false">ID</string>
     <string name="home_dark">Gelap</string>
     <string name="home_light">Terang</string>
+    <string name="store_empty">Kosong</string>
+    <string name="store_empty_desc">Data yang anda minta tidak tersedia</string>
+    <string name="all_reset" translatable="false">Reset</string>
+    <string name="all_search">Pencarian</string>
+    <string name="store_connection_desc">Koneksi anda tidak tersedia</string>
+    <string name="store_connection_title">Koneksi</string>
+    <string name="all_refresh">Muat Ulang</string>
+    <string name="store_filter" translatable="false">Filter</string>
+    <string name="all_label_hint" translatable="false">Label</string>
+    <string name="item_title_hint" translatable="false">Lenovo Legion 7 16 I7 11800 16GB 1TB SSD RTX3070 8GB</string>
+    <string name="item_price_hint" translatable="false">Rp23.499.000</string>
+    <string name="item_store_hint" translatable="false">ProStoreComputer</string>
+    <string name="item_rating_hint" translatable="false">5.0</string>
+    <string name="item_sold_hint">Terjual 10</string>
+    <string name="item_sold_title">Terjual</string>
+    <string name="bottomsheetfilter_sort">Urutkan</string>
+    <string name="bottomsheetfilter_category">Kategori</string>
+    <string name="bottomsheetfilter_price">Harga</string>
+    <string name="bottomsheetfilter_min">Terendah</string>
+    <string name="bottomsheetfilter_max">Tertinggi</string>
+    <string name="bottomsheetfilter_showproduct">Tampilkan Produk</string>
+    <string name="bottomsheetfilter_review">Ulasan</string>
+    <string name="bottomsheetfilter_sold">Penjualan</string>
+    <string name="bottomsheetfilter_maxprice">Harga Tertinggi</string>
+    <string name="bottomsheetfilter_minprice">Harga Terendah</string>
+    <string name="bottomsheetfilter_apple" translatable="false">Apple</string>
+    <string name="bottomsheetfilter_asus" translatable="false">Asus</string>
+    <string name="bottomsheetfilter_dell" translatable="false">Dell</string>
+    <string name="bottomsheetfilter_lenovo" translatable="false">Lenovo</string>
+    <string name="all_max">"Maksimal "</string>
 </resources>

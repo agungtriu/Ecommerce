@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.agungtriu.ecommerce.core.datastore.model.LoginModel
+import com.agungtriu.ecommerce.core.datastore.model.LoginStatusModel
 import com.agungtriu.ecommerce.core.datastore.model.RegisterProfileModel
 import com.agungtriu.ecommerce.core.datastore.model.ThemeLangModel
 import com.agungtriu.ecommerce.core.datastore.model.TokenModel
@@ -37,7 +38,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }
     }
 
-    fun getLoginStatus(): Flow<LoginModel> {
+    fun getDataLogin(): Flow<LoginModel> {
         return dataStore.data.map { preferences ->
             LoginModel(
                 isLogin = preferences[LOGIN_KEY] ?: false,
@@ -45,6 +46,14 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
                 userImage = preferences[IMAGE_KEY] ?: "",
                 accessToken = preferences[ACCESS_TOKEN_KEY] ?: "",
                 refreshToken = preferences[REFRESH_TOKEN_KEY] ?: "",
+            )
+        }
+    }
+
+    fun getLoginStatus(): Flow<LoginStatusModel> {
+        return dataStore.data.map { preferences ->
+            LoginStatusModel(
+                isLogin = preferences[LOGIN_KEY] ?: false,
             )
         }
     }

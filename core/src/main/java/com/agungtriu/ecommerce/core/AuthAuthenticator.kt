@@ -28,18 +28,18 @@ class AuthAuthenticator @Inject constructor(
             return runBlocking {
                 try {
                     val token = dataStoreManager.getToken().first()
-                    val refreshToken = refreshToken(token.refreshToken)
-                    if (refreshToken.data != null) {
+                    val refresh = refreshToken(token.refreshToken)
+                    if (refresh.data != null) {
                         dataStoreManager.refreshToken(
                             TokenModel(
-                                accessToken = refreshToken.data!!.accessToken!!,
-                                refreshToken = refreshToken.data!!.refreshToken!!
+                                accessToken = refresh.data!!.accessToken!!,
+                                refreshToken = refresh.data!!.refreshToken!!
                             )
                         )
                         return@runBlocking response.request.newBuilder()
                             .header(
                                 "Authorization",
-                                "Bearer ${refreshToken.data!!.accessToken!!}"
+                                "Bearer ${refresh.data!!.accessToken!!}"
                             )
                             .build()
                     } else {
@@ -66,6 +66,6 @@ class AuthAuthenticator @Inject constructor(
             .client(client)
             .build()
         val service = retrofit.create(ApiService::class.java)
-        return service.doRefreshToken(RequestRefresh("Bearer $token"))
+        return service.doRefreshToken(RequestRefresh(token = token))
     }
 }

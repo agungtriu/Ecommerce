@@ -6,7 +6,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.agungtriu.ecommerce.R
-import com.agungtriu.ecommerce.core.remote.model.response.DataLogin
 import com.agungtriu.ecommerce.databinding.FragmentLoginBinding
 import com.agungtriu.ecommerce.helper.Extension.setColor
 import com.agungtriu.ecommerce.helper.FormValidation.isEmailValid
@@ -60,14 +59,17 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
             when (it) {
                 is ViewState.Loading -> {
                     binding.pbLogin.visibility = View.VISIBLE
+                    binding.btnLogin.visibility = View.INVISIBLE
                 }
 
-                is ViewState.Success<DataLogin> -> {
+                is ViewState.Success -> {
                     binding.pbLogin.visibility = View.GONE
+                    binding.btnLogin.visibility = View.VISIBLE
                 }
 
                 is ViewState.Error -> {
                     binding.pbLogin.visibility = View.GONE
+                    binding.btnLogin.visibility = View.VISIBLE
                     Snackbar.make(requireView(), it.error.message ?: "", Snackbar.LENGTH_LONG)
                         .show()
                 }

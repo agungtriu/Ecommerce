@@ -6,7 +6,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.agungtriu.ecommerce.R
-import com.agungtriu.ecommerce.core.remote.model.response.DataRegister
 import com.agungtriu.ecommerce.databinding.FragmentRegisterBinding
 import com.agungtriu.ecommerce.helper.Extension.setColor
 import com.agungtriu.ecommerce.helper.FormValidation.isEmailValid
@@ -88,14 +87,17 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
             when (it) {
                 is ViewState.Loading -> {
                     binding.pbRegister.visibility = View.VISIBLE
+                    binding.btnRegister.visibility = View.INVISIBLE
                 }
 
-                is ViewState.Success<DataRegister> -> {
+                is ViewState.Success -> {
                     binding.pbRegister.visibility = View.GONE
+                    binding.btnRegister.visibility = View.VISIBLE
                 }
 
                 is ViewState.Error -> {
                     binding.pbRegister.visibility = View.GONE
+                    binding.btnRegister.visibility = View.VISIBLE
                     Snackbar.make(requireView(), it.error.message ?: "", Snackbar.LENGTH_LONG)
                         .show()
                 }

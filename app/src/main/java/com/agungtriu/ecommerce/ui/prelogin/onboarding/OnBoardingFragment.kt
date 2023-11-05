@@ -26,8 +26,9 @@ class OnBoardingFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = OnboardingAdapter(listOfImage)
+        adapter = OnboardingAdapter()
         binding.vpOnboarding.adapter = adapter
+        adapter.submitList(listOfImage)
         TabLayoutMediator(binding.tlOnboarding, binding.vpOnboarding) { tab, _ ->
             tab.setCustomView(R.layout.custom_tab_indicator)
         }.attach()

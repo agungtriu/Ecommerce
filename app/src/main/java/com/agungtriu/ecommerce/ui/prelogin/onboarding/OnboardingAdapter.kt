@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.agungtriu.ecommerce.databinding.SliderOnboardingBinding
 
-class OnboardingAdapter(private val data: List<Int>) :
+class OnboardingAdapter :
     ListAdapter<Int, OnboardingAdapter.ViewHolder>(callback) {
 
     companion object {
@@ -27,10 +27,8 @@ class OnboardingAdapter(private val data: List<Int>) :
         SliderOnboardingBinding.inflate(LayoutInflater.from(parent.context), parent, false)
     )
 
-    override fun getItemCount(): Int = data.size
-
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = data[position]
+        val item = getItem(position)
         holder.bind(item)
     }
 

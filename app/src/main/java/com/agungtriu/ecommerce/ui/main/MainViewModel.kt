@@ -12,6 +12,6 @@ import javax.inject.Inject
 class MainViewModel @Inject constructor(private val preLoginRepository: PreLoginRepository) : ViewModel() {
 
     fun getLoginStatus(): LiveData<LoginModel> {
-        return preLoginRepository.getLoginStatus().asLiveData()
+        return preLoginRepository.getDataLogin().asLiveData()
     }
 }
