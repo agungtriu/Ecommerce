@@ -73,7 +73,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
     private fun listener() {
         binding.ibStoreView.setOnClickListener {
             isGrid = !isGrid
-            val position = gridLayoutManager.findFirstVisibleItemPosition()
+            val position = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
             if (isGrid) {
                 setLayout(viewType = 2)
                 binding.ibStoreView.setBackgroundResource(R.drawable.ic_linear_view)
