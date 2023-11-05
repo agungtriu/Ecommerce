@@ -30,7 +30,7 @@ class StoreAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Product) {
             Glide.with(itemView.context).load(item.image)
-                .transform(CenterInside(), RoundedCorners(16)).placeholder(R.mipmap.ic_thumbnail)
+                .transform(CenterInside(), RoundedCorners(8)).placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemStoreLinear)
 
             binding.tvItemStoreLinearTitle.text = item.productName
