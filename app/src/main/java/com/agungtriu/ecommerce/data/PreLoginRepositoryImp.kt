@@ -7,7 +7,7 @@ import com.agungtriu.ecommerce.core.remote.model.request.RequestLogin
 import com.agungtriu.ecommerce.core.remote.model.request.RequestRegister
 import com.agungtriu.ecommerce.core.remote.model.response.DataLogin
 import com.agungtriu.ecommerce.core.remote.model.response.DataRegister
-import com.agungtriu.ecommerce.helper.Utils.getApiErrorMessage
+import com.agungtriu.ecommerce.helper.Extension.toResponseError
 import com.agungtriu.ecommerce.helper.ViewState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -27,8 +27,8 @@ class PreLoginRepositoryImp @Inject constructor(
         dataStoreManager.saveOnboardingStatus()
     }
 
-    override fun getLoginStatus(): Flow<LoginModel> {
-        return dataStoreManager.getLoginStatus()
+    override fun getDataLogin(): Flow<LoginModel> {
+        return dataStoreManager.getDataLogin()
     }
 
     override suspend fun saveLoginStatus(loginModel: LoginModel) {
@@ -59,8 +59,8 @@ class PreLoginRepositoryImp @Inject constructor(
                 } else {
                     throw Exception("Data register not found")
                 }
-            } catch (e: Throwable) {
-                emit(ViewState.Error(getApiErrorMessage(e)))
+            } catch (t: Throwable) {
+                emit(ViewState.Error(t.toResponseError()))
             }
         }
 
@@ -86,8 +86,8 @@ class PreLoginRepositoryImp @Inject constructor(
                 } else {
                     throw Exception("Data login not found")
                 }
-            } catch (e: Throwable) {
-                emit(ViewState.Error(getApiErrorMessage(e)))
+            } catch (t: Throwable) {
+                emit(ViewState.Error(t.toResponseError()))
             }
         }
 

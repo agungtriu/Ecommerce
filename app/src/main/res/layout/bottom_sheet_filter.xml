@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.store.filter.FilterBottomSheet">
+
+    <FrameLayout
+        style="@style/Widget.Material3.BottomSheet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rectangle_rounded_top_20"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.bottomsheet.BottomSheetDragHandleView
+                android:id="@+id/draghandle_bottomsheetfilter"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_bottomsheetfilter_filter"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:fontFamily="@font/poppins_700"
+                android:text="@string/store_filter"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="16sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/draghandle_bottomsheetfilter" />
+
+            <Button
+                android:id="@+id/btn_bottomsheetfilter_reset"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/poppins_500"
+                android:text="@string/all_reset"
+                android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/tv_bottomsheetfilter_filter"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/tv_bottomsheetfilter_filter" />
+
+            <TextView
+                android:id="@+id/tv_bottomsheetfilter_sort"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/poppins_600"
+                android:text="@string/bottomsheetfilter_sort"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                app:layout_constraintTop_toBottomOf="@id/tv_bottomsheetfilter_filter" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipgroup_bottomshettfilter_sort"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_bottomsheetfilter_sort"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_bottomshettfilter_sort_review"
+                    style="@style/Widget.App.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_500"
+                    android:text="@string/bottomsheetfilter_review"
+                    android:textColor="?attr/colorOnSurfaceVariant" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_bottomshettfilter_sort_sold"
+                    style="@style/Widget.App.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_500"
+                    android:text="@string/bottomsheetfilter_sold" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_bottomshettfilter_sort_maxprice"
+                    style="@style/Widget.App.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_500"
+                    android:text="@string/bottomsheetfilter_maxprice" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_bottomshettfilter_sort_minprice"
+                    style="@style/Widget.App.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_500"
+                    android:text="@string/bottomsheetfilter_minprice" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/tv_bottomsheetfilter_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/poppins_600"
+                android:text="@string/bottomsheetfilter_category"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                app:layout_constraintTop_toBottomOf="@id/chipgroup_bottomshettfilter_sort" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/chipgroup_bottomshettfilter_category"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintTop_toBottomOf="@id/tv_bottomsheetfilter_category"
+                app:singleSelection="true">
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_bottomshettfilter_category_apple"
+                    style="@style/Widget.App.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_500"
+                    android:text="@string/bottomsheetfilter_apple" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_bottomshettfilter_category_asus"
+                    style="@style/Widget.App.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_500"
+                    android:text="@string/bottomsheetfilter_asus" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_bottomshettfilter_category_dell"
+                    style="@style/Widget.App.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_500"
+                    android:text="@string/bottomsheetfilter_dell" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/chip_bottomshettfilter_category_lenovo"
+                    style="@style/Widget.App.Chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_500"
+                    android:text="@string/bottomsheetfilter_lenovo" />
+
+            </com.google.android.material.chip.ChipGroup>
+
+            <TextView
+                android:id="@+id/tv_bottomsheetfilter_price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/poppins_600"
+                android:text="@string/bottomsheetfilter_price"
+                android:textColor="?attr/colorOnSurfaceVariant"
+                app:layout_constraintTop_toBottomOf="@id/chipgroup_bottomshettfilter_category" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_bottomsheetfilter_min"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="8dp"
+                android:hint="@string/bottomsheetfilter_min"
+                app:layout_constraintEnd_toStartOf="@id/til_bottomsheetfilter_max"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_bottomsheetfilter_price">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_bottomsheetfilter_min"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_400"
+                    android:imeOptions="actionNext"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_bottomsheetfilter_max"
+                style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="16dp"
+                android:hint="@string/bottomsheetfilter_max"
+                app:layout_constraintBottom_toBottomOf="@id/til_bottomsheetfilter_min"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/til_bottomsheetfilter_min"
+                app:layout_constraintTop_toTopOf="@id/til_bottomsheetfilter_min">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_bottomsheetfilter_max"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/poppins_400"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_bottomsheetfilter_submit"
+                style="@style/Widget.Material3.Button.IconButton.Filled"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/poppins_500"
+                android:text="@string/bottomsheetfilter_showproduct"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/til_bottomsheetfilter_min"
+                app:layout_constraintVertical_bias="0.0" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

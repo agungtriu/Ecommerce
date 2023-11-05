@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ecommerce</string>
     <string name="btn_onboarding_join">Join Now</string>
     <string name="btn_onboarding_skip">Skip</string>
     <string name="btn_onboarding_next">Next</string>
     <string name="all_login">Login</string>
-    <string name="all_email">Email</string>
-    <string name="all_password">Password</string>
     <string name="all_password_state">Minimum 8 characters</string>
     <string name="all_email_example">Example: test@gmail.com</string>
     <string name="login_separate">or register with</string>
@@ -23,12 +20,28 @@
     <string name="dialog_title">Select Image</string>
     <string name="dialog_profile_camera">Camera</string>
     <string name="dialog_profile_gallery">Gallery</string>
-    <string name="all_home">Home</string>
-    <string name="all_store">Store</string>
-    <string name="all_wishlist">Wishlist</string>
     <string name="all_transaction">Transaction</string>
     <string name="register_separate">or login with</string>
     <string name="all_logout">Logout</string>
     <string name="home_dark">Dark</string>
     <string name="home_light">Light</string>
+    <string name="store_empty">Empty</string>
+    <string name="store_empty_desc">Your requested data is unavailable</string>
+    <string name="all_search">Search</string>
+    <string name="store_connection_desc">Your connection is unavailable</string>
+    <string name="store_connection_title">Connection</string>
+    <string name="all_refresh">Refresh</string>
+    <string name="item_sold_hint">Sold 10</string>
+    <string name="item_sold_title">Sold</string>
+    <string name="bottomsheetfilter_sort">Sort</string>
+    <string name="bottomsheetfilter_category">Category</string>
+    <string name="bottomsheetfilter_price">Price</string>
+    <string name="bottomsheetfilter_min">Lowest</string>
+    <string name="bottomsheetfilter_max">Highest</string>
+    <string name="bottomsheetfilter_showproduct">Show Product</string>
+    <string name="bottomsheetfilter_review">Review</string>
+    <string name="bottomsheetfilter_sold">Sold</string>
+    <string name="bottomsheetfilter_maxprice">Highest</string>
+    <string name="bottomsheetfilter_minprice">Lowest</string>
+    <string name="all_max">"Maximum "</string>
 </resources>

@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("kotlin-parcelize")
 }
 
 android {
@@ -52,6 +53,8 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("com.google.dagger:hilt-android:2.48.1")
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
     kapt("com.google.dagger:hilt-android-compiler:2.48.1")
     implementation(project(":core"))
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")
@@ -60,4 +63,8 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.11.0")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.airbnb.android:lottie:6.1.0")
+    implementation("androidx.paging:paging-runtime:3.2.1")
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation ("com.facebook.shimmer:shimmer:0.5.0")
+
 }

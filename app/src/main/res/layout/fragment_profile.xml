@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
-            style="@style/TextAppearance.Material3.TitleLarge"
+            style="@style/Theme.Ecommerce.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/all_profil"
@@ -53,6 +53,7 @@
             style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_400"
             android:inputType="textPersonName" />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -85,10 +86,11 @@
         android:id="@+id/pb_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminateTint="?attr/colorPrimary"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintBottom_toBottomOf="@id/btn_profile_finish"
+        app:layout_constraintEnd_toEndOf="@id/btn_profile_finish"
+        app:layout_constraintStart_toStartOf="@id/btn_profile_finish"
+        app:layout_constraintTop_toTopOf="@id/btn_profile_finish" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

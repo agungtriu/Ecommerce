@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProfile
 import com.agungtriu.ecommerce.core.remote.model.response.DataProfile
@@ -158,14 +159,18 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             when (it) {
                 is ViewState.Loading -> {
                     binding.pbProfile.visibility = View.VISIBLE
+                    binding.btnProfileFinish.visibility = View.INVISIBLE
                 }
 
                 is ViewState.Success<DataProfile> -> {
                     binding.pbProfile.visibility = View.GONE
+                    binding.btnProfileFinish.visibility = View.VISIBLE
+                    findNavController().navigate(R.id.action_profileFragment_to_mainFragment)
                 }
 
                 is ViewState.Error -> {
                     binding.pbProfile.visibility = View.GONE
+                    binding.btnProfileFinish.visibility = View.VISIBLE
                     Snackbar.make(requireView(), it.error.message ?: "", Snackbar.LENGTH_LONG)
                         .show()
 
