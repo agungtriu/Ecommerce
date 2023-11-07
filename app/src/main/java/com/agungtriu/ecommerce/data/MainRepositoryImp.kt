@@ -80,7 +80,7 @@ class MainRepositoryImp @Inject constructor(
 
     override fun getProducts(requestProducts: RequestProducts): Flow<PagingData<Product>> =
         Pager(
-            config = PagingConfig(pageSize = 10, initialLoadSize = 10),
+            config = PagingConfig(pageSize = 10, initialLoadSize = 10, prefetchDistance = 1),
             pagingSourceFactory = {
                 ProductsPagingSource(apiService, requestProducts)
             },

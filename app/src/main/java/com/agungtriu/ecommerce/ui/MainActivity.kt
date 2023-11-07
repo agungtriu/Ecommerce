@@ -27,13 +27,13 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
-        checkNotificationPermission()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         setupNavController()
         observeData()
+        checkNotificationPermission()
     }
 
     private fun setupNavController() {
