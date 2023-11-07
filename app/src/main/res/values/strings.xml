@@ -62,4 +62,13 @@
     <string name="bottomsheetfilter_dell" translatable="false">Dell</string>
     <string name="bottomsheetfilter_lenovo" translatable="false">Lenovo</string>
     <string name="all_max">"Maksimal "</string>
+    <string name="detail_pick_variant">Pilih varian</string>
+    <string name="detail_description_product">Deskripsi produk</string>
+    <string name="all_review_buyer">Ulasan pembeli</string>
+    <string name="detail_show_all_review">Lihat Semua</string>
+    <string name="detail_rating_scala" translatable="false">/5.0</string>
+    <string name="detail_desc_review">100% pembeli merasa puas</string>
+    <string name="detail_review_count">2 rating · 2 ulasan</string>
+    <string name="detail_add_cart">+ Keranjang</string>
+    <string name="detail_buy_now">Beli Langsung</string>
 </resources>

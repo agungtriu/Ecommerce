@@ -44,4 +44,12 @@
     <string name="bottomsheetfilter_maxprice">Highest</string>
     <string name="bottomsheetfilter_minprice">Lowest</string>
     <string name="all_max">"Maximum "</string>
+    <string name="detail_pick_variant">Choose variant</string>
+    <string name="detail_description_product">Description product</string>
+    <string name="all_review_buyer">Review buyer</string>
+    <string name="detail_show_all_review">See all</string>
+    <string name="detail_desc_review">100% buyers are satisfied</string>
+    <string name="detail_review_count">2 ratings · 2 reviews</string>
+    <string name="detail_add_cart">+ Cart</string>
+    <string name="detail_buy_now">Buy Now</string>
 </resources>
