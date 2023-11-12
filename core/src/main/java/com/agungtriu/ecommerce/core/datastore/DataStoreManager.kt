@@ -7,8 +7,8 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.agungtriu.ecommerce.core.datastore.model.AuthorizeModel
 import com.agungtriu.ecommerce.core.datastore.model.LoginModel
-import com.agungtriu.ecommerce.core.datastore.model.LoginStatusModel
 import com.agungtriu.ecommerce.core.datastore.model.RegisterProfileModel
 import com.agungtriu.ecommerce.core.datastore.model.ThemeLangModel
 import com.agungtriu.ecommerce.core.datastore.model.TokenModel
@@ -38,7 +38,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }
     }
 
-    fun getDataLogin(): Flow<LoginModel> {
+    fun getLoginData(): Flow<LoginModel> {
         return dataStore.data.map { preferences ->
             LoginModel(
                 isLogin = preferences[LOGIN_KEY] ?: false,
@@ -46,14 +46,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
                 userImage = preferences[IMAGE_KEY] ?: "",
                 accessToken = preferences[ACCESS_TOKEN_KEY] ?: "",
                 refreshToken = preferences[REFRESH_TOKEN_KEY] ?: "",
-            )
-        }
-    }
-
-    fun getLoginStatus(): Flow<LoginStatusModel> {
-        return dataStore.data.map { preferences ->
-            LoginStatusModel(
-                isLogin = preferences[LOGIN_KEY] ?: false,
+                isAuthorized = preferences[AUTHORIZED_KEY] ?: false,
             )
         }
     }
@@ -67,13 +60,22 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }
     }
 
-    suspend fun saveLoginStatus(loginModel: LoginModel) {
+    fun getAuthorizedStatus(): Flow<AuthorizeModel> {
+        return dataStore.data.map { preferences ->
+            AuthorizeModel(
+                isAuthorized = preferences[AUTHORIZED_KEY] ?: false,
+            )
+        }
+    }
+
+    suspend fun saveLoginData(loginModel: LoginModel) {
         dataStore.edit { preferences ->
             preferences[LOGIN_KEY] = loginModel.isLogin
             preferences[NAME_KEY] = loginModel.userName ?: ""
             preferences[IMAGE_KEY] = loginModel.userImage ?: ""
             preferences[ACCESS_TOKEN_KEY] = loginModel.accessToken ?: ""
             preferences[REFRESH_TOKEN_KEY] = loginModel.refreshToken ?: ""
+            preferences[AUTHORIZED_KEY] = loginModel.isAuthorized
         }
     }
 
@@ -120,12 +122,14 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
             preferences[IMAGE_KEY] = ""
             preferences[ACCESS_TOKEN_KEY] = ""
             preferences[REFRESH_TOKEN_KEY] = ""
+            preferences[AUTHORIZED_KEY] = false
         }
     }
 
     companion object {
         private val ONBOARDING_KEY = booleanPreferencesKey("onboarding_status")
         private val LOGIN_KEY = booleanPreferencesKey("login_status")
+        private val AUTHORIZED_KEY = booleanPreferencesKey("authorized_status")
         private val ACCESS_TOKEN_KEY = stringPreferencesKey("access_token")
         private val REFRESH_TOKEN_KEY = stringPreferencesKey("refresh_token")
         private val NAME_KEY = stringPreferencesKey("name")

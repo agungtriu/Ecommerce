@@ -6,4 +6,5 @@ data class LoginModel(
     val userImage: String? = "",
     val accessToken: String? = "",
     val refreshToken: String? = "",
+    val isAuthorized: Boolean
 )

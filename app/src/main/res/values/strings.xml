@@ -62,4 +62,40 @@
     <string name="bottomsheetfilter_dell" translatable="false">Dell</string>
     <string name="bottomsheetfilter_lenovo" translatable="false">Lenovo</string>
     <string name="all_max">"Maksimal "</string>
+    <string name="detail_pick_variant">Pilih varian</string>
+    <string name="detail_description_product">Deskripsi produk</string>
+    <string name="all_review_buyer">Ulasan pembeli</string>
+    <string name="detail_show_all_review">Lihat Semua</string>
+    <string name="detail_rating_scala" translatable="false">/5.0</string>
+    <string name="detail_desc_review_hint">100% pembeli merasa puas</string>
+    <string name="detail_review_count_hint">2 rating · 2 ulasan</string>
+    <string name="detail_add_cart">+ Keranjang</string>
+    <string name="detail_buy_now">Beli Langsung</string>
+    <string name="detail_satisfaction_desc">% pembeli merasa puas</string>
+    <string name="detail_rating_desc">rating</string>
+    <string name="detail_dot" translatable="false">·</string>
+    <string name="detail_review_desc">ulasan</string>
+    <string name="all_lorem_ipsum" translatable="false">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</string>
+    <string name="all_username_hint" translatable="false">John Doe</string>
+    <string name="all_name">Nama</string>
+    <string name="all_price">Harga</string>
+    <string name="all_link" translatable="false">Link</string>
+    <string name="all_item">Barang</string>
+    <string name="detail_success_add">Sukses menambahkan</string>
+    <string name="detail_to_wishlist">ke wishlist</string>
+    <string name="detail_success_remove">Sukses menghapus</string>
+    <string name="detail_from_wishlist">dari wishlist</string>
+    <string name="all_cart">Keranjang</string>
+    <string name="all_delete">Hapus</string>
+    <string name="all_select_all">Pilih Semua</string>
+    <string name="cart_total_pay">Total Bayar</string>
+    <string name="cart_buy">Beli</string>
+    <string name="all_stock_not_available">Stock tidak tersedia</string>
+    <string name="all_success_update_quantity">Sukses mengupdate kuantiti</string>
+    <string name="all_success_add_cart">Sukses menambahkan pada keranjang</string>
+    <string name="cart_remains">Sisa</string>
+    <string name="all_stock" translatable="false">Stock</string>
+    <string name="main_notification">Notifikasi</string>
+    <string name="main_cart">Keranjang</string>
+    <string name="main_menu">Menu</string>
 </resources>

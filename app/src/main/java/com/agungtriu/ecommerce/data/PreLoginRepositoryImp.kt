@@ -27,12 +27,12 @@ class PreLoginRepositoryImp @Inject constructor(
         dataStoreManager.saveOnboardingStatus()
     }
 
-    override fun getDataLogin(): Flow<LoginModel> {
-        return dataStoreManager.getDataLogin()
+    override fun getLoginData(): Flow<LoginModel> {
+        return dataStoreManager.getLoginData()
     }
 
-    override suspend fun saveLoginStatus(loginModel: LoginModel) {
-        dataStoreManager.saveLoginStatus(
+    override suspend fun saveLoginData(loginModel: LoginModel) {
+        dataStoreManager.saveLoginData(
             loginModel = loginModel
         )
     }
@@ -46,13 +46,14 @@ class PreLoginRepositoryImp @Inject constructor(
                 )
                 val dataRegister = result.data
                 if (dataRegister != null) {
-                    dataStoreManager.saveLoginStatus(
+                    dataStoreManager.saveLoginData(
                         LoginModel(
                             isLogin = true,
                             userName = dataRegister.userName,
                             userImage = dataRegister.userImage,
                             accessToken = dataRegister.accessToken,
-                            refreshToken = dataRegister.refreshToken
+                            refreshToken = dataRegister.refreshToken,
+                            isAuthorized = true
                         )
                     )
                     emit(ViewState.Success(dataRegister))
@@ -73,13 +74,14 @@ class PreLoginRepositoryImp @Inject constructor(
                 )
                 val dataLogin = result.data
                 if (dataLogin != null) {
-                    dataStoreManager.saveLoginStatus(
+                    dataStoreManager.saveLoginData(
                         LoginModel(
                             isLogin = true,
                             userName = dataLogin.userName,
                             userImage = dataLogin.userImage,
                             accessToken = dataLogin.accessToken,
-                            refreshToken = dataLogin.refreshToken
+                            refreshToken = dataLogin.refreshToken,
+                            isAuthorized = true
                         )
                     )
                     emit(ViewState.Success(dataLogin))

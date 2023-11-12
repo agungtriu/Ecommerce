@@ -43,13 +43,18 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
     private lateinit var chip: Chip
     private var querySearch: String? = null
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        storeAdapter = StoreAdapter(requireActivity())
+        getProducts()
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        storeAdapter = StoreAdapter()
         setLayout()
         listener()
         resultListener()
-        getProducts()
+        observeData()
         observeState()
     }
 
@@ -120,7 +125,6 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
             searchDialog.arguments = bundle
             searchDialog.show(childFragmentManager, SearchDialog.TAG)
         }
-
     }
 
     private fun resultListener() {
@@ -169,10 +173,10 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
             binding.tietStoreSearch.setText(querySearch)
             requestProducts = RequestProducts(
                 search = querySearch,
-                sort = filterModel.sort,
-                brand = filterModel.category,
-                lowest = filterModel.min,
-                highest = filterModel.max
+                sort = requestProducts.sort,
+                brand = requestProducts.brand,
+                lowest = requestProducts.lowest,
+                highest = requestProducts.highest
             )
             getProducts(requestProducts)
         }
@@ -187,8 +191,12 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
     }
 
     private fun getProducts(requestProducts: RequestProducts = RequestProducts()) {
+        viewModel.getProducts(requestProducts)
+    }
+
+    private fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
-            viewModel.getProducts(requestProducts).collect {
+            viewModel.resultProducts.observe(viewLifecycleOwner) {
                 storeAdapter.submitData(lifecycle, it)
             }
         }
