@@ -15,13 +15,13 @@
         android:id="@+id/storeFragment"
         android:name="com.agungtriu.ecommerce.ui.main.store.StoreFragment"
         android:label="@string/all_store"
-        tools:layout="@layout/fragment_store" />
+        tools:layout="@layout/fragment_store"/>
 
     <fragment
         android:id="@+id/wishlistFragment"
         android:name="com.agungtriu.ecommerce.ui.main.wishlist.WishlistFragment"
         android:label="@string/all_wishlist"
-        tools:layout="@layout/fragment_wishlish" />
+        tools:layout="@layout/fragment_wishlist" />
 
     <fragment
         android:id="@+id/transactionFragment"

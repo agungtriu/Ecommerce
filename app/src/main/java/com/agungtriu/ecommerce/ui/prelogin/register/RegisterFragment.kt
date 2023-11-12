@@ -12,6 +12,7 @@ import com.agungtriu.ecommerce.helper.FormValidation.isEmailValid
 import com.agungtriu.ecommerce.helper.FormValidation.isPasswordValid
 import com.agungtriu.ecommerce.helper.Utils.closeSoftKeyboard
 import com.agungtriu.ecommerce.helper.ViewState
+import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.Snackbar
@@ -93,6 +94,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                 is ViewState.Success -> {
                     binding.pbRegister.visibility = View.GONE
                     binding.btnRegister.visibility = View.VISIBLE
+                    (requireActivity() as MainActivity).toMain()
                 }
 
                 is ViewState.Error -> {

@@ -7,72 +7,19 @@
     tools:context=".ui.main.MainFragment">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/toolbar_main"
+        android:id="@+id/appbar_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_main"
+            style="@style/Theme.Ecommerce.Toolbar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/btn_home_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/ic_account_outline_circle"
-                android:tint="?attr/colorOnSurface"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/tv_home_username"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/tv_home_username"
-                style="@style/Theme.Ecommerce.Toolbar"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_home_notification"
-                app:layout_constraintStart_toEndOf="@id/btn_home_profile"
-                app:title="@string/app_name" />
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/btn_home_notification"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="24dp"
-                android:src="@drawable/ic_notifications"
-                android:tint="?attr/colorOnSurface"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_home_shopping_cart"
-                app:layout_constraintStart_toEndOf="@id/tv_home_username"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/btn_home_shopping_cart"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="24dp"
-                android:src="@drawable/ic_shopping_cart"
-                android:tint="?attr/colorOnSurface"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/btn_home_menu"
-                app:layout_constraintStart_toEndOf="@id/btn_home_notification"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/btn_home_menu"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_menu"
-                android:tint="?attr/colorOnSurface"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_home_shopping_cart"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="wrap_content"
+            app:menu="@menu/top_main_bar"
+            app:navigationIcon="@drawable/ic_account_outline_circle"
+            app:title="@string/app_name" />
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
@@ -88,11 +35,11 @@
         app:layout_constraintBottom_toTopOf="@id/bnv_main_fragment"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_main"
+        app:layout_constraintTop_toBottomOf="@id/appbar_main"
         app:navGraph="@navigation/bnv_navigation" />
 
     <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/divider_login_bottomnavview"
+        android:id="@+id/divider_main_bnv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@id/bnv_main_fragment" />

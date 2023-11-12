@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/app_navigation"
-    app:startDestination="@id/prelogin_navigation">
+    app:startDestination="@id/main_navigation">
 
     <navigation
         android:id="@+id/prelogin_navigation"
@@ -94,10 +94,32 @@
                 app:destination="@id/profileFragment"
                 app:popUpTo="@id/mainFragment"
                 app:popUpToInclusive="true" />
-
+            <action
+                android:id="@+id/action_mainFragment_to_cartFragment"
+                app:destination="@id/cartFragment" />
         </fragment>
 
+        <fragment
+            android:id="@+id/cartFragment"
+            android:name="com.agungtriu.ecommerce.ui.cart.CartFragment"
+            android:label="fragment_cart"
+            tools:layout="@layout/fragment_cart" />
+
     </navigation>
+
+    <fragment
+        android:id="@+id/detailProductFragment"
+        android:name="com.agungtriu.ecommerce.ui.detail.DetailProductFragment"
+        android:label="fragment_detail_product"
+        tools:layout="@layout/fragment_detail_product">
+        <argument
+            android:name="productId"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_detailProductFragment_to_reviewFragment"
+            app:destination="@id/reviewFragment" />
+        <deepLink app:uri="http://ecommerce.agungtriu.com/{productId}" />
+    </fragment>
 
     <action
         android:id="@+id/action_global_to_prelogin_navigation"
@@ -110,5 +132,18 @@
         app:destination="@id/main_navigation"
         app:popUpTo="@id/app_navigation"
         app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_global_to_detail_fragment"
+        app:destination="@id/detailProductFragment" />
+    <fragment
+        android:id="@+id/reviewFragment"
+        android:name="com.agungtriu.ecommerce.ui.main.review.ReviewFragment"
+        android:label="fragment_review"
+        tools:layout="@layout/fragment_review">
+        <argument
+            android:name="productId"
+            app:argType="string" />
+    </fragment>
 
 </navigation>

@@ -7,39 +7,18 @@
     tools:context=".ui.detail.DetailProductFragment">
 
     <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/toolbar_detail"
+        android:id="@+id/appbar_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar_detail"
+            style="@style/Theme.Ecommerce.Toolbar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/btn_detail_back"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="16dp"
-                android:src="@drawable/ic_arrow_back"
-                android:tint="?attr/colorOnSurface"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/toolbar_detail_title"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.appbar.MaterialToolbar
-                android:id="@+id/toolbar_detail_title"
-                style="@style/Theme.Ecommerce.Toolbar"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/btn_detail_back"
-                app:layout_constraintTop_toTopOf="parent"
-                app:title="Detail Product" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            android:layout_height="wrap_content"
+            app:navigationIcon="@drawable/ic_arrow_back"
+            app:title="Detail Product" />
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
@@ -52,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_detail">
+        app:layout_constraintTop_toBottomOf="@id/appbar_detail">
 
         <ScrollView
             android:id="@+id/scroll_detail_content"
@@ -66,18 +45,18 @@
                 android:layout_height="wrap_content">
 
                 <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/rv_detail_image"
+                    android:id="@+id/vp_detail_image"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tl_onboarding"
+                    android:id="@+id/tl_detail"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="16dp"
-                    android:background="?attr/colorSurface"
-                    app:layout_constraintBottom_toBottomOf="@id/rv_detail_image"
+                    android:background="@android:color/transparent"
+                    app:layout_constraintBottom_toBottomOf="@id/vp_detail_image"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:tabGravity="center"
@@ -95,7 +74,7 @@
                     android:textSize="20sp"
                     app:layout_constraintEnd_toStartOf="@id/iv_detail_share"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/rv_detail_image" />
+                    app:layout_constraintTop_toBottomOf="@id/vp_detail_image" />
 
                 <com.google.android.material.imageview.ShapeableImageView
                     android:id="@+id/iv_detail_share"
@@ -106,12 +85,12 @@
                     android:background="@drawable/ic_share"
                     android:backgroundTint="?attr/colorOnSurface"
                     app:layout_constraintBottom_toBottomOf="@id/tv_detail_price"
-                    app:layout_constraintEnd_toStartOf="@id/iv_detail_favorite"
+                    app:layout_constraintEnd_toStartOf="@id/iv_detail_wishlist"
                     app:layout_constraintStart_toEndOf="@id/tv_detail_price"
                     app:layout_constraintTop_toTopOf="@id/tv_detail_price" />
 
                 <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/iv_detail_favorite"
+                    android:id="@+id/iv_detail_wishlist"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
@@ -129,7 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:fontFamily="@font/poppins_400"
                     android:text="@string/item_title_hint"
                     android:textColor="?attr/colorOnSurfaceVariant"
@@ -143,32 +122,55 @@
                     android:layout_marginStart="16dp"
                     android:fontFamily="@font/poppins_400"
                     android:text="@string/item_sold_hint"
-                    app:layout_constraintBottom_toBottomOf="@id/tv_detail_rating"
+                    app:layout_constraintBottom_toBottomOf="@id/constraint_detail_rating"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/tv_detail_rating" />
+                    app:layout_constraintTop_toTopOf="@id/constraint_detail_rating" />
 
-                <TextView
-                    android:id="@+id/tv_detail_rating"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraint_detail_rating"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/all_rectangle_rounded_border"
-                    android:drawablePadding="4dp"
-                    android:gravity="center"
-                    android:padding="4dp"
-                    android:text="@string/item_rating_hint"
-                    app:drawableStartCompat="@drawable/ic_star"
-                    app:drawableTint="?attr/colorOnSurface"
+                    android:background="@drawable/all_rectangle_rounded_surface"
                     app:layout_constraintStart_toEndOf="@id/tv_detail_sold"
-                    app:layout_constraintTop_toBottomOf="@id/tv_detail_name" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_name">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/iv_detail_star"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:background="@drawable/ic_star"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_detail_rating"
+                        app:layout_constraintEnd_toStartOf="@id/tv_detail_rating"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/tv_detail_rating" />
+
+                    <TextView
+                        android:id="@+id/tv_detail_rating"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="4dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:fontFamily="@font/poppins_400"
+                        android:includeFontPadding="false"
+                        android:text="@string/item_rating_hint"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/iv_detail_star"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <com.google.android.material.divider.MaterialDivider
                     android:id="@+id/divider_detail_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="14dp"
-                    app:layout_constraintTop_toBottomOf="@id/tv_detail_rating" />
+                    app:layout_constraintTop_toBottomOf="@id/constraint_detail_rating" />
 
                 <TextView
                     android:id="@+id/tv_detail_variant"
@@ -190,7 +192,9 @@
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="8dp"
                     app:chipSpacingHorizontal="8dp"
-                    app:layout_constraintTop_toBottomOf="@id/tv_detail_variant" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_variant"
+                    app:selectionRequired="true"
+                    app:singleSelection="true" />
 
                 <com.google.android.material.divider.MaterialDivider
                     android:id="@+id/divider_detail_variant"
@@ -284,13 +288,13 @@
                     app:layout_constraintStart_toEndOf="@id/tv_detail_review_rating" />
 
                 <TextView
-                    android:id="@+id/tv_detail_review_desc"
+                    android:id="@+id/tv_detail_review_satisfaction"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="16dp"
                     android:fontFamily="@font/poppins_600"
-                    android:text="@string/detail_desc_review"
+                    android:text="@string/detail_desc_review_hint"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="12sp"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -304,13 +308,15 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="32dp"
                     android:layout_marginEnd="16dp"
+                    android:layout_marginBottom="16dp"
                     android:fontFamily="@font/poppins_400"
-                    android:text="@string/detail_review_count"
+                    android:text="@string/detail_review_count_hint"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_detail_review_rating_scala"
-                    app:layout_constraintTop_toBottomOf="@id/tv_detail_review_desc" />
+                    app:layout_constraintTop_toBottomOf="@id/tv_detail_review_satisfaction" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
@@ -350,13 +356,23 @@
             app:layout_constraintStart_toEndOf="@id/btn_detail_buy" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
+    <ProgressBar
+        android:id="@+id/pb_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar_detail" />
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_detail_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/toolbar_detail">
+        app:layout_constraintTop_toBottomOf="@id/appbar_detail">
 
         <ImageView
             android:id="@+id/iv_detail_error"

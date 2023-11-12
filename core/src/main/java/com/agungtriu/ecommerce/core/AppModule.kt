@@ -1,9 +1,12 @@
 package com.agungtriu.ecommerce.core
 
 import android.content.Context
+import androidx.room.Room
 import com.agungtriu.ecommerce.core.datastore.DataStoreManager
 import com.agungtriu.ecommerce.core.remote.ApiService
+import com.agungtriu.ecommerce.core.room.AppDatabase
 import com.agungtriu.ecommerce.core.utils.Config.API_BASE_URL
+import com.agungtriu.ecommerce.core.utils.Config.DATABASE_NAME
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
@@ -16,6 +19,7 @@ import okhttp3.Authenticator
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -73,4 +77,12 @@ object AppModule {
             .client(client)
             .build()
             .create(ApiService::class.java)
+
+    @Provides
+    @Singleton
+    fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
+        return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
+            .fallbackToDestructiveMigration()
+            .build()
+    }
 }

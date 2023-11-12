@@ -2,6 +2,8 @@ package com.agungtriu.ecommerce.ui.main.store
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
+import androidx.fragment.app.FragmentActivity
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -10,11 +12,13 @@ import com.agungtriu.ecommerce.core.remote.model.response.Product
 import com.agungtriu.ecommerce.databinding.ItemStoreGridBinding
 import com.agungtriu.ecommerce.databinding.ItemStoreLinearBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
+import com.agungtriu.ecommerce.ui.MainActivity
+import com.agungtriu.ecommerce.ui.detail.DetailProductFragment.Companion.PRODUCT_ID_KEY
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
-class StoreAdapter :
+class StoreAdapter(private val activity: FragmentActivity) :
     PagingDataAdapter<Product, RecyclerView.ViewHolder>(callback) {
 
     private var viewType = 1
@@ -39,6 +43,13 @@ class StoreAdapter :
             binding.tvItemStoreLinearRating.text = item.productRating.toString()
             binding.tvItemStoreLinearSold.text =
                 itemView.context.getString(R.string.item_sold_title).plus(" ${item.sale}")
+
+            binding.cvItemStoreLinear.setOnClickListener {
+                if (item.productId != null) {
+                    val bundle = bundleOf(PRODUCT_ID_KEY to item.productId)
+                    (activity as MainActivity).toDetail(bundle)
+                }
+            }
         }
     }
 
@@ -54,6 +65,13 @@ class StoreAdapter :
             binding.tvItemStoreGridRating.text = item.productRating.toString()
             binding.tvItemStoreGridSold.text =
                 itemView.context.getString(R.string.item_sold_title).plus(" ${item.sale}")
+
+            binding.cvItemStoreGrid.setOnClickListener {
+                if (item.productId != null) {
+                    val bundle = bundleOf(PRODUCT_ID_KEY to item.productId)
+                    (activity as MainActivity).toDetail(bundle)
+                }
+            }
         }
     }
 

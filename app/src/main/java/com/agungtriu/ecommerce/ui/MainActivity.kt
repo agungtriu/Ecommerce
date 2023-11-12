@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         setupNavController()
         observeData()
         checkNotificationPermission()
@@ -44,10 +43,12 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun observeData() {
-        viewModel.getStatusLogin().distinctUntilChanged().observe(this) {
-            if (it.isLogin) {
-                navController.navigate(R.id.action_global_to_main_navigation)
-            } else {
+        if (!viewModel.getLoginStatus()) {
+            navController.navigate(R.id.action_global_to_prelogin_navigation)
+        }
+
+        viewModel.getAuthorizedStatus().distinctUntilChanged().observe(this) {
+            if (!it.isAuthorized) {
                 navController.navigate(R.id.action_global_to_prelogin_navigation)
             }
         }
@@ -79,4 +80,13 @@ class MainActivity : AppCompatActivity() {
             if (!isGranted)
                 finish()
         }
+
+
+    fun toMain() {
+        navController.navigate(R.id.action_global_to_main_navigation)
+    }
+
+    fun toDetail(bundle: Bundle) {
+        navController.navigate(R.id.action_global_to_detail_fragment, bundle)
+    }
 }

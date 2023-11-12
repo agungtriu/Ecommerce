@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:adjustViewBounds="true"
         app:layout_constraintBottom_toBottomOf="@id/tv_item_review_rating"
         app:layout_constraintEnd_toStartOf="@id/tv_item_review_name"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,24 +24,23 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/poppins_600"
-        android:text="John Doe"
+        android:text="@string/all_username_hint"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@id/tv_item_review_rating"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_item_review"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <RatingBar
         android:id="@+id/tv_item_review_rating"
-        style="@style/TextAppearance.Material3.BodySmall"
-        android:layout_width="0dp"
+        style="?attr/ratingBarStyleSmall"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="@font/poppins_400"
-        android:text="XXXX"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/iv_item_review"
+        android:isIndicator="true"
+        android:numStars="5"
+        app:layout_constraintEnd_toEndOf="@id/tv_item_review_name"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@id/tv_item_review_name"
         app:layout_constraintTop_toBottomOf="@id/tv_item_review_name" />
 
     <TextView
@@ -52,7 +51,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/poppins_400"
-        android:text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book."
+        android:text="@string/all_lorem_ipsum"
         app:layout_constraintTop_toBottomOf="@id/tv_item_review_rating" />
 
     <com.google.android.material.divider.MaterialDivider

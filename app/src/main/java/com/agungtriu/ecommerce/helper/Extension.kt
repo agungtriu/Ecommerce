@@ -3,7 +3,9 @@ package com.agungtriu.ecommerce.helper
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import android.widget.TextView
+import com.agungtriu.ecommerce.core.remote.model.response.DataDetailProduct
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
+import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.google.gson.Gson
 import retrofit2.HttpException
 import java.io.IOException
@@ -58,5 +60,20 @@ object Extension {
                 ResponseError(code = null, message = this.message)
             }
         }
+    }
+
+    fun DataDetailProduct.toWishlist(): WishlistEntity {
+        return WishlistEntity(
+            id = this.productId ?: System.currentTimeMillis().toString(),
+            image = this.image?.get(0),
+            productName = this.productName,
+            productPrice = this.productPrice,
+            store = this.store,
+            productRating = this.productRating,
+            sale = this.sale,
+            stock = this.stock,
+            variantName = this.productVariant?.get(0)?.variantName,
+            variantPrice = this.productVariant?.get(0)?.variantPrice,
+        )
     }
 }
