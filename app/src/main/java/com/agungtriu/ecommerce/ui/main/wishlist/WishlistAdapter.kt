@@ -73,7 +73,7 @@ class WishlistAdapter(
             Glide.with(itemView.context).load(item.image).placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemWishlistGrid)
 
-            binding.tvItemWishlistGridPrice.text = item.productPrice?.toRupiah()
+            binding.tvItemWishlistGridPrice.text = item.variantPrice?.toRupiah()
             binding.tvItemWishlistGridTitle.text = item.productName
             binding.tvItemWishlistGridRating.text = item.productRating.toString()
             binding.tvItemWishlistGridSold.text =
@@ -143,7 +143,7 @@ class WishlistAdapter(
             Glide.with(itemView.context).load(item.image).placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemWishlistLinear)
 
-            binding.tvItemWishlistLinearPrice.text = item.productPrice?.toRupiah()
+            binding.tvItemWishlistLinearPrice.text = item.variantPrice?.toRupiah()
             binding.tvItemWishlistLinearTitle.text = item.productName
             binding.tvItemWishlistLinearRating.text = item.productRating.toString()
             binding.tvItemWishlistLinearSold.text =

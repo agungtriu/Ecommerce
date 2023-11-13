@@ -24,6 +24,7 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="false"
+            android:fontFamily="@font/poppins_400"
             android:inputType="text" />
 
     </com.google.android.material.textfield.TextInputLayout>

@@ -1,8 +1,6 @@
 package com.agungtriu.ecommerce.ui.main.store.search
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -28,8 +26,6 @@ class SearchDialog : DialogFragment() {
     private val binding get() = _binding!!
     private val viewModel: SearchViewModel by viewModels()
     private lateinit var adapter: SearchAdapter
-    private val handler = Handler(Looper.getMainLooper())
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?

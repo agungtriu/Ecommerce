@@ -44,6 +44,7 @@
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/poppins_400"
         android:text="@string/home_en"
+        android:textColor="?attr/colorOnSurface"
         app:layout_constraintBottom_toBottomOf="@id/switch_home_lang"
         app:layout_constraintEnd_toStartOf="@id/switch_home_lang"
         app:layout_constraintTop_toTopOf="@id/switch_home_lang" />
@@ -65,6 +66,7 @@
         android:layout_marginStart="16dp"
         android:fontFamily="@font/poppins_400"
         android:text="@string/home_id"
+        android:textColor="?attr/colorOnSurface"
         app:layout_constraintBottom_toBottomOf="@id/switch_home_lang"
         app:layout_constraintStart_toEndOf="@id/switch_home_lang"
         app:layout_constraintTop_toTopOf="@id/switch_home_lang" />
@@ -77,6 +79,7 @@
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/poppins_400"
         android:text="@string/home_light"
+        android:textColor="?attr/colorOnSurface"
         app:layout_constraintBottom_toBottomOf="@id/switch_home_theme"
         app:layout_constraintEnd_toStartOf="@id/switch_home_theme"
         app:layout_constraintTop_toTopOf="@id/switch_home_theme" />
@@ -100,6 +103,7 @@
         android:layout_marginStart="16dp"
         android:fontFamily="@font/poppins_400"
         android:text="@string/home_dark"
+        android:textColor="?attr/colorOnSurface"
         app:layout_constraintBottom_toBottomOf="@id/switch_home_theme"
         app:layout_constraintStart_toEndOf="@id/switch_home_theme"
         app:layout_constraintTop_toTopOf="@id/switch_home_theme" />

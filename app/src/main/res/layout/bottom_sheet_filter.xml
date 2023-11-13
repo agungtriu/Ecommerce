@@ -42,8 +42,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_500"
                 android:text="@string/all_reset"
-                android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/tv_bottomsheetfilter_filter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_bottomsheetfilter_filter" />
@@ -56,6 +54,7 @@
                 android:fontFamily="@font/poppins_600"
                 android:text="@string/bottomsheetfilter_sort"
                 android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/tv_bottomsheetfilter_filter" />
 
             <com.google.android.material.chip.ChipGroup
@@ -110,6 +109,7 @@
                 android:fontFamily="@font/poppins_600"
                 android:text="@string/bottomsheetfilter_category"
                 android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/chipgroup_bottomshettfilter_sort" />
 
             <com.google.android.material.chip.ChipGroup
@@ -163,6 +163,7 @@
                 android:fontFamily="@font/poppins_600"
                 android:text="@string/bottomsheetfilter_price"
                 android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/chipgroup_bottomshettfilter_category" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -212,7 +213,6 @@
 
             <Button
                 android:id="@+id/btn_bottomsheetfilter_submit"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"

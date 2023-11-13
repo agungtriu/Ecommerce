@@ -118,9 +118,12 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
         }
 
         binding.tietBottomsheetfilterMin.addTextChangedListener {
-            minPriceStatus = it?.isNotEmpty() == true
+            minPriceStatus = it?.isNotEmpty() ?: false
             try {
-                filterModel.min = it.toString().toInt()
+
+                if (it?.isNotEmpty() == true) {
+                    filterModel.min = it.toString().toInt()
+                }
             } catch (t: Throwable) {
                 binding.tietBottomsheetfilterMin.setText(filterModel.min.toString())
                 binding.tietBottomsheetfilterMin.setSelection(filterModel.min.toString().length)
@@ -134,7 +137,9 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
         binding.tietBottomsheetfilterMax.addTextChangedListener {
             maxPriceStatus = it?.isNotEmpty() ?: false
             try {
-                filterModel.max = it.toString().toInt()
+                if (it?.isNotEmpty() == true) {
+                    filterModel.max = it.toString().toInt()
+                }
             } catch (t: Throwable) {
                 binding.tietBottomsheetfilterMax.setText(filterModel.max.toString())
                 binding.tietBottomsheetfilterMax.setSelection(filterModel.max.toString().length)

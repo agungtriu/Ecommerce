@@ -3,9 +3,9 @@ package com.agungtriu.ecommerce.helper
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import android.widget.TextView
-import com.agungtriu.ecommerce.core.remote.model.response.DataDetailProduct
+import com.agungtriu.ecommerce.core.remote.model.request.RequestProducts
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
-import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
+import com.agungtriu.ecommerce.ui.main.store.filter.FilterModel
 import com.google.gson.Gson
 import retrofit2.HttpException
 import java.io.IOException
@@ -28,7 +28,7 @@ object Extension {
     fun Int.toRupiah(): String {
         val stringNumber = this.toString()
         val rest = stringNumber.length % 3
-        var rupiah = "Rp. ${stringNumber.slice(0 until rest)}"
+        var rupiah = "Rp${stringNumber.slice(0 until rest)}"
         val thousand = stringNumber.slice(rest until stringNumber.length)
         for (index in thousand.indices) {
             rupiah += if (index % 3 == 0) {
@@ -62,18 +62,13 @@ object Extension {
         }
     }
 
-    fun DataDetailProduct.toWishlist(): WishlistEntity {
-        return WishlistEntity(
-            id = this.productId ?: System.currentTimeMillis().toString(),
-            image = this.image?.get(0),
-            productName = this.productName,
-            productPrice = this.productPrice,
-            store = this.store,
-            productRating = this.productRating,
-            sale = this.sale,
-            stock = this.stock,
-            variantName = this.productVariant?.get(0)?.variantName,
-            variantPrice = this.productVariant?.get(0)?.variantPrice,
+
+    fun RequestProducts.toFilterModel(): FilterModel {
+        return FilterModel(
+            sort = this.sort,
+            category = this.brand,
+            min = this.lowest,
+            max = this.highest
         )
     }
 }

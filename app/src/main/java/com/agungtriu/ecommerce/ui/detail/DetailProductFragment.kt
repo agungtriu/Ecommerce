@@ -45,7 +45,7 @@ class DetailProductFragment :
 
     @SuppressLint("SetTextI18n")
     private fun observeData() {
-        viewModel.getDetailProduct().observe(viewLifecycleOwner) {
+        viewModel.resultDetail.observe(viewLifecycleOwner) {
             when (it) {
                 is ViewState.Loading -> {
                     binding.pbDetail.visibility = View.VISIBLE
@@ -122,6 +122,12 @@ class DetailProductFragment :
                                 R.string.detail_dot
                             )
                         } ${it.data.totalReview} ${getString(R.string.detail_review_desc)}"
+                }
+
+                else -> {
+                    binding.pbDetail.visibility = View.GONE
+                    binding.constraintDetailContent.visibility = View.GONE
+                    binding.constraintDetailError.visibility = View.VISIBLE
                 }
             }
         }

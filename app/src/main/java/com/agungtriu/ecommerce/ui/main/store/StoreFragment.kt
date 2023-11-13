@@ -12,6 +12,7 @@ import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProducts
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
 import com.agungtriu.ecommerce.databinding.FragmentStoreBinding
+import com.agungtriu.ecommerce.helper.Extension.toFilterModel
 import com.agungtriu.ecommerce.helper.Extension.toResponseError
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.ui.base.BaseFragment
@@ -35,18 +36,16 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
     private lateinit var searchDialog: SearchDialog
     private lateinit var filterBottomSheet: FilterBottomSheet
     private lateinit var gridLayoutManager: GridLayoutManager
-    private var requestProducts = RequestProducts()
     private var filterModel = FilterModel()
     private val bundle = Bundle()
-    private var isGrid = false
     private lateinit var error: ResponseError
     private lateinit var chip: Chip
     private var querySearch: String? = null
+    private var viewType: Int = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         storeAdapter = StoreAdapter(requireActivity())
-        getProducts()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -56,9 +55,12 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
         resultListener()
         observeData()
         observeState()
+        observeFilter(filterModel = viewModel.requestProducts.toFilterModel())
     }
 
-    private fun setLayout(viewType: Int = 1) {
+    private fun setLayout() {
+        viewType = if (viewModel.isGrid) 2 else 1
+
         gridLayoutManager = GridLayoutManager(view?.context, viewType)
         binding.rvStore.layoutManager = gridLayoutManager
         storeAdapter.setItemViewType(viewType)
@@ -77,40 +79,30 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
 
     private fun listener() {
         binding.ibStoreView.setOnClickListener {
-            isGrid = !isGrid
+            viewModel.isGrid = !viewModel.isGrid
             val position = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
-            if (isGrid) {
-                setLayout(viewType = 2)
-                binding.ibStoreView.setBackgroundResource(R.drawable.ic_linear_view)
-            } else {
-                setLayout(viewType = 1)
-                binding.ibStoreView.setBackgroundResource(R.drawable.ic_grid_view)
-            }
+            setLayout()
             gridLayoutManager.scrollToPosition(position)
+            binding.ibStoreView.setBackgroundResource(if (viewModel.isGrid) R.drawable.ic_linear_view else R.drawable.ic_grid_view)
         }
 
         binding.swiperStore.setOnRefreshListener {
-            getProducts(requestProducts = requestProducts)
+            viewModel.getProducts(viewModel.requestProducts)
         }
 
         binding.btnStoreErrorReset.setOnClickListener {
             binding.tietStoreSearch.text = null
             binding.chipgroupBottomshettfilter.removeAllViews()
-            requestProducts = RequestProducts()
-            getProducts()
+            viewModel.requestProducts = RequestProducts()
+            viewModel.getProducts(viewModel.requestProducts)
         }
 
         binding.btnStoreErrorRefresh.setOnClickListener {
-            getProducts(requestProducts)
+            viewModel.getProducts(viewModel.requestProducts)
         }
 
         binding.chipStoreFilter.setOnClickListener {
-            filterModel = FilterModel(
-                sort = requestProducts.sort,
-                category = requestProducts.brand,
-                min = requestProducts.lowest,
-                max = requestProducts.highest
-            )
+            filterModel = viewModel.requestProducts.toFilterModel()
             bundle.putParcelable(
                 TO_FILTER_KEY, filterModel
             )
@@ -121,7 +113,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
 
         binding.tietStoreSearch.setOnClickListener {
             searchDialog = SearchDialog()
-            bundle.putString(TO_SEARCH_KEY, requestProducts.search)
+            bundle.putString(TO_SEARCH_KEY, viewModel.requestProducts.search)
             searchDialog.arguments = bundle
             searchDialog.show(childFragmentManager, SearchDialog.TAG)
         }
@@ -132,37 +124,22 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
             FILTER_KEY,
             viewLifecycleOwner
         ) { _, bundle ->
-            binding.chipgroupBottomshettfilter.removeAllViews()
             filterModel = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 bundle.getParcelable(RESULT_FILTER_KEY, FilterModel::class.java)
             } else {
                 bundle.getParcelable(RESULT_FILTER_KEY)
             } ?: FilterModel()
 
-            addChip(
-                !filterModel.sort.isNullOrBlank(),
-                filterModel.sort
-            )
-            addChip(
-                !filterModel.category.isNullOrBlank(),
-                filterModel.category
-            )
-            addChip(
-                filterModel.min != null,
-                "> ".plus(filterModel.min?.toRupiah())
-            )
-            addChip(
-                filterModel.max != null,
-                "< ".plus(filterModel.max?.toRupiah())
-            )
-            requestProducts = RequestProducts(
-                search = requestProducts.search,
+            observeFilter(filterModel)
+
+            viewModel.requestProducts = RequestProducts(
+                search = viewModel.requestProducts.search,
                 sort = filterModel.sort,
                 brand = filterModel.category,
                 lowest = filterModel.min,
                 highest = filterModel.max
             )
-            getProducts(requestProducts)
+            viewModel.getProducts(viewModel.requestProducts)
         }
 
         childFragmentManager.setFragmentResultListener(
@@ -171,14 +148,14 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
         ) { _, bundle ->
             querySearch = bundle.getString(RESULT_SEARCH_KEY)
             binding.tietStoreSearch.setText(querySearch)
-            requestProducts = RequestProducts(
+            viewModel.requestProducts = RequestProducts(
                 search = querySearch,
-                sort = requestProducts.sort,
-                brand = requestProducts.brand,
-                lowest = requestProducts.lowest,
-                highest = requestProducts.highest
+                sort = viewModel.requestProducts.sort,
+                brand = viewModel.requestProducts.brand,
+                lowest = viewModel.requestProducts.lowest,
+                highest = viewModel.requestProducts.highest
             )
-            getProducts(requestProducts)
+            viewModel.getProducts(viewModel.requestProducts)
         }
     }
 
@@ -190,16 +167,32 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
         }
     }
 
-    private fun getProducts(requestProducts: RequestProducts = RequestProducts()) {
-        viewModel.getProducts(requestProducts)
-    }
-
     private fun observeData() {
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.resultProducts.observe(viewLifecycleOwner) {
                 storeAdapter.submitData(lifecycle, it)
             }
         }
+    }
+
+    private fun observeFilter(filterModel: FilterModel) {
+        binding.chipgroupBottomshettfilter.removeAllViews()
+        addChip(
+            !filterModel.sort.isNullOrBlank(),
+            filterModel.sort
+        )
+        addChip(
+            !filterModel.category.isNullOrBlank(),
+            filterModel.category
+        )
+        addChip(
+            filterModel.min != null,
+            "> ".plus(filterModel.min?.toRupiah())
+        )
+        addChip(
+            filterModel.max != null,
+            "< ".plus(filterModel.max?.toRupiah())
+        )
     }
 
     private fun observeState() {
@@ -256,7 +249,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
     }
 
     private fun showShimmer() {
-        if (isGrid) {
+        if (viewModel.isGrid) {
             binding.shimmerStoreGrid.visibility = View.VISIBLE
             binding.shimmerStoreGrid.startShimmer()
         } else {
@@ -267,7 +260,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
     }
 
     private fun hideShimmer() {
-        if (isGrid) {
+        if (viewModel.isGrid) {
             binding.shimmerStoreGrid.stopShimmer()
             binding.shimmerStoreGrid.visibility = View.GONE
         } else {
@@ -281,4 +274,5 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
         const val TO_FILTER_KEY = "FilterKey"
         const val TO_SEARCH_KEY = "SearchKey"
     }
+
 }

@@ -20,7 +20,16 @@ class StoreVideModel @Inject constructor(
 
     private var _resultProducts = MutableLiveData<PagingData<Product>>()
     val resultProducts: LiveData<PagingData<Product>> get() = _resultProducts
-    fun getProducts(requestProducts: RequestProducts) {
+
+    var requestProducts = RequestProducts()
+
+    var isGrid = false
+
+    init {
+        getProducts()
+    }
+
+    fun getProducts(requestProducts: RequestProducts = RequestProducts()) {
         viewModelScope.launch {
             mainRepository.getProducts(requestProducts).cachedIn(viewModelScope).collect {
                 _resultProducts.value = it
