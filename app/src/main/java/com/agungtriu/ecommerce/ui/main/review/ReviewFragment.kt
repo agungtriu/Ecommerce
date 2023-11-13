@@ -16,11 +16,6 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>(FragmentReviewBinding
     private lateinit var adapter: ReviewAdapter
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val productId = arguments?.getString(REVIEW_KEY)
-
-        if (productId != null) {
-            viewModel.getReviewProduct(productId)
-        }
         observeData()
         binding.toolbarReview.setNavigationOnClickListener {
             findNavController().navigateUp()
