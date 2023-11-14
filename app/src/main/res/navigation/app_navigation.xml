@@ -138,12 +138,31 @@
         app:destination="@id/detailProductFragment" />
     <fragment
         android:id="@+id/reviewFragment"
-        android:name="com.agungtriu.ecommerce.ui.main.review.ReviewFragment"
+        android:name="com.agungtriu.ecommerce.ui.review.ReviewFragment"
         android:label="fragment_review"
         tools:layout="@layout/fragment_review">
         <argument
             android:name="productId"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/checkoutFragment"
+        android:name="com.agungtriu.ecommerce.ui.checkout.CheckoutFragment"
+        android:label="fragment_checkout"
+        tools:layout="@layout/fragment_checkout" >
+        <action
+            android:id="@+id/action_checkoutFragment_to_statusFragment"
+            app:destination="@id/statusFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/choosePaymentFragment"
+        android:name="com.agungtriu.ecommerce.ui.payment.ChoosePaymentFragment"
+        android:label="fragment_choose_payment"
+        tools:layout="@layout/fragment_choose_payment" />
+    <fragment
+        android:id="@+id/statusFragment"
+        android:name="com.agungtriu.ecommerce.ui.status.StatusFragment"
+        android:label="fragment_status"
+        tools:layout="@layout/fragment_status" />
 
 </navigation>

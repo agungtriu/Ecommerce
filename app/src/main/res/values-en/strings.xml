@@ -65,7 +65,7 @@
     <string name="all_cart">Cart</string>
     <string name="all_delete">Delete</string>
     <string name="all_select_all">Select All</string>
-    <string name="cart_total_pay">Total Pay</string>
+    <string name="all_total_pay">Total Pay</string>
     <string name="cart_buy">Buy</string>
     <string name="all_stock_not_available">Stock not available</string>
     <string name="all_success_update_quantity">Success update quantity</string>
@@ -74,4 +74,5 @@
     <string name="main_notification">Notification</string>
     <string name="main_cart">Cart</string>
     <string name="main_menu">Menu</string>
+    <string name="all_checkout">Checkout</string>
 </resources>

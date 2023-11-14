@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    style="@style/Widget.Material3.CardView.Elevated"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardBackgroundColor="?attr/colorOnPrimary"
+    app:cardCornerRadius="8dp"
+    app:cardUseCompatPadding="true">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_item_transaction_bag"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/ic_shopping_bag"
+            app:layout_constraintBottom_toBottomOf="@id/tv_item_transaction_date"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_item_transaction_shopping" />
+
+        <TextView
+            android:id="@+id/tv_item_transaction_shopping"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_600"
+            android:text="@string/transaction_shopping"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toStartOf="@id/tv_item_transaction_done"
+            app:layout_constraintStart_toEndOf="@id/iv_item_transaction_bag"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_item_transaction_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="4dp"
+            android:fontFamily="@font/poppins_400"
+            android:text="@string/status_date"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toStartOf="@id/tv_item_transaction_done"
+            app:layout_constraintStart_toEndOf="@id/iv_item_transaction_bag"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_transaction_shopping" />
+
+        <TextView
+            android:id="@+id/tv_item_transaction_done"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:background="@drawable/all_rectangle_rounded_primary_containter"
+            android:fontFamily="@font/poppins_600"
+            android:paddingHorizontal="4dp"
+            android:paddingVertical="2dp"
+            android:text="@string/all_done"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="@id/tv_item_transaction_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_item_transaction_shopping"
+            app:layout_constraintTop_toTopOf="@id/tv_item_transaction_shopping" />
+
+        <com.google.android.material.divider.MaterialDivider
+            android:id="@+id/divider_item_transaction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_transaction_date" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/iv_item_transaction"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginStart="8dp"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/ic_thumbnail"
+            app:layout_constraintBottom_toBottomOf="@id/tv_item_transaction_quantity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/tv_item_transaction_product_name" />
+
+        <TextView
+            android:id="@+id/tv_item_transaction_product_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/poppins_500"
+            android:maxLines="1"
+            android:text="@string/item_title_hint"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_item_transaction"
+            app:layout_constraintTop_toBottomOf="@id/divider_item_transaction" />
+
+        <TextView
+            android:id="@+id/tv_item_transaction_quantity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:fontFamily="@font/poppins_400"
+            android:text="@string/item_title_hint"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/iv_item_transaction"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_transaction_product_name" />
+
+        <TextView
+            android:id="@+id/tv_item_transaction_total_shopping_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/poppins_400"
+            android:text="@string/transaction_total_shopping"
+            android:textSize="10sp"
+            app:layout_constraintEnd_toStartOf="@id/btn_item_transaction_review"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/iv_item_transaction" />
+
+        <TextView
+            android:id="@+id/tv_item_transaction_total_shopping"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/poppins_600"
+            android:text="@string/item_price_hint"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_item_transaction_review"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_item_transaction_total_shopping_title" />
+
+        <Button
+            android:id="@+id/btn_item_transaction_review"
+            style="@style/Widget.App.Button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:fontFamily="@font/poppins_500"
+            android:paddingHorizontal="50dp"
+            android:text="@string/all_review"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.cardview.widget.CardView>

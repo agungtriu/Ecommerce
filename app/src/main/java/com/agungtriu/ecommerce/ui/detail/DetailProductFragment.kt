@@ -17,7 +17,7 @@ import com.agungtriu.ecommerce.helper.Config.BASE_DEEPLINK
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.base.BaseFragment
-import com.agungtriu.ecommerce.ui.main.review.ReviewFragment.Companion.REVIEW_KEY
+import com.agungtriu.ecommerce.ui.review.ReviewFragment.Companion.REVIEW_KEY
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator

@@ -88,7 +88,7 @@
     <string name="all_cart">Keranjang</string>
     <string name="all_delete">Hapus</string>
     <string name="all_select_all">Pilih Semua</string>
-    <string name="cart_total_pay">Total Bayar</string>
+    <string name="all_total_pay">Total Bayar</string>
     <string name="cart_buy">Beli</string>
     <string name="all_stock_not_available">Stock tidak tersedia</string>
     <string name="all_success_update_quantity">Sukses mengupdate kuantiti</string>
@@ -98,5 +98,26 @@
     <string name="main_notification">Notifikasi</string>
     <string name="main_cart">Keranjang</string>
     <string name="main_menu">Menu</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="all_checkout">Checkout</string>
+    <string name="checkout_pay">Bayar</string>
+    <string name="all_payment">Pembayaran</string>
+    <string name="all_choose_payment">Pilih Pembayaran</string>
+    <string name="checkout_item_buy">Barang yang dibeli</string>
+    <string name="payment_virtual_account_hint">Virtual account</string>
+    <string name="status_payment_success">Pembayaran Berhasil</string>
+    <string name="status_review">Beri Ulasan</string>
+    <string name="all_done">Selesai</string>
+    <string name="status_detail_transaction">Detail Transaksi</string>
+    <string name="status_id_transaction">ID Transaksi</string>
+    <string name="status">Status</string>
+    <string name="status_date">Tanggal</string>
+    <string name="status_time">Waktu</string>
+    <string name="status_payment">Metode Pembayaran</string>
+    <string name="status_total_payment">Total Pembayaran</string>
+    <string name="transaction_shopping">Belanja</string>
+    <string name="all_review">Ulas</string>
+    <string name="transaction_total_shopping">Total Belanja</string>
     <string name="detail_product">Detail Product</string>
 </resources>

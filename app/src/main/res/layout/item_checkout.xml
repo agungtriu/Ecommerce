@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_item_checkout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_checkout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginStart="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/tv_item_checkout_name"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_item_checkout_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_500"
+        android:maxLines="1"
+        android:text="@string/item_title_hint"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="8"
+        app:layout_constraintStart_toEndOf="@id/iv_checkout"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_item_checkout_variant"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_400"
+        android:maxLines="1"
+        android:text="16GB, 1TB SSD"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@id/tv_item_checkout_name"
+        app:layout_constraintStart_toStartOf="@id/tv_item_checkout_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_checkout_name" />
+
+    <TextView
+        android:id="@+id/tv_item_checkout_stock"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_400"
+        android:maxLines="1"
+        android:text="Stock 10"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="@id/tv_item_checkout_name"
+        app:layout_constraintStart_toStartOf="@id/tv_item_checkout_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_checkout_variant" />
+
+    <TextView
+        android:id="@+id/tv_item_checkout_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:ellipsize="end"
+        android:fontFamily="@font/poppins_500"
+        android:maxLines="1"
+        android:text="@string/item_price_hint"
+        android:textColor="?attr/colorOnSurfaceVariant"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/constraint_checkout_toggle"
+        app:layout_constraintHorizontal_weight="4"
+        app:layout_constraintStart_toStartOf="@id/tv_item_checkout_name"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_checkout_stock" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraint_checkout_toggle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/all_rectangle_rounded_surface_100"
+        app:layout_constraintBottom_toBottomOf="@id/tv_item_checkout_price"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_weight="2"
+        app:layout_constraintStart_toEndOf="@id/tv_item_checkout_price"
+        app:layout_constraintTop_toTopOf="@id/tv_item_checkout_price">
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btn_item_checkout_toggle_min"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:src="@drawable/ic_min"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tv_item_checkout_quantity"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_item_checkout_quantity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_500"
+            android:includeFontPadding="false"
+            android:textAlignment="center"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/btn_item_checkout_toggle_plus"
+            app:layout_constraintStart_toEndOf="@id/btn_item_checkout_toggle_min"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/btn_item_checkout_toggle_plus"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:src="@drawable/ic_add"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/tv_item_checkout_quantity"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
