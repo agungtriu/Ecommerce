@@ -45,13 +45,12 @@
 
     <TextView
         android:id="@+id/tv_review_desc"
-        style="@style/TextAppearance.Material3.BodySmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/poppins_400"
         android:text="@string/all_lorem_ipsum"
+        android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
         app:layout_constraintTop_toBottomOf="@id/tv_item_review_rating" />
 
     <com.google.android.material.divider.MaterialDivider

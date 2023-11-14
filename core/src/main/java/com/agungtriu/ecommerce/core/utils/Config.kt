@@ -3,8 +3,8 @@ package com.agungtriu.ecommerce.core.utils
 object Config {
     const val DATASTORE_NAME = "ecommerce"
 
-        const val API_BASE_URL = "http://172.17.20.86:5000/"
-//    const val API_BASE_URL = "http://192.168.43.9:5000/"
+//        const val API_BASE_URL = "http://172.17.20.139:5000/"
+    const val API_BASE_URL = "http://192.168.43.9:5000/"
 //    const val API_BASE_URL = "http://192.168.1.5:5000/"
 
 

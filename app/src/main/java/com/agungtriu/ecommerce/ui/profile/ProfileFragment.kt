@@ -89,7 +89,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                 getString(R.string.dialog_profile_camera),
                 getString(R.string.dialog_profile_gallery)
             )
-            val dialogProfile = MaterialAlertDialogBuilder(requireContext())
+            val dialogProfile = MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
                 .setTitle(R.string.dialog_title)
                 .setBackground(
                     ContextCompat.getDrawable(

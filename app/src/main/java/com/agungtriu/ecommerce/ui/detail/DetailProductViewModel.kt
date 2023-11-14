@@ -11,6 +11,7 @@ import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.data.MainRepository
 import com.agungtriu.ecommerce.helper.ViewState
+import com.google.android.material.chip.Chip
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,6 +24,9 @@ class DetailProductViewModel @Inject constructor(
     ViewModel() {
 
     private val productId: String = savedStateHandle[DetailProductFragment.PRODUCT_ID_KEY] ?: ""
+
+    var selectedVariantName = ""
+    var selectedVariantPrice = 0
 
     private val _resultDetail = MutableLiveData<ViewState<DataDetailProduct>?>(null)
     val resultDetail: LiveData<ViewState<DataDetailProduct>?> get() = _resultDetail

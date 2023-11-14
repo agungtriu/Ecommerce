@@ -13,13 +13,12 @@
 
         <TextView
             android:id="@+id/tv_wishlist_count"
-            style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
-            android:fontFamily="@font/poppins_400"
             android:text="3 Barang"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -93,14 +92,13 @@
 
         <TextView
             android:id="@+id/tv_wishlist_error_desc"
-            style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_400"
             android:text="@string/store_empty_desc"
             android:textAlignment="center"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -15,6 +15,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/all_search"
+        app:hintTextAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
         app:layout_constraintTop_toTopOf="parent"
         app:startIconDrawable="@drawable/ic_search">
 
@@ -24,8 +25,8 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="false"
-            android:fontFamily="@font/poppins_400"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -43,13 +44,12 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_store_filter"
-                style="@style/TextAppearance.Material3.LabelLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/poppins_500"
                 android:text="@string/store_filter"
+                android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
                 app:chipIcon="@drawable/ic_tune"
                 app:chipIconTint="?attr/colorOnSurface"
                 app:layout_constraintStart_toStartOf="parent"
@@ -68,7 +68,6 @@
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipgroup_bottomshettfilter"
-                    style="@style/Theme.Ecommerce.ChipGroup.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:chipSpacingHorizontal="8dp" />
@@ -239,14 +238,13 @@
 
         <TextView
             android:id="@+id/tv_store_error_desc"
-            style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_400"
             android:text="@string/store_empty_desc"
             android:textAlignment="center"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_store_error_title" />
@@ -256,10 +254,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_500"
             android:paddingHorizontal="24dp"
             android:paddingVertical="10dp"
             android:text="@string/all_reset"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -271,10 +269,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_500"
             android:paddingHorizontal="24dp"
             android:paddingVertical="10dp"
             android:text="@string/all_refresh"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

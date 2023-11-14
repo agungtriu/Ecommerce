@@ -21,6 +21,7 @@
         android:layout_marginEnd="16dp"
         android:hint="@string/all_search"
         app:endIconMode="clear_text"
+        app:hintTextAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
         app:layout_constraintTop_toTopOf="parent"
         app:startIconDrawable="@drawable/ic_search">
 
@@ -30,9 +31,9 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="true"
-            android:fontFamily="@font/poppins_400"
             android:imeOptions="actionSearch"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge" />
 
     </com.google.android.material.textfield.TextInputLayout>
 

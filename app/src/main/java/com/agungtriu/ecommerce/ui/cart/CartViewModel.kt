@@ -3,13 +3,11 @@ package com.agungtriu.ecommerce.ui.cart
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.data.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,9 +26,7 @@ class CartViewModel @Inject constructor(private val mainRepository: MainReposito
 
     private var updateJob: Job? = null
     fun updateCart(cartEntity: CartEntity) {
-        updateJob?.cancel()
-        updateJob = viewModelScope.launch {
-            delay(1000)
+        viewModelScope.launch {
             mainRepository.updateCart(cartEntity)
         }
     }
@@ -47,15 +43,9 @@ class CartViewModel @Inject constructor(private val mainRepository: MainReposito
         }
     }
 
-
-    fun checkCartIsSelected(isSelected: Boolean): LiveData<List<CartEntity>> =
-        mainRepository.checkCartIsSelected(isSelected).asLiveData()
-
     fun updateAllCartIsSelected(isSelected: Boolean) {
         viewModelScope.launch {
             mainRepository.updateAllCartSelected(isSelected)
         }
     }
-
-    fun getTotalPay(): LiveData<Int?> = mainRepository.getTotalPay().asLiveData()
 }
