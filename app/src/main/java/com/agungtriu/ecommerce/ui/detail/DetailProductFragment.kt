@@ -34,8 +34,7 @@ class DetailProductFragment :
     private lateinit var bundle: Bundle
     private var wishlistState = false
     private var wishlistPress = false
-    private var selectedVariantName = ""
-    private var selectedVariantPrice = 0
+    private lateinit var selectedChip: Chip
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -76,33 +75,36 @@ class DetailProductFragment :
                     } else {
                         binding.tlDetail.visibility = View.GONE
                     }
-                    var checked = false
                     it.data.productVariant?.forEach { variant ->
                         chip = Chip(requireActivity())
+                        chip.setTextAppearanceResource(R.style.Theme_Ecommerce_ChipGroup_Chip)
                         chip.text = variant.variantName
                         chip.isCheckable = true
-                        if (!checked) {
+                        if (viewModel.selectedVariantName == "") {
                             chip.isChecked = true
-                            checked = true
-                            selectedVariantName = variant.variantName ?: ""
-                            selectedVariantPrice = (it.data.productPrice?.plus(
+                            viewModel.selectedVariantName = variant.variantName ?: ""
+                            viewModel.selectedVariantPrice = (it.data.productPrice?.plus(
                                 (variant.variantPrice ?: 0)
                             )) ?: 0
-                            binding.tvDetailPrice.text = selectedVariantPrice.toRupiah()
+                            binding.tvDetailPrice.text = viewModel.selectedVariantPrice.toRupiah()
 
+                        } else if (viewModel.selectedVariantName == variant.variantName) {
+                            chip.isChecked = true
+                            binding.tvDetailPrice.text = viewModel.selectedVariantPrice.toRupiah()
                         }
                         binding.chipgroupDetailVariant.addView(chip)
                     }
 
                     binding.chipgroupDetailVariant.setOnCheckedStateChangeListener { group, _ ->
                         it.data.productVariant?.forEach { variant ->
-                            val selectedChip = group.findViewById<Chip>(group.checkedChipId)
+                            selectedChip = group.findViewById(group.checkedChipId)
                             if (selectedChip.text.toString() == variant.variantName) {
-                                selectedVariantName = variant.variantName ?: ""
-                                selectedVariantPrice = (it.data.productPrice?.plus(
+                                viewModel.selectedVariantName = variant.variantName ?: ""
+                                viewModel.selectedVariantPrice = (it.data.productPrice?.plus(
                                     (variant.variantPrice ?: 0)
                                 )) ?: 0
-                                binding.tvDetailPrice.text = selectedVariantPrice.toRupiah()
+                                binding.tvDetailPrice.text =
+                                    viewModel.selectedVariantPrice.toRupiah()
                             }
                         }
                     }
@@ -194,8 +196,8 @@ class DetailProductFragment :
                         productRating = productDetail.productRating,
                         sale = productDetail.sale,
                         stock = productDetail.stock,
-                        variantName = selectedVariantName,
-                        variantPrice = selectedVariantPrice,
+                        variantName = viewModel.selectedVariantName,
+                        variantPrice = viewModel.selectedVariantPrice,
                     )
                 )
             }
@@ -226,8 +228,8 @@ class DetailProductFragment :
                     productPrice = productDetail.productPrice,
                     store = productDetail.store,
                     stock = productDetail.stock,
-                    variantPrice = selectedVariantPrice,
-                    variantName = selectedVariantName
+                    variantPrice = viewModel.selectedVariantPrice,
+                    variantName = viewModel.selectedVariantName
                 )
             ).observe(viewLifecycleOwner) {
                 when (it) {

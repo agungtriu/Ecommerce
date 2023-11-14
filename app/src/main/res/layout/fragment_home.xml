@@ -29,21 +29,20 @@
         android:id="@+id/btn_home_logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/poppins_500"
         android:paddingHorizontal="32dp"
         android:text="@string/all_logout"
+        android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lottie_home_hallo" />
 
     <TextView
         android:id="@+id/tv_home_eng"
-        style="@style/TextAppearance.Material3.BodyMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/poppins_400"
         android:text="@string/home_en"
+        android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyMedium"
         android:textColor="?attr/colorOnSurface"
         app:layout_constraintBottom_toBottomOf="@id/switch_home_lang"
         app:layout_constraintEnd_toStartOf="@id/switch_home_lang"
@@ -60,12 +59,12 @@
 
     <TextView
         android:id="@+id/tv_home_id"
-        style="@style/TextAppearance.Material3.BodyMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:fontFamily="@font/poppins_400"
         android:text="@string/home_id"
+        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
         android:textColor="?attr/colorOnSurface"
         app:layout_constraintBottom_toBottomOf="@id/switch_home_lang"
         app:layout_constraintStart_toEndOf="@id/switch_home_lang"
@@ -73,12 +72,11 @@
 
     <TextView
         android:id="@+id/tv_home_light"
-        style="@style/TextAppearance.Material3.BodyMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/poppins_400"
         android:text="@string/home_light"
+        android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyMedium"
         android:textColor="?attr/colorOnSurface"
         app:layout_constraintBottom_toBottomOf="@id/switch_home_theme"
         app:layout_constraintEnd_toStartOf="@id/switch_home_theme"
@@ -97,12 +95,11 @@
 
     <TextView
         android:id="@+id/tv_home_dark"
-        style="@style/TextAppearance.Material3.BodyMedium"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:fontFamily="@font/poppins_400"
         android:text="@string/home_dark"
+        android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyMedium"
         android:textColor="?attr/colorOnSurface"
         app:layout_constraintBottom_toBottomOf="@id/switch_home_theme"
         app:layout_constraintStart_toEndOf="@id/switch_home_theme"

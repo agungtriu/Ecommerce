@@ -14,11 +14,11 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar_cart"
-            style="@style/Theme.Ecommerce.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:title="@string/all_cart" />
+            app:title="@string/all_cart"
+            app:titleTextAppearance="@style/Theme.Ecommerce.TextAppearance.TitleLarge" />
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
@@ -44,12 +44,12 @@
 
         <TextView
             android:id="@+id/tv_cart_select_all"
-            style="@style/TextAppearance.Material3.TitleSmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/poppins_500"
             android:text="@string/all_select_all"
+            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintEnd_toStartOf="@id/btn_cart_delete"
             app:layout_constraintStart_toEndOf="@id/cb_cart_select_all"
@@ -61,8 +61,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:fontFamily="@font/poppins_500"
             android:text="@string/all_delete"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
             app:layout_constraintBottom_toBottomOf="@id/tv_cart_select_all"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_cart_select_all" />
@@ -91,14 +91,13 @@
 
         <TextView
             android:id="@+id/tv_cart_total_title"
-            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:fontFamily="@font/poppins_400"
             android:text="@string/cart_total_pay"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintBottom_toTopOf="@id/tv_cart_total_pay"
             app:layout_constraintEnd_toStartOf="@id/btn_cart_buy"
@@ -128,8 +127,8 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:fontFamily="@font/poppins_500"
             android:text="@string/cart_buy"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tv_cart_total_title"
@@ -172,14 +171,13 @@
 
         <TextView
             android:id="@+id/tv_cart_error_desc"
-            style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_400"
             android:text="@string/store_empty_desc"
             android:textAlignment="center"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

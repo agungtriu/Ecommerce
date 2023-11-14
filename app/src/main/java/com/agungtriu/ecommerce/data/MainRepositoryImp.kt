@@ -197,12 +197,8 @@ class MainRepositoryImp @Inject constructor(
 
     override fun getAllCart(): Flow<List<CartEntity>?> = appDatabase.cartDao().selectCarts()
 
-    override fun checkCartIsSelected(isSelected: Boolean): Flow<List<CartEntity>> =
-        appDatabase.cartDao().selectCartsIsSelected(isSelected)
-
     override fun getCartById(id: String): Flow<CartEntity?> =
         appDatabase.cartDao().selectCartById(id)
 
-    override fun getTotalPay(): Flow<Int?> = appDatabase.cartDao().selectTotalPay()
     override fun getQuantity(): Flow<Int?> = appDatabase.cartDao().selectQuantity()
 }

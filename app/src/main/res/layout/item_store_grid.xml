@@ -22,13 +22,12 @@
 
         <TextView
             android:id="@+id/tv_item_store_grid_title"
-            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
             android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_400"
             android:text="@string/item_title_hint"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintTop_toBottomOf="@id/iv_item_store_grid" />
 

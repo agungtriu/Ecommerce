@@ -13,11 +13,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
-            style="@style/Theme.Ecommerce.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/all_register"
-            app:titleCentered="true" />
+            app:titleCentered="true"
+            app:titleTextAppearance="@style/Theme.Ecommerce.TextAppearance.TitleLarge" />
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
@@ -37,16 +37,17 @@
         app:errorEnabled="true"
         app:helperText="@string/all_email_example"
         app:helperTextEnabled="true"
+        app:helperTextTextAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
+        app:hintTextAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
         app:layout_constraintTop_toBottomOf="@id/toolbar_register">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_register_email"
-            style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_400"
             android:imeOptions="actionNext"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -62,16 +63,17 @@
         app:errorEnabled="true"
         app:helperText="@string/all_password_state"
         app:helperTextEnabled="true"
+        app:helperTextTextAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
+        app:hintTextAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
         app:layout_constraintTop_toBottomOf="@id/til_register_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_register_password"
-            style="@style/TextAppearance.Material3.BodyLarge"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_400"
             android:imeOptions="actionSend"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -82,8 +84,8 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="24dp"
         android:enabled="false"
-        android:fontFamily="@font/poppins_500"
         android:text="@string/all_register"
+        android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
         app:layout_constraintTop_toBottomOf="@id/til_register_password" />
 
     <com.google.android.material.divider.MaterialDivider
@@ -98,12 +100,11 @@
 
     <TextView
         android:id="@+id/tv_register_separate"
-        style="@style/TextAppearance.Material3.BodySmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/poppins_400"
         android:text="@string/register_separate"
+        android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
         app:layout_constraintEnd_toStartOf="@id/divider_register_after"
         app:layout_constraintStart_toEndOf="@id/divider_register_before"
         app:layout_constraintTop_toBottomOf="@id/btn_register" />
@@ -125,20 +126,19 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/poppins_500"
         android:text="@string/all_login"
+        android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
         app:layout_constraintTop_toBottomOf="@id/tv_register_separate" />
 
     <TextView
         android:id="@+id/tv_register_agreement"
-        style="@style/TextAppearance.Material3.BodySmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="24dp"
-        android:fontFamily="@font/poppins_400"
         android:text="@string/all_agreement_register"
         android:textAlignment="center"
+        android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_register_login"
         app:layout_constraintVertical_bias="0" />

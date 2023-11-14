@@ -98,4 +98,5 @@
     <string name="main_notification">Notifikasi</string>
     <string name="main_cart">Keranjang</string>
     <string name="main_menu">Menu</string>
+    <string name="detail_product">Detail Product</string>
 </resources>

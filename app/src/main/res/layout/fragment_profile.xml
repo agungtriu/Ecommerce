@@ -13,11 +13,11 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
-            style="@style/Theme.Ecommerce.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:title="@string/all_profil"
-            app:titleCentered="true" />
+            app:titleCentered="true"
+            app:titleTextAppearance="@style/Theme.Ecommerce.TextAppearance.TitleLarge" />
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
@@ -46,15 +46,15 @@
         android:layout_marginTop="32dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/profile_name"
+        app:hintTextAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
         app:layout_constraintTop_toBottomOf="@id/iv_profile">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/tiet_profile_name"
-            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/poppins_400"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -65,19 +65,19 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="24dp"
         android:enabled="false"
-        android:fontFamily="@font/poppins_500"
         android:text="@string/profile_finish"
+        android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
         app:layout_constraintTop_toBottomOf="@id/til_profile_name" />
 
     <TextView
         android:id="@+id/tv_profile_agreement"
-        style="@style/TextAppearance.Material3.BodySmall"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="24dp"
         android:text="@string/all_agreement_register"
         android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_profile_finish"
         app:layout_constraintVertical_bias="0" />

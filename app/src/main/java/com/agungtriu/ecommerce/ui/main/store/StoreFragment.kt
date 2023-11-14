@@ -162,6 +162,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
     private fun addChip(condition: Boolean, text: String?) {
         if (condition) {
             chip = Chip(requireActivity())
+            chip.setTextAppearanceResource(R.style.Theme_Ecommerce_ChipGroup_Chip)
             chip.text = text
             binding.chipgroupBottomshettfilter.addView(chip)
         }

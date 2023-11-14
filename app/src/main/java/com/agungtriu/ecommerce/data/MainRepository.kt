@@ -55,8 +55,6 @@ interface MainRepository {
 
     suspend fun deleteAllCartSelected()
     fun getAllCart(): Flow<List<CartEntity>?>
-    fun checkCartIsSelected(isSelected: Boolean): Flow<List<CartEntity>>
     fun getCartById(id: String): Flow<CartEntity?>
-    fun getTotalPay(): Flow<Int?>
     fun getQuantity(): Flow<Int?>
 }

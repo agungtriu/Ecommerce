@@ -28,13 +28,12 @@
 
         <TextView
             android:id="@+id/tv_item_store_linear_title"
-            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:fontFamily="@font/poppins_400"
             android:text="@string/item_title_hint"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="6"

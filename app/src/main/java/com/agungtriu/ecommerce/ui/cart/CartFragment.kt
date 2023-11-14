@@ -16,6 +16,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     private val viewModel: CartViewModel by viewModels()
     private lateinit var adapter: CartAdapter
     private var isChecked = false
+    private var isVisibleDelete = false
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.getCarts()
@@ -35,25 +36,31 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
     }
 
     private fun observeData() {
-        viewModel.getTotalPay().observe(viewLifecycleOwner) {
-            binding.tvCartTotalPay.text = (it ?: 0).toRupiah()
-        }
         viewModel.resultCarts.observe(viewLifecycleOwner) {
             if (it.isNotEmpty()) {
+                adapter.submitList(it)
                 binding.constraintCartError.isVisible = false
                 binding.constraintCartContent.isVisible = true
-                adapter.submitList(it)
+
+                var totalPay = 0
+                isVisibleDelete = false
+                isChecked = true
+                it.forEach { item ->
+                    if (item.isSelected == true) {
+                        isVisibleDelete = true
+                        totalPay += item.variantPrice?.times(item.quantity!!) ?: 0
+                    } else {
+                        isChecked = false
+                    }
+                }
+
+                binding.btnCartDelete.isVisible = isVisibleDelete
+                binding.cbCartSelectAll.isChecked = isChecked
+                binding.tvCartTotalPay.text = (totalPay).toRupiah()
             } else {
                 binding.constraintCartError.isVisible = true
                 binding.constraintCartContent.isVisible = false
             }
-        }
-        viewModel.checkCartIsSelected(true).observe(viewLifecycleOwner) {
-            binding.btnCartDelete.isVisible = it.isNotEmpty()
-        }
-        viewModel.checkCartIsSelected(false).observe(viewLifecycleOwner) {
-            isChecked = it.isNullOrEmpty()
-            binding.cbCartSelectAll.isChecked = isChecked
         }
     }
 
