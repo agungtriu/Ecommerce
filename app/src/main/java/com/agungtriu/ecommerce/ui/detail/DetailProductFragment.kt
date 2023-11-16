@@ -16,7 +16,9 @@ import com.agungtriu.ecommerce.databinding.FragmentDetailProductBinding
 import com.agungtriu.ecommerce.helper.Config.BASE_DEEPLINK
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.ViewState
+import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
+import com.agungtriu.ecommerce.ui.checkout.CheckoutFragment
 import com.agungtriu.ecommerce.ui.review.ReviewFragment.Companion.REVIEW_KEY
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
@@ -49,19 +51,19 @@ class DetailProductFragment :
                 is ViewState.Loading -> {
                     binding.pbDetail.visibility = View.VISIBLE
                     binding.constraintDetailContent.visibility = View.GONE
-                    binding.constraintDetailError.visibility = View.GONE
+                    binding.scrollviewDetailError.visibility = View.GONE
                 }
 
                 is ViewState.Error -> {
                     binding.pbDetail.visibility = View.GONE
                     binding.constraintDetailContent.visibility = View.GONE
-                    binding.constraintDetailError.visibility = View.VISIBLE
+                    binding.scrollviewDetailError.visibility = View.VISIBLE
                 }
 
                 is ViewState.Success -> {
                     productDetail = it.data
                     binding.pbDetail.visibility = View.GONE
-                    binding.constraintDetailError.visibility = View.GONE
+                    binding.scrollviewDetailError.visibility = View.GONE
                     binding.constraintDetailContent.visibility = View.VISIBLE
 
                     adapter = DetailProductAdapter()
@@ -129,7 +131,7 @@ class DetailProductFragment :
                 else -> {
                     binding.pbDetail.visibility = View.GONE
                     binding.constraintDetailContent.visibility = View.GONE
-                    binding.constraintDetailError.visibility = View.VISIBLE
+                    binding.scrollviewDetailError.visibility = View.VISIBLE
                 }
             }
         }
@@ -266,8 +268,27 @@ class DetailProductFragment :
             }
         }
 
-        binding.btnDetailErrorRefresh.setOnClickListener {
+        binding.layoutDetailError.btnErrorResetRefresh.setOnClickListener {
             viewModel.getDetailProduct()
+        }
+
+        binding.btnDetailBuy.setOnClickListener {
+            val bundle = bundleOf(
+                CheckoutFragment.CHECKOUT_KEY to listOf(
+                    CartEntity(
+                        id = productDetail.productId!!,
+                        productName = productDetail.productName,
+                        image = productDetail.image?.get(0),
+                        productPrice = productDetail.productPrice,
+                        store = productDetail.store,
+                        stock = productDetail.stock,
+                        variantPrice = viewModel.selectedVariantPrice,
+                        variantName = viewModel.selectedVariantName,
+                        quantity = 1,
+                    )
+                )
+            )
+            (requireActivity() as MainActivity).toCheckOut(bundle)
         }
     }
 

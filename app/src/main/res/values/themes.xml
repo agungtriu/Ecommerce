@@ -24,6 +24,10 @@
         <item name="fontFamily">@font/poppins_400</item>
     </style>
 
+    <style name="Theme.Ecommerce.TextAppearance.TitleMedium" parent="TextAppearance.Material3.TitleMedium">
+        <item name="fontFamily">@font/poppins_500</item>
+    </style>
+
     <style name="Theme.Ecommerce.TextAppearance.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
         <item name="fontFamily">@font/poppins_500</item>
     </style>
@@ -93,6 +97,4 @@
         </item>
         <item name="fontFamily">@font/poppins_400</item>
     </style>
-
-
 </resources>

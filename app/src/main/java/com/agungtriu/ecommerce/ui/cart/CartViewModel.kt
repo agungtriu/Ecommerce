@@ -23,8 +23,6 @@ class CartViewModel @Inject constructor(private val mainRepository: MainReposito
             }
         }
     }
-
-    private var updateJob: Job? = null
     fun updateCart(cartEntity: CartEntity) {
         viewModelScope.launch {
             mainRepository.updateCart(cartEntity)

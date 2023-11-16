@@ -4,6 +4,7 @@ import android.os.Build
 import android.os.Build.VERSION
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.paging.LoadState
@@ -37,7 +38,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
     private lateinit var filterBottomSheet: FilterBottomSheet
     private lateinit var gridLayoutManager: GridLayoutManager
     private var filterModel = FilterModel()
-    private val bundle = Bundle()
+    private var bundle = Bundle()
     private lateinit var error: ResponseError
     private lateinit var chip: Chip
     private var querySearch: String? = null
@@ -64,11 +65,9 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
         gridLayoutManager = GridLayoutManager(view?.context, viewType)
         binding.rvStore.layoutManager = gridLayoutManager
         storeAdapter.setItemViewType(viewType)
-        binding.rvStore.adapter = storeAdapter.withLoadStateFooter(
-            footer = LoadingStateAdapter {
-                storeAdapter.retry()
-            }
-        )
+        binding.rvStore.adapter = storeAdapter.withLoadStateFooter(footer = LoadingStateAdapter {
+            storeAdapter.retry()
+        })
 
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
@@ -90,21 +89,19 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
             viewModel.getProducts(viewModel.requestProducts)
         }
 
-        binding.btnStoreErrorReset.setOnClickListener {
-            binding.tietStoreSearch.text = null
-            binding.chipgroupBottomshettfilter.removeAllViews()
-            viewModel.requestProducts = RequestProducts()
-            viewModel.getProducts(viewModel.requestProducts)
-        }
-
-        binding.btnStoreErrorRefresh.setOnClickListener {
+        binding.layoutStoreError.btnErrorResetRefresh.setOnClickListener {
+            if (binding.layoutStoreError.btnErrorResetRefresh.text == getString(R.string.all_reset)) {
+                binding.tietStoreSearch.text = null
+                binding.chipgroupBottomshettfilter.removeAllViews()
+                viewModel.requestProducts = RequestProducts()
+            }
             viewModel.getProducts(viewModel.requestProducts)
         }
 
         binding.chipStoreFilter.setOnClickListener {
             filterModel = viewModel.requestProducts.toFilterModel()
-            bundle.putParcelable(
-                TO_FILTER_KEY, filterModel
+            bundle = bundleOf(
+                TO_FILTER_KEY to filterModel
             )
             filterBottomSheet = FilterBottomSheet()
             filterBottomSheet.arguments = bundle
@@ -113,7 +110,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
 
         binding.tietStoreSearch.setOnClickListener {
             searchDialog = SearchDialog()
-            bundle.putString(TO_SEARCH_KEY, viewModel.requestProducts.search)
+            bundle = bundleOf(TO_SEARCH_KEY to viewModel.requestProducts.search)
             searchDialog.arguments = bundle
             searchDialog.show(childFragmentManager, SearchDialog.TAG)
         }
@@ -121,8 +118,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
 
     private fun resultListener() {
         childFragmentManager.setFragmentResultListener(
-            FILTER_KEY,
-            viewLifecycleOwner
+            FILTER_KEY, viewLifecycleOwner
         ) { _, bundle ->
             filterModel = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 bundle.getParcelable(RESULT_FILTER_KEY, FilterModel::class.java)
@@ -143,8 +139,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
         }
 
         childFragmentManager.setFragmentResultListener(
-            SEARCH_KEY,
-            viewLifecycleOwner
+            SEARCH_KEY, viewLifecycleOwner
         ) { _, bundle ->
             querySearch = bundle.getString(RESULT_SEARCH_KEY)
             binding.tietStoreSearch.setText(querySearch)
@@ -179,20 +174,16 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
     private fun observeFilter(filterModel: FilterModel) {
         binding.chipgroupBottomshettfilter.removeAllViews()
         addChip(
-            !filterModel.sort.isNullOrBlank(),
-            filterModel.sort
+            !filterModel.sort.isNullOrBlank(), filterModel.sort
         )
         addChip(
-            !filterModel.category.isNullOrBlank(),
-            filterModel.category
+            !filterModel.category.isNullOrBlank(), filterModel.category
         )
         addChip(
-            filterModel.min != null,
-            "> ".plus(filterModel.min?.toRupiah())
+            filterModel.min != null, "> ".plus(filterModel.min?.toRupiah())
         )
         addChip(
-            filterModel.max != null,
-            "< ".plus(filterModel.max?.toRupiah())
+            filterModel.max != null, "< ".plus(filterModel.max?.toRupiah())
         )
     }
 
@@ -203,7 +194,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
                     is LoadState.Loading -> {
                         showShimmer()
                         binding.constraintStore.visibility = View.GONE
-                        binding.constraintError.visibility = View.GONE
+                        binding.scrollviewStoreError.visibility = View.GONE
                     }
 
                     is LoadState.NotLoading -> {
@@ -214,33 +205,39 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
 
                     is LoadState.Error -> {
                         hideShimmer()
+                        binding.constraintStore.visibility = View.GONE
                         binding.swiperStore.isRefreshing = false
-                        binding.constraintError.visibility = View.VISIBLE
+                        binding.scrollviewStoreError.visibility = View.VISIBLE
                         error = (loadState.refresh as LoadState.Error).error.toResponseError()
-                        when (error.code) {
+                        if (error.message != null) {
+                            viewModel.error = error
+                        }
+                        when (viewModel.error.code) {
                             404 -> {
-                                binding.btnStoreErrorRefresh.visibility = View.GONE
-                                binding.btnStoreErrorReset.visibility = View.VISIBLE
-                                binding.tvStoreErrorTitle.text = getString(R.string.store_empty)
-                                binding.tvStoreErrorDesc.text = getString(R.string.store_empty_desc)
+                                binding.layoutStoreError.btnErrorResetRefresh.text =
+                                    getString(R.string.all_reset)
+                                binding.layoutStoreError.tvErrorTitle.text =
+                                    getString(R.string.store_empty)
+                                binding.layoutStoreError.tvErrorDesc.text =
+                                    getString(R.string.store_empty_desc)
                             }
 
                             503 -> {
-                                binding.btnStoreErrorRefresh.visibility = View.VISIBLE
-                                binding.btnStoreErrorReset.visibility = View.GONE
-                                binding.tvStoreErrorTitle.text =
+                                binding.layoutStoreError.btnErrorResetRefresh.text =
+                                    getString(R.string.all_refresh)
+                                binding.layoutStoreError.tvErrorTitle.text =
                                     getString(R.string.store_connection_title)
-                                binding.tvStoreErrorDesc.text =
+                                binding.layoutStoreError.tvErrorDesc.text =
                                     getString(R.string.store_connection_desc)
                             }
 
                             else -> {
-                                binding.btnStoreErrorRefresh.visibility = View.VISIBLE
-                                binding.btnStoreErrorReset.visibility = View.GONE
-                                binding.tvStoreErrorTitle.text =
-                                    if (error.code != null) error.code.toString() else null
-                                binding.tvStoreErrorDesc.text = error.message
-
+                                binding.layoutStoreError.btnErrorResetRefresh.text =
+                                    getString(R.string.all_refresh)
+                                binding.layoutStoreError.tvErrorTitle.text =
+                                    if (viewModel.error.code != null) viewModel.error.code.toString() else null
+                                binding.layoutStoreError.tvErrorDesc.text =
+                                    viewModel.error.message
                             }
                         }
                     }

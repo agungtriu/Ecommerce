@@ -41,9 +41,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setLayout()
         observeData()
         listener()
+    }
 
+    private fun setLayout() {
         binding.tvLoginAgreement.setColor(
             getString(R.string.all_terms_conditions),
             MaterialColors.getColor(requireView(), com.google.android.material.R.attr.colorPrimary)

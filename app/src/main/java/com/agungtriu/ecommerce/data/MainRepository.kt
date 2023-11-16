@@ -5,11 +5,16 @@ import com.agungtriu.ecommerce.core.datastore.model.AuthorizeModel
 import com.agungtriu.ecommerce.core.datastore.model.RegisterProfileModel
 import com.agungtriu.ecommerce.core.datastore.model.ThemeLangModel
 import com.agungtriu.ecommerce.core.datastore.model.TokenModel
+import com.agungtriu.ecommerce.core.remote.model.request.RequestFulfillment
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProducts
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProfile
+import com.agungtriu.ecommerce.core.remote.model.request.RequestRating
 import com.agungtriu.ecommerce.core.remote.model.response.DataDetailProduct
+import com.agungtriu.ecommerce.core.remote.model.response.DataFulfillment
 import com.agungtriu.ecommerce.core.remote.model.response.DataProfile
 import com.agungtriu.ecommerce.core.remote.model.response.DataReview
+import com.agungtriu.ecommerce.core.remote.model.response.DataTransaction
+import com.agungtriu.ecommerce.core.remote.model.response.DataTypePayment
 import com.agungtriu.ecommerce.core.remote.model.response.Product
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
@@ -57,4 +62,12 @@ interface MainRepository {
     fun getAllCart(): Flow<List<CartEntity>?>
     fun getCartById(id: String): Flow<CartEntity?>
     fun getQuantity(): Flow<Int?>
+
+    fun getPayments(): Flow<ViewState<List<DataTypePayment>>>
+
+    suspend fun postFulfillment(requestFulfillment: RequestFulfillment): Flow<ViewState<DataFulfillment>>
+
+    suspend fun postRating(requestRating: RequestRating): Flow<ViewState<String>>
+
+    suspend fun getTransaction(): Flow<ViewState<List<DataTransaction>>>
 }

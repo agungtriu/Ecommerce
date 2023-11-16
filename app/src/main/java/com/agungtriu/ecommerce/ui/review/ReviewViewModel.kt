@@ -17,8 +17,7 @@ import javax.inject.Inject
 class ReviewViewModel @Inject constructor(
     private val mainRepository: MainRepository,
     savedStateHandle: SavedStateHandle
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val productId: String = savedStateHandle[REVIEW_KEY] ?: ""
 

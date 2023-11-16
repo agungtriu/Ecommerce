@@ -14,11 +14,11 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar_checkout"
-            style="@style/Theme.Ecommerce.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:title="@string/all_checkout" />
+            app:title="@string/all_checkout"
+            app:titleTextAppearance="@style/Theme.Ecommerce.TextAppearance.TitleLarge" />
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
@@ -46,13 +46,12 @@
 
                 <TextView
                     android:id="@+id/tv_checkout_select_all"
-                    style="@style/TextAppearance.Material3.TitleMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
-                    android:fontFamily="@font/poppins_500"
                     android:text="@string/checkout_item_buy"
+                    android:textAppearance="@style/Theme.Ecommerce.TextAppearance.TitleMedium"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -74,13 +73,12 @@
 
                 <TextView
                     android:id="@+id/tv_checkout_payment_title"
-                    style="@style/TextAppearance.Material3.TitleMedium"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
                     android:layout_marginTop="16dp"
-                    android:fontFamily="@font/poppins_500"
                     android:text="@string/all_payment"
+                    android:textAppearance="@style/Theme.Ecommerce.TextAppearance.TitleMedium"
                     app:layout_constraintTop_toBottomOf="@id/divider_checkout_top" />
 
                 <androidx.cardview.widget.CardView
@@ -89,25 +87,46 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginVertical="16dp"
                     android:background="?attr/colorSurface"
                     app:cardCornerRadius="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/tv_checkout_payment_title">
 
-                    <TextView
-                        android:id="@+id/tv_checkout_payment"
-                        style="@style/TextAppearance.Material3.TitleSmall"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="16dp"
-                        android:drawablePadding="16dp"
-                        android:fontFamily="@font/poppins_500"
-                        android:gravity="center_vertical"
-                        android:text="@string/all_choose_payment"
-                        android:textColor="?attr/colorOnSurfaceVariant"
-                        app:drawableEndCompat="@drawable/ic_arrow_forward_ios"
-                        app:drawableStartCompat="@drawable/ic_add_card" />
+                        android:layout_height="wrap_content">
+
+                        <com.google.android.material.imageview.ShapeableImageView
+                            android:id="@+id/iv_checkout_payment"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginVertical="16dp"
+                            android:layout_marginStart="16dp"
+                            android:adjustViewBounds="true"
+                            android:src="@drawable/ic_add_card"
+                            app:layout_constraintBottom_toBottomOf="@id/tv_checkout_payment"
+                            app:layout_constraintEnd_toStartOf="@id/tv_checkout_payment"
+                            app:layout_constraintHorizontal_weight="1"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tv_checkout_payment" />
+
+                        <TextView
+                            android:id="@+id/tv_checkout_payment"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="16dp"
+                            android:fontFamily="@font/poppins_500"
+                            android:padding="16dp"
+                            android:text="@string/all_choose_payment"
+                            android:textColor="?attr/colorOnSurfaceVariant"
+                            android:textSize="14sp"
+                            app:drawableEndCompat="@drawable/ic_arrow_forward_ios"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_weight="8"
+                            app:layout_constraintStart_toEndOf="@id/iv_checkout_payment"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
@@ -122,14 +141,13 @@
 
         <TextView
             android:id="@+id/tv_checkout_total_title"
-            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
-            android:fontFamily="@font/poppins_400"
             android:text="@string/all_total_pay"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintBottom_toTopOf="@id/tv_checkout_total_pay"
             app:layout_constraintEnd_toStartOf="@id/btn_checkout_buy"
@@ -159,61 +177,25 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:fontFamily="@font/poppins_500"
+            android:enabled="false"
             android:text="@string/checkout_pay"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tv_checkout_total_title"
             app:layout_constraintTop_toTopOf="@id/tv_checkout_total_title"
             app:layout_constraintVertical_bias="0.0" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_checkout_error"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <ImageView
-            android:id="@+id/iv_checkout_error"
+        <ProgressBar
+            android:id="@+id/pb_checkout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_error"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_checkout_error_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_500"
-            android:text="@string/store_empty"
-            android:textAlignment="center"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="32sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_checkout_error"
-            app:layout_goneMarginTop="8dp" />
-
-        <TextView
-            android:id="@+id/tv_checkout_error_desc"
-            style="@style/TextAppearance.Material3.BodyLarge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_400"
-            android:text="@string/store_empty_desc"
-            android:textAlignment="center"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:indeterminateTint="?attr/colorPrimary"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_checkout_error_title" />
+            app:layout_constraintTop_toTopOf="@id/tv_checkout_total_title"
+            app:layout_constraintVertical_bias="0.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

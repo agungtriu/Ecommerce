@@ -14,11 +14,11 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/toolbar_choose_payment"
-            style="@style/Theme.Ecommerce.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:navigationIcon="@drawable/ic_arrow_back"
-            app:title="@string/all_choose_payment" />
+            app:title="@string/all_choose_payment"
+            app:titleTextAppearance="@style/Theme.Ecommerce.TextAppearance.TitleLarge" />
 
         <com.google.android.material.divider.MaterialDivider
             android:layout_width="match_parent"
@@ -32,5 +32,30 @@
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appbar_choose_payment"
-        tools:listitem="@layout/items_payment" />
+        tools:listitem="@layout/item_payment_parent" />
+
+    <ProgressBar
+        android:id="@+id/pb_choose_payment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminateTint="?attr/colorPrimary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar_choose_payment" />
+
+    <ScrollView
+        android:id="@+id/scrollview_choose_payment_error"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/appbar_choose_payment">
+
+        <include
+            android:id="@+id/layout_choose_payment_error"
+            layout="@layout/layout_error" />
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

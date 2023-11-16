@@ -7,19 +7,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.agungtriu.ecommerce.databinding.ItemImageBinding
 
-class OnboardingAdapter :
-    ListAdapter<Int, OnboardingAdapter.ViewHolder>(callback) {
-
-    companion object {
-        val callback = object : DiffUtil.ItemCallback<Int>() {
-            override fun areItemsTheSame(oldItem: Int, newItem: Int) =
-                oldItem == newItem
-
-            override fun areContentsTheSame(oldItem: Int, newItem: Int) =
-                oldItem == newItem
-        }
-    }
-
+class OnboardingAdapter : ListAdapter<Int, OnboardingAdapter.ViewHolder>(callback) {
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
@@ -37,7 +25,15 @@ class OnboardingAdapter :
         fun bind(item: Int) {
             binding.ivItemImage.setImageResource(item)
         }
-
     }
 
+    companion object {
+        val callback = object : DiffUtil.ItemCallback<Int>() {
+            override fun areItemsTheSame(oldItem: Int, newItem: Int) =
+                oldItem == newItem
+
+            override fun areContentsTheSame(oldItem: Int, newItem: Int) =
+                oldItem == newItem
+        }
+    }
 }

@@ -33,7 +33,7 @@
             android:text="@string/transaction_shopping"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="10sp"
-            app:layout_constraintEnd_toStartOf="@id/tv_item_transaction_done"
+            app:layout_constraintEnd_toStartOf="@id/tv_item_transaction_status"
             app:layout_constraintStart_toEndOf="@id/iv_item_transaction_bag"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -46,12 +46,12 @@
             android:text="@string/status_date"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="10sp"
-            app:layout_constraintEnd_toStartOf="@id/tv_item_transaction_done"
+            app:layout_constraintEnd_toStartOf="@id/tv_item_transaction_status"
             app:layout_constraintStart_toEndOf="@id/iv_item_transaction_bag"
             app:layout_constraintTop_toBottomOf="@id/tv_item_transaction_shopping" />
 
         <TextView
-            android:id="@+id/tv_item_transaction_done"
+            android:id="@+id/tv_item_transaction_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -76,12 +76,13 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_item_transaction"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:adjustViewBounds="true"
             android:src="@mipmap/ic_thumbnail"
-            app:layout_constraintBottom_toBottomOf="@id/tv_item_transaction_quantity"
+            app:layout_constraintEnd_toStartOf="@id/tv_item_transaction_product_name"
+            app:layout_constraintHorizontal_weight="1"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_item_transaction_product_name" />
 
@@ -98,6 +99,7 @@
             android:text="@string/item_title_hint"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_weight="5"
             app:layout_constraintStart_toEndOf="@id/iv_item_transaction"
             app:layout_constraintTop_toBottomOf="@id/divider_item_transaction" />
 
@@ -131,7 +133,9 @@
             android:id="@+id/tv_item_transaction_total_shopping"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="8dp"
             android:fontFamily="@font/poppins_600"
             android:text="@string/item_price_hint"
             android:textSize="12sp"
@@ -146,10 +150,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:fontFamily="@font/poppins_500"
-            android:paddingHorizontal="50dp"
+            android:paddingHorizontal="32dp"
             android:text="@string/all_review"
-            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelMedium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
