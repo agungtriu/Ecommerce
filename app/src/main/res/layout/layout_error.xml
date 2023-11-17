@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_error"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/view_error_top"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/iv_error"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:src="@mipmap/ic_error"
+        app:layout_constraintBottom_toTopOf="@id/tv_error_title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view_error_top" />
+
+    <TextView
+        android:id="@+id/tv_error_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/poppins_500"
+        android:text="@string/store_empty"
+        android:textAlignment="center"
+        android:textColor="?attr/colorOnSurface"
+        android:textSize="32sp"
+        app:layout_constraintBottom_toTopOf="@id/tv_error_desc"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_error"
+        app:layout_goneMarginTop="8dp" />
+
+    <TextView
+        android:id="@+id/tv_error_desc"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/store_empty_desc"
+        android:textAlignment="center"
+        android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge"
+        app:layout_constraintBottom_toTopOf="@id/btn_error_reset_refresh"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_error_title" />
+
+    <Button
+        android:id="@+id/btn_error_reset_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        android:paddingHorizontal="24dp"
+        android:paddingVertical="10dp"
+        android:text="@string/all_refresh"
+        android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
+        app:layout_constraintBottom_toTopOf="@id/view_error_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_error_desc" />
+
+    <View
+        android:id="@+id/view_error_bottom"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_error_reset_refresh" />
+</androidx.constraintlayout.widget.ConstraintLayout>

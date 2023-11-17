@@ -2,6 +2,7 @@ package com.agungtriu.ecommerce.ui.main.wishlist
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import com.agungtriu.ecommerce.R
@@ -54,8 +55,9 @@ class WishlistFragment : BaseFragment<FragmentWishlistBinding>(FragmentWishlistB
                     it.size.toString().plus(" ${getString(R.string.all_item)}")
                 adapter.submitList(it)
             } else {
-                binding.constraintWishlist.visibility = View.GONE
-                binding.constraintWishlistError.visibility = View.VISIBLE
+                binding.constraintWishlist.isVisible = false
+                binding.scrollviewWishlistError.isVisible = true
+                binding.layoutWishlistError.btnErrorResetRefresh.isVisible = false
             }
         }
     }

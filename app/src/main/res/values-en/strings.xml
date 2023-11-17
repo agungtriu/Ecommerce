@@ -65,7 +65,7 @@
     <string name="all_cart">Cart</string>
     <string name="all_delete">Delete</string>
     <string name="all_select_all">Select All</string>
-    <string name="cart_total_pay">Total Pay</string>
+    <string name="all_total_pay">Total Pay</string>
     <string name="cart_buy">Buy</string>
     <string name="all_stock_not_available">Stock not available</string>
     <string name="all_success_update_quantity">Success update quantity</string>
@@ -74,4 +74,28 @@
     <string name="main_notification">Notification</string>
     <string name="main_cart">Cart</string>
     <string name="main_menu">Menu</string>
+    <string name="all_checkout">Checkout</string>
+    <string name="checkout_pay">Pay</string>
+    <string name="all_payment">Payment</string>
+    <string name="all_choose_payment">Choose Payment</string>
+    <string name="checkout_item_buy">Purchased items</string>
+    <string name="status_payment_success">Payment successful</string>
+    <string name="status_review">Leave a review</string>
+    <string name="all_done">Done</string>
+    <string name="status_detail_transaction">Detail Transaction</string>
+    <string name="status_id_transaction">ID Transaction</string>
+    <string name="status_date">Date</string>
+    <string name="status_time">Time</string>
+    <string name="status_payment">Payment Method</string>
+    <string name="status_total_payment">Total Payment</string>
+    <string name="transaction_shopping">Shopping</string>
+    <string name="all_review">Review</string>
+    <string name="transaction_total_shopping">Total Shopping</string>
+    <string name="detail_product">Detail Product</string>
+    <string name="all_success">Success</string>
+    <string name="all_fail">Fail</string>
+    <string name="all_notification">Notification</string>
+    <string name="notiication_status_hint">Transaction Successful</string>
+    <string name="nofitifaction_info">Info</string>
+    <string name="wishlist_count_hint">3 Items</string>
 </resources>

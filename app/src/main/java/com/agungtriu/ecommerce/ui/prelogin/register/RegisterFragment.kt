@@ -26,10 +26,12 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setLayout()
         observeData()
         listener()
+    }
 
+    private fun setLayout() {
         binding.tvRegisterAgreement.setColor(
             getString(R.string.all_terms_conditions),
             MaterialColors.getColor(requireView(), com.google.android.material.R.attr.colorPrimary)
@@ -42,7 +44,6 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     }
 
     private fun listener() {
-
         binding.btnRegisterLogin.setOnClickListener {
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
@@ -60,6 +61,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
             }
             buttonValidation(isEmailValid, isPasswordValid)
         }
+
         binding.tietRegisterPassword.addTextChangedListener {
             if (isPasswordValid(it.toString())) {
                 isPasswordValid = true
@@ -68,12 +70,12 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                 isPasswordValid = false
                 binding.tilRegisterPassword.error = getString(R.string.all_password_not_valid)
             }
-
             if (it.isNullOrBlank()) {
                 binding.tilRegisterPassword.error = null
             }
             buttonValidation(isEmailValid, isPasswordValid)
         }
+
         binding.btnRegister.setOnClickListener {
             closeSoftKeyboard(binding.tietRegisterPassword, requireContext())
             viewModel.doRegister(

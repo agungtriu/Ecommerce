@@ -1,4 +1,4 @@
-package com.agungtriu.ecommerce.ui.main.review
+package com.agungtriu.ecommerce.ui.review
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -8,7 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.remote.model.response.DataReview
 import com.agungtriu.ecommerce.data.MainRepository
 import com.agungtriu.ecommerce.helper.ViewState
-import com.agungtriu.ecommerce.ui.main.review.ReviewFragment.Companion.REVIEW_KEY
+import com.agungtriu.ecommerce.ui.review.ReviewFragment.Companion.REVIEW_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -17,8 +17,7 @@ import javax.inject.Inject
 class ReviewViewModel @Inject constructor(
     private val mainRepository: MainRepository,
     savedStateHandle: SavedStateHandle
-) :
-    ViewModel() {
+) : ViewModel() {
 
     private val productId: String = savedStateHandle[REVIEW_KEY] ?: ""
 

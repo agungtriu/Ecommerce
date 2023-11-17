@@ -1,7 +1,8 @@
-package com.agungtriu.ecommerce.ui.main.review
+package com.agungtriu.ecommerce.ui.review
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,9 +18,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>(FragmentReviewBinding
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeData()
-        binding.toolbarReview.setNavigationOnClickListener {
-            findNavController().navigateUp()
-        }
+        listener()
     }
 
     private fun observeData() {
@@ -27,19 +26,20 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>(FragmentReviewBinding
             when (it) {
                 is ViewState.Loading -> {
                     binding.pbReview.visibility = View.VISIBLE
-                    binding.constraintReviewError.visibility = View.GONE
+                    binding.scrollviewReviewError.visibility = View.GONE
                     binding.rvReview.visibility = View.GONE
                 }
 
                 is ViewState.Error -> {
                     binding.pbReview.visibility = View.GONE
-                    binding.constraintReviewError.visibility = View.VISIBLE
+                    binding.scrollviewReviewError.visibility = View.VISIBLE
+                    binding.layoutReviewError.btnErrorResetRefresh.isVisible = false
                     binding.rvReview.visibility = View.GONE
                 }
 
                 is ViewState.Success -> {
                     binding.pbReview.visibility = View.GONE
-                    binding.constraintReviewError.visibility = View.GONE
+                    binding.scrollviewReviewError.visibility = View.GONE
                     binding.rvReview.visibility = View.VISIBLE
 
                     adapter = ReviewAdapter()
@@ -48,6 +48,12 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>(FragmentReviewBinding
                     adapter.submitList(it.data)
                 }
             }
+        }
+    }
+
+    private fun listener() {
+        binding.toolbarReview.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
     }
 

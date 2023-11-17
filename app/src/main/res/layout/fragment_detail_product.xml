@@ -364,70 +364,24 @@
         android:id="@+id/pb_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:indeterminateTint="?attr/colorPrimary"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appbar_detail" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_detail_error"
+    <ScrollView
+        android:id="@+id/scrollview_detail_error"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appbar_detail">
 
-        <ImageView
-            android:id="@+id/iv_detail_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_error"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_detail_error_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_500"
-            android:text="@string/store_empty"
-            android:textAlignment="center"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="32sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_detail_error"
-            app:layout_goneMarginTop="8dp" />
-
-        <TextView
-            android:id="@+id/tv_detail_error_desc"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/store_empty_desc"
-            android:textAlignment="center"
-            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_detail_error_title" />
-
-        <Button
-            android:id="@+id/btn_detail_error_refresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:paddingHorizontal="24dp"
-            android:paddingVertical="10dp"
-            android:text="@string/all_refresh"
-            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_detail_error_desc" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/layout_detail_error"
+            layout="@layout/layout_error" />
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

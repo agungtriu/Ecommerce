@@ -25,7 +25,11 @@ class OnBoardingFragment :
     private val viewModel: OnBoardingViewModel by viewModels()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setLayout()
+        listener()
+    }
 
+    private fun setLayout() {
         adapter = OnboardingAdapter()
         binding.vpOnboarding.adapter = adapter
         adapter.submitList(listOfImage)
@@ -33,7 +37,6 @@ class OnBoardingFragment :
             tab.setCustomView(R.layout.custom_tab_indicator)
         }.attach()
 
-        listener()
     }
 
     private fun listener() {

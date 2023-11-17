@@ -2,6 +2,7 @@ package com.agungtriu.ecommerce.ui.main
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -11,6 +12,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.databinding.FragmentMainBinding
 import com.agungtriu.ecommerce.ui.base.BaseFragment
+import com.agungtriu.ecommerce.ui.status.StatusFragment.Companion.STATE_STATUS_KEY
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils.attachBadgeDrawable
 import com.google.android.material.snackbar.Snackbar
@@ -64,6 +66,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 badgeCart.clearNumber()
             }
         }
+
+        if (arguments?.getString(STATE_STATUS_KEY) == "transaction") {
+            binding.bnvMainFragment.selectedItemId = R.id.transactionFragment
+        }
     }
 
 
@@ -71,7 +77,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         binding.toolbarMain.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_main_notification -> {
-                    Snackbar.make(requireView(), "coming soon", Snackbar.LENGTH_LONG).show()
+                    findNavController().navigate(R.id.action_mainFragment_to_notificationFragment)
                     true
                 }
 
