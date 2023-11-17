@@ -1,5 +1,6 @@
 package com.agungtriu.ecommerce.data
 
+import androidx.lifecycle.LiveData
 import androidx.paging.PagingData
 import com.agungtriu.ecommerce.core.datastore.model.AuthorizeModel
 import com.agungtriu.ecommerce.core.datastore.model.RegisterProfileModel
@@ -70,4 +71,10 @@ interface MainRepository {
     suspend fun postRating(requestRating: RequestRating): Flow<ViewState<String>>
 
     suspend fun getTransaction(): Flow<ViewState<List<DataTransaction>>>
+
+    fun getFirebasePayments(): LiveData<ViewState<List<DataTypePayment>>>
+
+    fun updateFirebasePayments(): LiveData<ViewState<List<DataTypePayment>>>
+
+
 }

@@ -1,5 +1,6 @@
 package com.agungtriu.ecommerce.data
 
+import androidx.lifecycle.LiveData
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
@@ -24,6 +25,7 @@ import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
 import com.agungtriu.ecommerce.core.room.AppDatabase
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
+import com.agungtriu.ecommerce.data.firebase.RemoteConfig
 import com.agungtriu.ecommerce.helper.Extension.toResponseError
 import com.agungtriu.ecommerce.helper.ViewState
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +41,8 @@ import javax.inject.Singleton
 class MainRepositoryImp @Inject constructor(
     private val dataStoreManager: DataStoreManager,
     private val apiService: ApiService,
-    private val appDatabase: AppDatabase
+    private val appDatabase: AppDatabase,
+    private val remoteConfig: RemoteConfig
 ) : MainRepository {
     override suspend fun updateLoginStatus(registerProfileModel: RegisterProfileModel) {
         dataStoreManager.updateLoginStatus(registerProfileModel = registerProfileModel)
@@ -268,4 +271,10 @@ class MainRepositoryImp @Inject constructor(
             emit(ViewState.Error(t.toResponseError()))
         }
     }
+
+    override fun getFirebasePayments(): LiveData<ViewState<List<DataTypePayment>>> =
+        remoteConfig.getPayment()
+
+    override fun updateFirebasePayments(): LiveData<ViewState<List<DataTypePayment>>> =
+        remoteConfig.updatePayment()
 }

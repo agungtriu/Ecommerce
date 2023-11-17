@@ -16,10 +16,6 @@ class ChoosePaymentFragment :
     BaseFragment<FragmentChoosePaymentBinding>(FragmentChoosePaymentBinding::inflate) {
     private val viewModel: PaymentViewModel by viewModels()
     private lateinit var adapter: PaymentParentAdapter
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel.getPayment()
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -35,7 +31,24 @@ class ChoosePaymentFragment :
     }
 
     private fun observeData() {
-        viewModel.resultPayment.observe(viewLifecycleOwner) {
+        viewModel.getFirebasePayment().observe(viewLifecycleOwner) {
+            when (it) {
+                is ViewState.Loading -> {
+                    binding.pbChoosePayment.isVisible = true
+                }
+
+                is ViewState.Error -> {
+                    binding.pbChoosePayment.isVisible = false
+                    binding.scrollviewChoosePaymentError.isVisible = true
+                }
+
+                is ViewState.Success -> {
+                    binding.pbChoosePayment.isVisible = false
+                    adapter.submitList(it.data)
+                }
+            }
+        }
+        viewModel.updateFirebasePayment().observe(viewLifecycleOwner) {
             when (it) {
                 is ViewState.Loading -> {
                     binding.pbChoosePayment.isVisible = true
@@ -59,7 +72,7 @@ class ChoosePaymentFragment :
             findNavController().navigateUp()
         }
         binding.layoutChoosePaymentError.btnErrorResetRefresh.setOnClickListener {
-            viewModel.getPayment()
+            viewModel.getFirebasePayment()
         }
     }
 }

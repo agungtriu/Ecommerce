@@ -89,6 +89,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                 email = binding.tietLoginEmail.text.toString(),
                 password = binding.tietLoginPassword.text.toString()
             )
+//            throw RuntimeException("Test Crash") // Force a crash
         }
 
         binding.btnLoginRegister.setOnClickListener {
