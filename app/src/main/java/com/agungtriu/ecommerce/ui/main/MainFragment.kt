@@ -2,7 +2,6 @@ package com.agungtriu.ecommerce.ui.main
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
@@ -62,6 +61,19 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             badgeCart.number = it ?: 0
             if (it != null) {
                 attachBadgeDrawable(badgeCart, binding.toolbarMain, R.id.btn_main_shopping_cart)
+            } else {
+                badgeCart.clearNumber()
+            }
+        }
+
+        viewModel.selectNotification().observe(viewLifecycleOwner) {
+            val badgeCart = BadgeDrawable.create(requireContext())
+            val quantity = it?.filter { notification -> !notification.isRead }?.size
+
+            badgeCart.isVisible = quantity != 0
+            badgeCart.number = quantity ?: 0
+            if (it != null) {
+                attachBadgeDrawable(badgeCart, binding.toolbarMain, R.id.btn_main_notification)
             } else {
                 badgeCart.clearNumber()
             }

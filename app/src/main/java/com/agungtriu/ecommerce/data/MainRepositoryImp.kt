@@ -24,10 +24,13 @@ import com.agungtriu.ecommerce.core.remote.model.response.Product
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
 import com.agungtriu.ecommerce.core.room.AppDatabase
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
+import com.agungtriu.ecommerce.core.room.entity.NotificationEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.data.firebase.RemoteConfig
 import com.agungtriu.ecommerce.helper.Extension.toResponseError
 import com.agungtriu.ecommerce.helper.ViewState
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -72,6 +75,7 @@ class MainRepositoryImp @Inject constructor(
         CoroutineScope(Dispatchers.IO).launch {
             appDatabase.clearAllTables()
         }
+        Firebase.messaging.unsubscribeFromTopic("promo")
         dataStoreManager.deleteLoginStatus()
     }
 
@@ -277,4 +281,15 @@ class MainRepositoryImp @Inject constructor(
 
     override fun updateFirebasePayments(): LiveData<ViewState<List<DataTypePayment>>> =
         remoteConfig.updatePayment()
+
+    override suspend fun insertNotification(notificationEntity: NotificationEntity) {
+        appDatabase.notificationDao().insertNotification(notificationEntity)
+    }
+
+    override fun selectNotifications(): Flow<List<NotificationEntity>?> =
+        appDatabase.notificationDao().selectNotifications()
+
+    override suspend fun updateNotification(notificationEntity: NotificationEntity) {
+        appDatabase.notificationDao().updateNotification(notificationEntity)
+    }
 }

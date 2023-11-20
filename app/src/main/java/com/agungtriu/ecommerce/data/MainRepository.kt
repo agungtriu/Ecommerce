@@ -18,6 +18,7 @@ import com.agungtriu.ecommerce.core.remote.model.response.DataTransaction
 import com.agungtriu.ecommerce.core.remote.model.response.DataTypePayment
 import com.agungtriu.ecommerce.core.remote.model.response.Product
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
+import com.agungtriu.ecommerce.core.room.entity.NotificationEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.helper.ViewState
 import kotlinx.coroutines.flow.Flow
@@ -76,5 +77,9 @@ interface MainRepository {
 
     fun updateFirebasePayments(): LiveData<ViewState<List<DataTypePayment>>>
 
+    suspend fun insertNotification(notificationEntity: NotificationEntity)
 
+    fun selectNotifications(): Flow<List<NotificationEntity>?>
+
+    suspend fun updateNotification(notificationEntity: NotificationEntity)
 }

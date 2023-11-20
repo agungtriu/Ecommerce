@@ -1,23 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/constraint_item_notification"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginHorizontal="16dp">
+    android:layout_height="wrap_content">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_item_notification"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
+        android:layout_marginStart="16dp"
         android:adjustViewBounds="true"
         android:src="@mipmap/ic_thumbnail"
-        app:layout_constraintBottom_toBottomOf="@id/tv_item_notification_status"
-        app:layout_constraintEnd_toStartOf="@id/tv_item_notification_info"
+        app:layout_constraintBottom_toBottomOf="@id/tv_item_notification_title"
+        app:layout_constraintEnd_toStartOf="@id/tv_item_notification_type"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_item_notification_info" />
+        app:layout_constraintTop_toTopOf="@id/tv_item_notification_type" />
 
     <TextView
-        android:id="@+id/tv_item_notification_info"
+        android:id="@+id/tv_item_notification_type"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -32,33 +33,36 @@
         android:id="@+id/tv_item_notification_datetime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:text="@string/notification_datetime_hint"
         android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/tv_item_notification_info"
-        app:layout_constraintTop_toTopOf="@id/tv_item_notification_info" />
+        app:layout_constraintStart_toEndOf="@id/tv_item_notification_type"
+        app:layout_constraintTop_toTopOf="@id/tv_item_notification_type" />
 
     <TextView
-        android:id="@+id/tv_item_notification_status"
+        android:id="@+id/tv_item_notification_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
         android:fontFamily="@font/poppins_600"
         android:text="@string/notiication_status_hint"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tv_item_notification_info"
-        app:layout_constraintTop_toBottomOf="@id/tv_item_notification_info" />
+        app:layout_constraintStart_toStartOf="@id/tv_item_notification_type"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_notification_type" />
 
     <TextView
         android:id="@+id/tv_item_notification_desc"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
         android:text="@string/notification_desc_hint"
         android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tv_item_notification_info"
-        app:layout_constraintTop_toBottomOf="@id/tv_item_notification_status" />
+        app:layout_constraintStart_toStartOf="@id/tv_item_notification_type"
+        app:layout_constraintTop_toBottomOf="@id/tv_item_notification_title" />
 
     <com.google.android.material.divider.MaterialDivider
         android:id="@+id/divider_item_notification"
@@ -66,7 +70,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/tv_item_notification_info"
+        app:layout_constraintStart_toStartOf="@id/tv_item_notification_type"
         app:layout_constraintTop_toBottomOf="@id/tv_item_notification_desc" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

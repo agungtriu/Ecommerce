@@ -9,6 +9,8 @@ import com.agungtriu.ecommerce.core.remote.model.response.DataLogin
 import com.agungtriu.ecommerce.core.remote.model.response.DataRegister
 import com.agungtriu.ecommerce.helper.Extension.toResponseError
 import com.agungtriu.ecommerce.helper.ViewState
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -56,6 +58,7 @@ class PreLoginRepositoryImp @Inject constructor(
                             isAuthorized = true
                         )
                     )
+                    Firebase.messaging.subscribeToTopic("promo")
                     emit(ViewState.Success(dataRegister))
                 } else {
                     throw Exception("Data register not found")
@@ -84,6 +87,7 @@ class PreLoginRepositoryImp @Inject constructor(
                             isAuthorized = true
                         )
                     )
+                    Firebase.messaging.subscribeToTopic("promo")
                     emit(ViewState.Success(dataLogin))
                 } else {
                     throw Exception("Data login not found")

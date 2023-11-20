@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.agungtriu.ecommerce.core.datastore.model.LoginModel
+import com.agungtriu.ecommerce.core.room.entity.NotificationEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.data.MainRepository
 import com.agungtriu.ecommerce.data.PreLoginRepository
@@ -22,4 +23,7 @@ class MainViewModel @Inject constructor(
 
     fun getWishlists(): LiveData<List<WishlistEntity>> = mainRepository.getWishlists().asLiveData()
     fun getQuantity(): LiveData<Int?> = mainRepository.getQuantity().asLiveData()
+
+    fun selectNotification(): LiveData<List<NotificationEntity>?> =
+        mainRepository.selectNotifications().asLiveData()
 }

@@ -7,8 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.remote.model.request.RequestRegister
 import com.agungtriu.ecommerce.core.remote.model.response.DataRegister
 import com.agungtriu.ecommerce.data.PreLoginRepository
-import com.agungtriu.ecommerce.helper.Config.FIREBASE_TOKEN
 import com.agungtriu.ecommerce.helper.ViewState
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,16 +22,22 @@ class RegisterViewModel @Inject constructor(private val preLoginRepository: PreL
     val resultRegister: LiveData<ViewState<DataRegister>> = _resultRegister
 
     fun doRegister(email: String, password: String) {
-        viewModelScope.launch {
-            preLoginRepository.doRegister(
-                RequestRegister(
-                    email = email,
-                    password = password,
-                    firebaseToken = FIREBASE_TOKEN
-                )
-            ).collect {
-                _resultRegister.value = it
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                return@OnCompleteListener
             }
-        }
+            val token = task.result
+            viewModelScope.launch {
+                preLoginRepository.doRegister(
+                    RequestRegister(
+                        email = email,
+                        password = password,
+                        firebaseToken = token
+                    )
+                ).collect {
+                    _resultRegister.value = it
+                }
+            }
+        })
     }
 }
