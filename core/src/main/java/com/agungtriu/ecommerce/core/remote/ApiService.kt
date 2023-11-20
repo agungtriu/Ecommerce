@@ -1,16 +1,22 @@
 package com.agungtriu.ecommerce.core.remote
 
+import com.agungtriu.ecommerce.core.remote.model.request.RequestFulfillment
 import com.agungtriu.ecommerce.core.remote.model.request.RequestLogin
+import com.agungtriu.ecommerce.core.remote.model.request.RequestRating
 import com.agungtriu.ecommerce.core.remote.model.request.RequestRefresh
 import com.agungtriu.ecommerce.core.remote.model.request.RequestRegister
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseDetailProduct
+import com.agungtriu.ecommerce.core.remote.model.response.ResponseFulfillment
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseLogin
+import com.agungtriu.ecommerce.core.remote.model.response.ResponsePayment
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseProducts
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseProfile
+import com.agungtriu.ecommerce.core.remote.model.response.ResponseRating
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseRefresh
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseRegister
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseReviewProduct
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseSearch
+import com.agungtriu.ecommerce.core.remote.model.response.ResponseTransaction
 import okhttp3.MultipartBody
 import retrofit2.http.Body
 import retrofit2.http.GET
@@ -69,4 +75,21 @@ interface ApiService {
     suspend fun getReviewProduct(
         @Path("id") productId: String
     ): ResponseReviewProduct
+
+    @GET("payment")
+    suspend fun getPayment(): ResponsePayment
+
+    @POST("fulfillment")
+    suspend fun postFulfillment(
+        @Body requestFulfillment: RequestFulfillment
+    ): ResponseFulfillment
+
+    @POST("rating")
+    suspend fun postRating(
+        @Body requestRating: RequestRating
+    ): ResponseRating
+
+    @GET("transaction")
+    suspend fun getTransaction(): ResponseTransaction
+
 }

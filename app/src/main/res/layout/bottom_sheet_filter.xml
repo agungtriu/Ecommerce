@@ -42,8 +42,6 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/poppins_500"
                 android:text="@string/all_reset"
-                android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="@id/tv_bottomsheetfilter_filter"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="@id/tv_bottomsheetfilter_filter" />
@@ -56,6 +54,7 @@
                 android:fontFamily="@font/poppins_600"
                 android:text="@string/bottomsheetfilter_sort"
                 android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/tv_bottomsheetfilter_filter" />
 
             <com.google.android.material.chip.ChipGroup
@@ -72,8 +71,8 @@
                     style="@style/Widget.App.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_500"
                     android:text="@string/bottomsheetfilter_review"
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip"
                     android:textColor="?attr/colorOnSurfaceVariant" />
 
                 <com.google.android.material.chip.Chip
@@ -81,24 +80,24 @@
                     style="@style/Widget.App.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_500"
-                    android:text="@string/bottomsheetfilter_sold" />
+                    android:text="@string/bottomsheetfilter_sold"
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_bottomshettfilter_sort_maxprice"
                     style="@style/Widget.App.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_500"
-                    android:text="@string/bottomsheetfilter_maxprice" />
+                    android:text="@string/bottomsheetfilter_maxprice"
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_bottomshettfilter_sort_minprice"
                     style="@style/Widget.App.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_500"
-                    android:text="@string/bottomsheetfilter_minprice" />
+                    android:text="@string/bottomsheetfilter_minprice"
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip" />
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -110,6 +109,7 @@
                 android:fontFamily="@font/poppins_600"
                 android:text="@string/bottomsheetfilter_category"
                 android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/chipgroup_bottomshettfilter_sort" />
 
             <com.google.android.material.chip.ChipGroup
@@ -126,32 +126,32 @@
                     style="@style/Widget.App.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_500"
-                    android:text="@string/bottomsheetfilter_apple" />
+                    android:text="@string/bottomsheetfilter_apple"
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_bottomshettfilter_category_asus"
                     style="@style/Widget.App.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_500"
-                    android:text="@string/bottomsheetfilter_asus" />
+                    android:text="@string/bottomsheetfilter_asus"
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_bottomshettfilter_category_dell"
                     style="@style/Widget.App.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_500"
-                    android:text="@string/bottomsheetfilter_dell" />
+                    android:text="@string/bottomsheetfilter_dell"
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_bottomshettfilter_category_lenovo"
                     style="@style/Widget.App.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_500"
-                    android:text="@string/bottomsheetfilter_lenovo" />
+                    android:text="@string/bottomsheetfilter_lenovo"
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip" />
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -163,6 +163,7 @@
                 android:fontFamily="@font/poppins_600"
                 android:text="@string/bottomsheetfilter_price"
                 android:textColor="?attr/colorOnSurfaceVariant"
+                android:textSize="14sp"
                 app:layout_constraintTop_toBottomOf="@id/chipgroup_bottomshettfilter_category" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -174,6 +175,7 @@
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
                 android:hint="@string/bottomsheetfilter_min"
+                app:hintTextAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
                 app:layout_constraintEnd_toStartOf="@id/til_bottomsheetfilter_max"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/tv_bottomsheetfilter_price">
@@ -182,9 +184,9 @@
                     android:id="@+id/tiet_bottomsheetfilter_min"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_400"
                     android:imeOptions="actionNext"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -196,6 +198,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginEnd="16dp"
                 android:hint="@string/bottomsheetfilter_max"
+                app:hintTextAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
                 app:layout_constraintBottom_toBottomOf="@id/til_bottomsheetfilter_min"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@id/til_bottomsheetfilter_min"
@@ -205,19 +208,18 @@
                     android:id="@+id/tiet_bottomsheetfilter_max"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/poppins_400"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:id="@+id/btn_bottomsheetfilter_submit"
-                style="@style/Widget.Material3.Button.IconButton.Filled"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:fontFamily="@font/poppins_500"
                 android:text="@string/bottomsheetfilter_showproduct"
+                android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_bottomsheetfilter_min"
                 app:layout_constraintVertical_bias="0.0" />

@@ -1,6 +1,7 @@
 package com.agungtriu.ecommerce.ui.detail
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
@@ -10,6 +11,7 @@ import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.data.MainRepository
 import com.agungtriu.ecommerce.helper.ViewState
+import com.google.android.material.chip.Chip
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,16 +25,27 @@ class DetailProductViewModel @Inject constructor(
 
     private val productId: String = savedStateHandle[DetailProductFragment.PRODUCT_ID_KEY] ?: ""
 
+    var selectedVariantName = ""
+    var selectedVariantPrice = 0
+
+    private val _resultDetail = MutableLiveData<ViewState<DataDetailProduct>?>(null)
+    val resultDetail: LiveData<ViewState<DataDetailProduct>?> get() = _resultDetail
+
     init {
         getDetailProduct()
-        getWishlist()
     }
 
-    fun getDetailProduct(): LiveData<ViewState<DataDetailProduct>> =
-        mainRepository.getDetailProduct(productId).asLiveData()
+    fun getDetailProduct() {
+        viewModelScope.launch {
+            mainRepository.getDetailProduct(productId).collect {
+                _resultDetail.value = it
+            }
+        }
+    }
 
     fun getWishlist(): LiveData<WishlistEntity> =
         mainRepository.getWishlistById(productId).asLiveData()
+
 
     fun insertWishlist(wishlistEntity: WishlistEntity) {
         viewModelScope.launch {

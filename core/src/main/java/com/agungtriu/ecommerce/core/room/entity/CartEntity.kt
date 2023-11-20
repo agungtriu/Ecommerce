@@ -1,9 +1,12 @@
 package com.agungtriu.ecommerce.core.room.entity
 
+import android.os.Parcelable
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
 @Entity(tableName = "carts")
+@Parcelize
 data class CartEntity(
     @PrimaryKey
     val id: String,
@@ -16,4 +19,4 @@ data class CartEntity(
     val variantName: String? = null,
     val quantity: Int? = 1,
     val isSelected: Boolean? = true
-)
+) : Parcelable

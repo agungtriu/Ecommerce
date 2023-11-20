@@ -23,14 +23,8 @@ interface CartDao {
     @Query("SELECT * FROM carts")
     fun selectCarts(): Flow<List<CartEntity>?>
 
-    @Query("SELECT * FROM carts WHERE isSelected = :isSelected")
-    fun selectCartsIsSelected(isSelected: Boolean): Flow<List<CartEntity>>
-
     @Query("SELECT * FROM carts WHERE id = :id")
     fun selectCartById(id: String): Flow<CartEntity?>
-
-    @Query("SELECT SUM(variantPrice*quantity) FROM carts WHERE isSelected = 1")
-    fun selectTotalPay(): Flow<Int?>
 
     @Query("SELECT COUNT(*) FROM carts")
     fun selectQuantity(): Flow<Int?>

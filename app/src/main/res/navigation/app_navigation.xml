@@ -97,6 +97,9 @@
             <action
                 android:id="@+id/action_mainFragment_to_cartFragment"
                 app:destination="@id/cartFragment" />
+            <action
+                android:id="@+id/action_mainFragment_to_notificationFragment"
+                app:destination="@id/notificationFragment" />
         </fragment>
 
         <fragment
@@ -105,21 +108,13 @@
             android:label="fragment_cart"
             tools:layout="@layout/fragment_cart" />
 
-    </navigation>
+        <fragment
+            android:id="@+id/notificationFragment"
+            android:name="com.agungtriu.ecommerce.ui.notification.NotificationFragment"
+            android:label="fragment_notification"
+            tools:layout="@layout/fragment_notification" />
 
-    <fragment
-        android:id="@+id/detailProductFragment"
-        android:name="com.agungtriu.ecommerce.ui.detail.DetailProductFragment"
-        android:label="fragment_detail_product"
-        tools:layout="@layout/fragment_detail_product">
-        <argument
-            android:name="productId"
-            app:argType="string" />
-        <action
-            android:id="@+id/action_detailProductFragment_to_reviewFragment"
-            app:destination="@id/reviewFragment" />
-        <deepLink app:uri="http://ecommerce.agungtriu.com/{productId}" />
-    </fragment>
+    </navigation>
 
     <action
         android:id="@+id/action_global_to_prelogin_navigation"
@@ -135,15 +130,63 @@
 
     <action
         android:id="@+id/action_global_to_detail_fragment"
-        app:destination="@id/detailProductFragment" />
+        app:destination="@id/detail_navigation" />
     <fragment
-        android:id="@+id/reviewFragment"
-        android:name="com.agungtriu.ecommerce.ui.main.review.ReviewFragment"
-        android:label="fragment_review"
-        tools:layout="@layout/fragment_review">
-        <argument
-            android:name="productId"
-            app:argType="string" />
+        android:id="@+id/checkoutFragment"
+        android:name="com.agungtriu.ecommerce.ui.checkout.CheckoutFragment"
+        android:label="fragment_checkout"
+        tools:layout="@layout/fragment_checkout">
+        <action
+            android:id="@+id/action_checkoutFragment_to_choosePaymentFragment"
+            app:destination="@id/choosePaymentFragment" />
+        <action
+            android:id="@+id/action_checkoutFragment_to_statusFragment"
+            app:destination="@id/statusFragment"
+            app:popUpTo="@id/main_navigation"
+            app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/choosePaymentFragment"
+        android:name="com.agungtriu.ecommerce.ui.payment.ChoosePaymentFragment"
+        android:label="fragment_choose_payment"
+        tools:layout="@layout/fragment_choose_payment" />
+    <fragment
+        android:id="@+id/statusFragment"
+        android:name="com.agungtriu.ecommerce.ui.status.StatusFragment"
+        android:label="fragment_status"
+        tools:layout="@layout/fragment_status" />
 
+    <action
+        android:id="@+id/action_global_to_checkout_fragment"
+        app:destination="@id/checkoutFragment" />
+
+    <action
+        android:id="@+id/action_global_to_status_fragment"
+        app:destination="@id/statusFragment" />
+    <navigation
+        android:id="@+id/detail_navigation"
+        app:startDestination="@id/detailProductFragment">
+        <fragment
+            android:id="@+id/reviewFragment"
+            android:name="com.agungtriu.ecommerce.ui.review.ReviewFragment"
+            android:label="fragment_review"
+            tools:layout="@layout/fragment_review">
+            <argument
+                android:name="productId"
+                app:argType="string" />
+        </fragment>
+        <fragment
+            android:id="@+id/detailProductFragment"
+            android:name="com.agungtriu.ecommerce.ui.detail.DetailProductFragment"
+            android:label="fragment_detail_product"
+            tools:layout="@layout/fragment_detail_product">
+            <argument
+                android:name="productId"
+                app:argType="string" />
+            <action
+                android:id="@+id/action_detailProductFragment_to_reviewFragment"
+                app:destination="@id/reviewFragment" />
+            <deepLink app:uri="http://ecommerce.agungtriu.com/{productId}" />
+        </fragment>
+    </navigation>
 </navigation>

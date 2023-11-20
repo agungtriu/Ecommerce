@@ -34,7 +34,6 @@ import okhttp3.RequestBody.Companion.toRequestBody
 class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBinding::inflate) {
     private lateinit var galleryResultLauncher: ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var takePictureLauncher: ActivityResultLauncher<Uri>
-    private var nameState = false
     private val viewModel: ProfileViewModel by viewModels()
 
 
@@ -89,27 +88,28 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                 getString(R.string.dialog_profile_camera),
                 getString(R.string.dialog_profile_gallery)
             )
-            val dialogProfile = MaterialAlertDialogBuilder(requireContext())
-                .setTitle(R.string.dialog_title)
-                .setBackground(
-                    ContextCompat.getDrawable(
-                        requireContext(),
-                        R.drawable.all_rectangle
+            val dialogProfile =
+                MaterialAlertDialogBuilder(requireContext(), R.style.AlertDialogTheme)
+                    .setTitle(R.string.dialog_title)
+                    .setBackground(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            R.drawable.all_rectangle
+                        )
                     )
-                )
-                .setItems(items) { dialog, which ->
-                    when (items[which]) {
-                        getString(R.string.dialog_profile_gallery) -> {
-                            openGallery()
-                            dialog.dismiss()
-                        }
+                    .setItems(items) { dialog, which ->
+                        when (items[which]) {
+                            getString(R.string.dialog_profile_gallery) -> {
+                                openGallery()
+                                dialog.dismiss()
+                            }
 
-                        getString(R.string.dialog_profile_camera) -> {
-                            openCamera()
-                            dialog.dismiss()
+                            getString(R.string.dialog_profile_camera) -> {
+                                openCamera()
+                                dialog.dismiss()
+                            }
                         }
                     }
-                }
             dialogProfile.show()
         }
 
@@ -136,8 +136,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
         }
         binding.tietProfileName.addTextChangedListener {
-            nameState = it?.length!! >= 1
-            buttonValidation(nameState = nameState)
+            binding.btnProfileFinish.isEnabled = it?.length!! > 0
         }
     }
 
@@ -148,10 +147,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private fun openGallery() {
         galleryResultLauncher.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
-    }
-
-    private fun buttonValidation(nameState: Boolean) {
-        binding.btnProfileFinish.isEnabled = nameState
     }
 
     private fun observeData() {

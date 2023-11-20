@@ -19,6 +19,8 @@ class WishlistViewModel @Inject constructor(private val mainRepository: MainRepo
     private var _resultWishlists = MutableLiveData<List<WishlistEntity>>()
     val resultWishlist: LiveData<List<WishlistEntity>> get() = _resultWishlists
 
+    var isGrid = false
+
     fun getWishlists() {
         viewModelScope.launch {
             mainRepository.getWishlists().collect {

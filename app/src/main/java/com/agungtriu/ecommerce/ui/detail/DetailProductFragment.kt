@@ -16,8 +16,10 @@ import com.agungtriu.ecommerce.databinding.FragmentDetailProductBinding
 import com.agungtriu.ecommerce.helper.Config.BASE_DEEPLINK
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.ViewState
+import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
-import com.agungtriu.ecommerce.ui.main.review.ReviewFragment.Companion.REVIEW_KEY
+import com.agungtriu.ecommerce.ui.checkout.CheckoutFragment
+import com.agungtriu.ecommerce.ui.review.ReviewFragment.Companion.REVIEW_KEY
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
@@ -34,8 +36,7 @@ class DetailProductFragment :
     private lateinit var bundle: Bundle
     private var wishlistState = false
     private var wishlistPress = false
-    private var selectedVariantName = ""
-    private var selectedVariantPrice = 0
+    private lateinit var selectedChip: Chip
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,24 +46,24 @@ class DetailProductFragment :
 
     @SuppressLint("SetTextI18n")
     private fun observeData() {
-        viewModel.getDetailProduct().observe(viewLifecycleOwner) {
+        viewModel.resultDetail.observe(viewLifecycleOwner) {
             when (it) {
                 is ViewState.Loading -> {
                     binding.pbDetail.visibility = View.VISIBLE
                     binding.constraintDetailContent.visibility = View.GONE
-                    binding.constraintDetailError.visibility = View.GONE
+                    binding.scrollviewDetailError.visibility = View.GONE
                 }
 
                 is ViewState.Error -> {
                     binding.pbDetail.visibility = View.GONE
                     binding.constraintDetailContent.visibility = View.GONE
-                    binding.constraintDetailError.visibility = View.VISIBLE
+                    binding.scrollviewDetailError.visibility = View.VISIBLE
                 }
 
                 is ViewState.Success -> {
                     productDetail = it.data
                     binding.pbDetail.visibility = View.GONE
-                    binding.constraintDetailError.visibility = View.GONE
+                    binding.scrollviewDetailError.visibility = View.GONE
                     binding.constraintDetailContent.visibility = View.VISIBLE
 
                     adapter = DetailProductAdapter()
@@ -76,33 +77,36 @@ class DetailProductFragment :
                     } else {
                         binding.tlDetail.visibility = View.GONE
                     }
-                    var checked = false
                     it.data.productVariant?.forEach { variant ->
                         chip = Chip(requireActivity())
+                        chip.setTextAppearanceResource(R.style.Theme_Ecommerce_ChipGroup_Chip)
                         chip.text = variant.variantName
                         chip.isCheckable = true
-                        if (!checked) {
+                        if (viewModel.selectedVariantName == "") {
                             chip.isChecked = true
-                            checked = true
-                            selectedVariantName = variant.variantName ?: ""
-                            selectedVariantPrice = (it.data.productPrice?.plus(
+                            viewModel.selectedVariantName = variant.variantName ?: ""
+                            viewModel.selectedVariantPrice = (it.data.productPrice?.plus(
                                 (variant.variantPrice ?: 0)
                             )) ?: 0
-                            binding.tvDetailPrice.text = selectedVariantPrice.toRupiah()
+                            binding.tvDetailPrice.text = viewModel.selectedVariantPrice.toRupiah()
 
+                        } else if (viewModel.selectedVariantName == variant.variantName) {
+                            chip.isChecked = true
+                            binding.tvDetailPrice.text = viewModel.selectedVariantPrice.toRupiah()
                         }
                         binding.chipgroupDetailVariant.addView(chip)
                     }
 
                     binding.chipgroupDetailVariant.setOnCheckedStateChangeListener { group, _ ->
                         it.data.productVariant?.forEach { variant ->
-                            val selectedChip = group.findViewById<Chip>(group.checkedChipId)
+                            selectedChip = group.findViewById(group.checkedChipId)
                             if (selectedChip.text.toString() == variant.variantName) {
-                                selectedVariantName = variant.variantName ?: ""
-                                selectedVariantPrice = (it.data.productPrice?.plus(
+                                viewModel.selectedVariantName = variant.variantName ?: ""
+                                viewModel.selectedVariantPrice = (it.data.productPrice?.plus(
                                     (variant.variantPrice ?: 0)
                                 )) ?: 0
-                                binding.tvDetailPrice.text = selectedVariantPrice.toRupiah()
+                                binding.tvDetailPrice.text =
+                                    viewModel.selectedVariantPrice.toRupiah()
                             }
                         }
                     }
@@ -122,6 +126,12 @@ class DetailProductFragment :
                                 R.string.detail_dot
                             )
                         } ${it.data.totalReview} ${getString(R.string.detail_review_desc)}"
+                }
+
+                else -> {
+                    binding.pbDetail.visibility = View.GONE
+                    binding.constraintDetailContent.visibility = View.GONE
+                    binding.scrollviewDetailError.visibility = View.VISIBLE
                 }
             }
         }
@@ -188,8 +198,8 @@ class DetailProductFragment :
                         productRating = productDetail.productRating,
                         sale = productDetail.sale,
                         stock = productDetail.stock,
-                        variantName = selectedVariantName,
-                        variantPrice = selectedVariantPrice,
+                        variantName = viewModel.selectedVariantName,
+                        variantPrice = viewModel.selectedVariantPrice,
                     )
                 )
             }
@@ -220,8 +230,8 @@ class DetailProductFragment :
                     productPrice = productDetail.productPrice,
                     store = productDetail.store,
                     stock = productDetail.stock,
-                    variantPrice = selectedVariantPrice,
-                    variantName = selectedVariantName
+                    variantPrice = viewModel.selectedVariantPrice,
+                    variantName = viewModel.selectedVariantName
                 )
             ).observe(viewLifecycleOwner) {
                 when (it) {
@@ -258,8 +268,27 @@ class DetailProductFragment :
             }
         }
 
-        binding.btnDetailErrorRefresh.setOnClickListener {
+        binding.layoutDetailError.btnErrorResetRefresh.setOnClickListener {
             viewModel.getDetailProduct()
+        }
+
+        binding.btnDetailBuy.setOnClickListener {
+            val bundle = bundleOf(
+                CheckoutFragment.CHECKOUT_KEY to listOf(
+                    CartEntity(
+                        id = productDetail.productId!!,
+                        productName = productDetail.productName,
+                        image = productDetail.image?.get(0),
+                        productPrice = productDetail.productPrice,
+                        store = productDetail.store,
+                        stock = productDetail.stock,
+                        variantPrice = viewModel.selectedVariantPrice,
+                        variantName = viewModel.selectedVariantName,
+                        quantity = 1,
+                    )
+                )
+            )
+            (requireActivity() as MainActivity).toCheckOut(bundle)
         }
     }
 

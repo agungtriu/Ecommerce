@@ -5,7 +5,7 @@
     style="@style/Widget.Material3.CardView.Elevated"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="?attr/colorOnPrimary"
+    app:cardBackgroundColor="?attr/colorSurface"
     app:cardCornerRadius="8dp"
     app:cardUseCompatPadding="true">
 
@@ -28,12 +28,12 @@
 
         <TextView
             android:id="@+id/tv_item_store_linear_title"
-            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
             android:text="@string/item_title_hint"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
             android:textColor="?attr/colorOnSurfaceVariant"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="6"
@@ -71,6 +71,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="2dp"
             android:layout_marginEnd="8dp"
+            android:fontFamily="@font/poppins_400"
             android:text="@string/item_store_hint"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="10sp"
@@ -96,6 +97,7 @@
             android:layout_marginStart="4dp"
             android:layout_marginTop="2dp"
             android:layout_marginBottom="8dp"
+            android:fontFamily="@font/poppins_400"
             android:text="@string/item_rating_hint"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="10sp"
@@ -121,6 +123,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="4dp"
             android:layout_marginEnd="8dp"
+            android:fontFamily="@font/poppins_400"
             android:text="@string/item_sold_hint"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="10sp"

@@ -87,7 +87,6 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/btn_item_cart_delete"
-        app:layout_constraintHorizontal_weight="4"
         app:layout_constraintStart_toStartOf="@id/tv_item_cart_name"
         app:layout_constraintTop_toBottomOf="@id/tv_item_cart_stock" />
 
@@ -104,13 +103,12 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraint_cart_toggle"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/all_rectangle_rounded_surface_100"
         app:layout_constraintBottom_toBottomOf="@id/btn_item_cart_delete"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toEndOf="@id/btn_item_cart_delete"
         app:layout_constraintTop_toTopOf="@id/btn_item_cart_delete">
 
@@ -127,7 +125,7 @@
 
         <TextView
             android:id="@+id/tv_item_cart_quantity"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_500"
             android:includeFontPadding="false"

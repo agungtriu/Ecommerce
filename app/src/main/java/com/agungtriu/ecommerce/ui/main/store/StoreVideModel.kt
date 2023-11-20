@@ -8,6 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProducts
 import com.agungtriu.ecommerce.core.remote.model.response.Product
+import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
 import com.agungtriu.ecommerce.data.MainRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -20,7 +21,15 @@ class StoreVideModel @Inject constructor(
 
     private var _resultProducts = MutableLiveData<PagingData<Product>>()
     val resultProducts: LiveData<PagingData<Product>> get() = _resultProducts
-    fun getProducts(requestProducts: RequestProducts) {
+    var requestProducts = RequestProducts()
+    var isGrid = false
+    var error = ResponseError()
+
+    init {
+        getProducts()
+    }
+
+    fun getProducts(requestProducts: RequestProducts = RequestProducts()) {
         viewModelScope.launch {
             mainRepository.getProducts(requestProducts).cachedIn(viewModelScope).collect {
                 _resultProducts.value = it

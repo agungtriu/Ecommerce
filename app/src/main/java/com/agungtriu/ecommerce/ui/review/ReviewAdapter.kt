@@ -1,4 +1,4 @@
-package com.agungtriu.ecommerce.ui.main.review
+package com.agungtriu.ecommerce.ui.review
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

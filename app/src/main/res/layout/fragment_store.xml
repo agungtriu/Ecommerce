@@ -15,6 +15,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:hint="@string/all_search"
+        app:hintTextAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
         app:layout_constraintTop_toTopOf="parent"
         app:startIconDrawable="@drawable/ic_search">
 
@@ -24,7 +25,8 @@
             android:layout_height="wrap_content"
             android:clickable="true"
             android:focusable="false"
-            android:inputType="text" />
+            android:inputType="text"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -42,13 +44,12 @@
 
             <com.google.android.material.chip.Chip
                 android:id="@+id/chip_store_filter"
-                style="@style/TextAppearance.Material3.LabelLarge"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:fontFamily="@font/poppins_500"
                 android:text="@string/store_filter"
+                android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
                 app:chipIcon="@drawable/ic_tune"
                 app:chipIconTint="?attr/colorOnSurface"
                 app:layout_constraintStart_toStartOf="parent"
@@ -67,7 +68,6 @@
 
                 <com.google.android.material.chip.ChipGroup
                     android:id="@+id/chipgroup_bottomshettfilter"
-                    style="@style/Theme.Ecommerce.ChipGroup.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:chipSpacingHorizontal="8dp" />
@@ -203,81 +203,17 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.facebook.shimmer.ShimmerFrameLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraint_error"
+    <ScrollView
+        android:id="@+id/scrollview_store_error"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:fillViewport="true"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/til_store_search">
 
-        <ImageView
-            android:id="@+id/iv_store_error"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_error"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/tv_store_error_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_500"
-            android:text="@string/store_empty"
-            android:textAlignment="center"
-            android:textColor="?attr/colorOnSurface"
-            android:textSize="32sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_store_error"
-            app:layout_goneMarginTop="8dp" />
-
-        <TextView
-            android:id="@+id/tv_store_error_desc"
-            style="@style/TextAppearance.Material3.BodyLarge"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_400"
-            android:text="@string/store_empty_desc"
-            android:textAlignment="center"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_store_error_title" />
-
-        <Button
-            android:id="@+id/btn_store_error_reset"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_500"
-            android:paddingHorizontal="24dp"
-            android:paddingVertical="10dp"
-            android:text="@string/all_reset"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_store_error_desc"
-            app:layout_constraintVertical_bias="00.0" />
-
-        <Button
-            android:id="@+id/btn_store_error_refresh"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_500"
-            android:paddingHorizontal="24dp"
-            android:paddingVertical="10dp"
-            android:text="@string/all_refresh"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_store_error_desc"
-            app:layout_constraintVertical_bias="00.0" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <include
+            android:id="@+id/layout_store_error"
+            layout="@layout/layout_error" />
+    </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

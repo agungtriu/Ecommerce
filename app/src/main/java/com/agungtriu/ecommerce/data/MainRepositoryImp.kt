@@ -9,11 +9,16 @@ import com.agungtriu.ecommerce.core.datastore.model.RegisterProfileModel
 import com.agungtriu.ecommerce.core.datastore.model.ThemeLangModel
 import com.agungtriu.ecommerce.core.datastore.model.TokenModel
 import com.agungtriu.ecommerce.core.remote.ApiService
+import com.agungtriu.ecommerce.core.remote.model.request.RequestFulfillment
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProducts
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProfile
+import com.agungtriu.ecommerce.core.remote.model.request.RequestRating
 import com.agungtriu.ecommerce.core.remote.model.response.DataDetailProduct
+import com.agungtriu.ecommerce.core.remote.model.response.DataFulfillment
 import com.agungtriu.ecommerce.core.remote.model.response.DataProfile
 import com.agungtriu.ecommerce.core.remote.model.response.DataReview
+import com.agungtriu.ecommerce.core.remote.model.response.DataTransaction
+import com.agungtriu.ecommerce.core.remote.model.response.DataTypePayment
 import com.agungtriu.ecommerce.core.remote.model.response.Product
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
 import com.agungtriu.ecommerce.core.room.AppDatabase
@@ -21,9 +26,12 @@ import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.helper.Extension.toResponseError
 import com.agungtriu.ecommerce.helper.ViewState
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -34,11 +42,11 @@ class MainRepositoryImp @Inject constructor(
     private val appDatabase: AppDatabase
 ) : MainRepository {
     override suspend fun updateLoginStatus(registerProfileModel: RegisterProfileModel) {
-        return dataStoreManager.updateLoginStatus(registerProfileModel = registerProfileModel)
+        dataStoreManager.updateLoginStatus(registerProfileModel = registerProfileModel)
     }
 
     override suspend fun refreshToken(refreshTokenModel: TokenModel) {
-        return dataStoreManager.refreshToken(refreshTokenModel = refreshTokenModel)
+        dataStoreManager.refreshToken(refreshTokenModel = refreshTokenModel)
     }
 
     override suspend fun changeTheme(isDark: Boolean) {
@@ -58,7 +66,10 @@ class MainRepositoryImp @Inject constructor(
     }
 
     override suspend fun deleteLoginStatus() {
-        return dataStoreManager.deleteLoginStatus()
+        CoroutineScope(Dispatchers.IO).launch {
+            appDatabase.clearAllTables()
+        }
+        dataStoreManager.deleteLoginStatus()
     }
 
     override suspend fun registerProfile(requestProfile: RequestProfile): Flow<ViewState<DataProfile>> =
@@ -197,12 +208,64 @@ class MainRepositoryImp @Inject constructor(
 
     override fun getAllCart(): Flow<List<CartEntity>?> = appDatabase.cartDao().selectCarts()
 
-    override fun checkCartIsSelected(isSelected: Boolean): Flow<List<CartEntity>> =
-        appDatabase.cartDao().selectCartsIsSelected(isSelected)
-
     override fun getCartById(id: String): Flow<CartEntity?> =
         appDatabase.cartDao().selectCartById(id)
 
-    override fun getTotalPay(): Flow<Int?> = appDatabase.cartDao().selectTotalPay()
     override fun getQuantity(): Flow<Int?> = appDatabase.cartDao().selectQuantity()
+    override fun getPayments(): Flow<ViewState<List<DataTypePayment>>> = flow {
+        emit(ViewState.Loading)
+        try {
+            val result = apiService.getPayment()
+            val data = result.data
+            if (data != null) {
+                emit(ViewState.Success(data))
+            } else {
+                throw Exception("Data Product not found")
+            }
+        } catch (t: Throwable) {
+            emit(ViewState.Error(t.toResponseError()))
+        }
+    }
+
+    override suspend fun postFulfillment(requestFulfillment: RequestFulfillment): Flow<ViewState<DataFulfillment>> =
+        flow {
+            emit(ViewState.Loading)
+            try {
+                val result = apiService.postFulfillment(requestFulfillment = requestFulfillment)
+                val data = result.data
+                if (data != null) {
+                    emit(ViewState.Success(data))
+                } else {
+                    throw Exception("Data search not found")
+                }
+            } catch (t: Throwable) {
+                emit(ViewState.Error(t.toResponseError()))
+            }
+        }
+
+    override suspend fun postRating(requestRating: RequestRating): Flow<ViewState<String>> = flow {
+        emit(ViewState.Loading)
+        try {
+            val result = apiService.postRating(requestRating = requestRating)
+            val data = result.message
+            if (data != null) {
+                emit(ViewState.Success(data))
+            }
+        } catch (t: Throwable) {
+            emit(ViewState.Error(t.toResponseError()))
+        }
+    }
+
+    override suspend fun getTransaction(): Flow<ViewState<List<DataTransaction>>> = flow {
+        emit(ViewState.Loading)
+        try {
+            val result = apiService.getTransaction()
+            val data = result.data
+            if (data != null) {
+                emit(ViewState.Success(data))
+            }
+        } catch (t: Throwable) {
+            emit(ViewState.Error(t.toResponseError()))
+        }
+    }
 }
