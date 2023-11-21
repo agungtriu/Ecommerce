@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.agungtriu.ecommerce.databinding.FragmentChoosePaymentBinding
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.base.BaseFragment
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -16,6 +19,12 @@ class ChoosePaymentFragment :
     BaseFragment<FragmentChoosePaymentBinding>(FragmentChoosePaymentBinding::inflate) {
     private val viewModel: PaymentViewModel by viewModels()
     private lateinit var adapter: PaymentParentAdapter
+    private lateinit var analytics: FirebaseAnalytics
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -69,9 +78,11 @@ class ChoosePaymentFragment :
 
     private fun listener() {
         binding.toolbarChoosePayment.setNavigationOnClickListener {
+            analytics.logEvent("btn_choose_payment_back", null)
             findNavController().navigateUp()
         }
         binding.layoutChoosePaymentError.btnErrorResetRefresh.setOnClickListener {
+            analytics.logEvent("btn_choose_payment_refresh", null)
             viewModel.getFirebasePayment()
         }
     }

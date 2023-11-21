@@ -25,6 +25,11 @@ import com.agungtriu.ecommerce.ui.main.store.search.SearchDialog
 import com.agungtriu.ecommerce.ui.main.store.search.SearchDialog.Companion.RESULT_SEARCH_KEY
 import com.agungtriu.ecommerce.ui.main.store.search.SearchDialog.Companion.SEARCH_KEY
 import com.google.android.material.chip.Chip
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.FirebaseAnalytics.Param
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.logEvent
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -37,6 +42,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
     private lateinit var searchDialog: SearchDialog
     private lateinit var filterBottomSheet: FilterBottomSheet
     private lateinit var gridLayoutManager: GridLayoutManager
+    private lateinit var analytics: FirebaseAnalytics
     private var filterModel = FilterModel()
     private var bundle = Bundle()
     private lateinit var error: ResponseError
@@ -46,7 +52,8 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        storeAdapter = StoreAdapter(requireActivity())
+        analytics = Firebase.analytics
+        storeAdapter = StoreAdapter(requireActivity(), analytics)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,6 +85,11 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
 
     private fun listener() {
         binding.ibStoreView.setOnClickListener {
+            if (viewModel.isGrid) {
+                analytics.logEvent("btn_store_view_linear", null)
+            } else {
+                analytics.logEvent("btn_store_view_grid", null)
+            }
             viewModel.isGrid = !viewModel.isGrid
             val position = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
             setLayout()
@@ -91,14 +103,18 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
 
         binding.layoutStoreError.btnErrorResetRefresh.setOnClickListener {
             if (binding.layoutStoreError.btnErrorResetRefresh.text == getString(R.string.all_reset)) {
+                analytics.logEvent("btn_store_error_reset", null)
                 binding.tietStoreSearch.text = null
                 binding.chipgroupBottomshettfilter.removeAllViews()
                 viewModel.requestProducts = RequestProducts()
+            } else if (binding.layoutStoreError.btnErrorResetRefresh.text == getString(R.string.all_refresh)) {
+                analytics.logEvent("btn_store_error_refresh", null)
             }
             viewModel.getProducts(viewModel.requestProducts)
         }
 
         binding.chipStoreFilter.setOnClickListener {
+            analytics.logEvent("btn_store_filter", null)
             filterModel = viewModel.requestProducts.toFilterModel()
             bundle = bundleOf(
                 TO_FILTER_KEY to filterModel
@@ -127,6 +143,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
             } ?: FilterModel()
 
             observeFilter(filterModel)
+
 
             viewModel.requestProducts = RequestProducts(
                 search = viewModel.requestProducts.search,
@@ -167,6 +184,28 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
         viewLifecycleOwner.lifecycleScope.launch {
             viewModel.resultProducts.observe(viewLifecycleOwner) {
                 storeAdapter.submitData(lifecycle, it)
+
+                if (viewModel.requestProducts.search != null) {
+                    analytics.logEvent(FirebaseAnalytics.Event.VIEW_SEARCH_RESULTS) {
+                        param(
+                            Param.SEARCH_TERM,
+                            viewModel.requestProducts.search!!
+                        )
+                    }
+                }
+                var bundles = arrayOf(bundleOf())
+                storeAdapter.snapshot().items.forEach { product ->
+                    bundles += bundleOf(
+                        Param.ITEM_ID to product.productId,
+                        Param.ITEM_NAME to product.productName,
+                        Param.ITEM_BRAND to product.brand
+                    )
+                }
+
+                analytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM_LIST) {
+                    param(Param.ITEMS, bundles)
+                    param(Param.ITEM_LIST_NAME, "Store")
+                }
             }
         }
     }
@@ -185,6 +224,37 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
         addChip(
             filterModel.max != null, "< ".plus(filterModel.max?.toRupiah())
         )
+
+        var bundles = arrayOf(bundleOf())
+        if (!filterModel.sort.isNullOrBlank()) {
+            bundles += bundleOf(
+                Param.ITEM_NAME to filterModel.sort,
+                Param.ITEM_CATEGORY to "Sort"
+            )
+        }
+        if (!filterModel.category.isNullOrBlank()) {
+            bundles += bundleOf(
+                Param.ITEM_NAME to filterModel.category,
+                Param.ITEM_CATEGORY to "Category"
+            )
+        }
+        if (filterModel.min != null) {
+            bundles += bundleOf(
+                Param.ITEM_NAME to filterModel.min.toString(),
+                Param.ITEM_CATEGORY to "Minimum"
+            )
+        }
+        if (filterModel.max != null) {
+            bundles += bundleOf(
+                Param.ITEM_NAME to filterModel.max.toString(),
+                Param.ITEM_CATEGORY to "Maximum"
+            )
+        }
+
+        analytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+            param(Param.ITEMS, bundles)
+            param(Param.ITEM_LIST_NAME, "Filter")
+        }
     }
 
     private fun observeState() {

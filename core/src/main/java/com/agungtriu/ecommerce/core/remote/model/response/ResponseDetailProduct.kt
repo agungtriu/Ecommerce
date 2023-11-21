@@ -1,6 +1,8 @@
 package com.agungtriu.ecommerce.core.remote.model.response
 
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import kotlinx.parcelize.Parcelize
 
 data class ResponseDetailProduct(
 
@@ -14,6 +16,7 @@ data class ResponseDetailProduct(
     val message: String? = null
 )
 
+@Parcelize
 data class DataDetailProduct(
 
     @field:SerializedName("image")
@@ -57,8 +60,9 @@ data class DataDetailProduct(
 
     @field:SerializedName("totalReview")
     val totalReview: Int? = null
-)
+) : Parcelable
 
+@Parcelize
 data class ProductVariantItem(
 
     @field:SerializedName("variantPrice")
@@ -66,5 +70,5 @@ data class ProductVariantItem(
 
     @field:SerializedName("variantName")
     val variantName: String? = null
-)
+) : Parcelable
 

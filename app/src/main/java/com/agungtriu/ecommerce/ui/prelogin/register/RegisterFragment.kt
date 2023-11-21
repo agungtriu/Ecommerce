@@ -16,6 +16,10 @@ import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.logEvent
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,6 +27,12 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
     private var isEmailValid = false
     private var isPasswordValid = false
     private val viewModel: RegisterViewModel by viewModels()
+    private lateinit var analytics: FirebaseAnalytics
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -45,6 +55,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
     private fun listener() {
         binding.btnRegisterLogin.setOnClickListener {
+            analytics.logEvent("btn_register_login", null)
             findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
         }
 
@@ -77,6 +88,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         }
 
         binding.btnRegister.setOnClickListener {
+            analytics.logEvent("btn_register", null)
             closeSoftKeyboard(binding.tietRegisterPassword, requireContext())
             viewModel.doRegister(
                 email = binding.tietRegisterEmail.text.toString(),
@@ -94,6 +106,10 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
                 }
 
                 is ViewState.Success -> {
+                    analytics.logEvent(FirebaseAnalytics.Event.SIGN_UP) {
+                        param(FirebaseAnalytics.Param.METHOD, getString(R.string.all_email))
+                    }
+
                     binding.pbRegister.visibility = View.GONE
                     binding.btnRegister.visibility = View.VISIBLE
                     (requireActivity() as MainActivity).toMain()

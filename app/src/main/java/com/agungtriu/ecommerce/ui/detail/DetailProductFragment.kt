@@ -23,6 +23,11 @@ import com.agungtriu.ecommerce.ui.review.ReviewFragment.Companion.REVIEW_KEY
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.FirebaseAnalytics.Param
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.logEvent
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -34,9 +39,15 @@ class DetailProductFragment :
     private lateinit var productDetail: DataDetailProduct
     private lateinit var chip: Chip
     private lateinit var bundle: Bundle
+    private lateinit var analytics: FirebaseAnalytics
     private var wishlistState = false
     private var wishlistPress = false
     private lateinit var selectedChip: Chip
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -107,6 +118,15 @@ class DetailProductFragment :
                                 )) ?: 0
                                 binding.tvDetailPrice.text =
                                     viewModel.selectedVariantPrice.toRupiah()
+
+                                analytics.logEvent("btn_detail_variant", null)
+                                analytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+                                    param(
+                                        Param.ITEMS,
+                                        bundleOf(Param.ITEM_NAME to viewModel.selectedVariantName)
+                                    )
+                                    param(Param.ITEM_LIST_NAME, "Variant")
+                                }
                             }
                         }
                     }
@@ -126,6 +146,16 @@ class DetailProductFragment :
                                 R.string.detail_dot
                             )
                         } ${it.data.totalReview} ${getString(R.string.detail_review_desc)}"
+
+
+                    analyticsViewItem(
+                        bundle = bundleOf(
+                            Param.ITEM_ID to it.data.productId,
+                            Param.ITEM_NAME to it.data.productName,
+                            Param.ITEM_BRAND to it.data.brand,
+                        ),
+                        value = it.data.productPrice!!.toDouble()
+                    )
                 }
 
                 else -> {
@@ -151,6 +181,16 @@ class DetailProductFragment :
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
+
+                analyticsAddToWishlist(
+                    bundle = bundleOf(
+                        Param.ITEM_ID to productDetail.productId,
+                        Param.ITEM_NAME to productDetail.productName,
+                        Param.ITEM_BRAND to productDetail.brand,
+                        Param.ITEM_VARIANT to viewModel.selectedVariantName
+                    ),
+                    value = viewModel.selectedVariantPrice.toDouble()
+                )
             } else {
                 wishlistState = false
                 binding.ivDetailWishlist.setBackgroundResource(R.drawable.ic_favorite_border)
@@ -172,6 +212,7 @@ class DetailProductFragment :
 
     private fun listener() {
         binding.btnDetailReviewShowAll.setOnClickListener {
+            analytics.logEvent("btn_detail_review_show_all", null)
             bundle = bundleOf(REVIEW_KEY to productDetail.productId)
             findNavController().navigate(
                 R.id.action_detailProductFragment_to_reviewFragment,
@@ -180,14 +221,17 @@ class DetailProductFragment :
         }
 
         binding.toolbarDetail.setNavigationOnClickListener {
+            analytics.logEvent("btn_detail_back", null)
             findNavController().navigateUp()
         }
 
         binding.ivDetailWishlist.setOnClickListener {
             wishlistPress = true
             if (wishlistState) {
+                analytics.logEvent("btn_detail_wishlist_delete", null)
                 viewModel.deleteWishlistById(productDetail.productId!!)
             } else {
+                analytics.logEvent("btn_detail_wishlist_insert", null)
                 viewModel.insertWishlist(
                     wishlistEntity = WishlistEntity(
                         id = productDetail.productId ?: System.currentTimeMillis().toString(),
@@ -196,6 +240,7 @@ class DetailProductFragment :
                         productPrice = productDetail.productPrice,
                         store = productDetail.store,
                         productRating = productDetail.productRating,
+                        brand = productDetail.brand,
                         sale = productDetail.sale,
                         stock = productDetail.stock,
                         variantName = viewModel.selectedVariantName,
@@ -206,6 +251,7 @@ class DetailProductFragment :
         }
 
         binding.ivDetailShare.setOnClickListener {
+            analytics.logEvent("btn_detail_share", null)
             val sendIntent: Intent = Intent().apply {
                 action = Intent.ACTION_SEND
                 putExtra(
@@ -222,12 +268,14 @@ class DetailProductFragment :
         }
 
         binding.btnDetailCart.setOnClickListener {
+            analytics.logEvent("btn_detail_cart", null)
             viewModel.addCart(
                 cartEntity = CartEntity(
                     id = productDetail.productId ?: System.currentTimeMillis().toString(),
                     image = productDetail.image?.get(0),
                     productName = productDetail.productName,
                     productPrice = productDetail.productPrice,
+                    brand = productDetail.brand,
                     store = productDetail.store,
                     stock = productDetail.stock,
                     variantPrice = viewModel.selectedVariantPrice,
@@ -253,6 +301,16 @@ class DetailProductFragment :
                                 ).show()
                             }
                         }
+
+                        analyticsAddToCart(
+                            bundle = bundleOf(
+                                Param.ITEM_ID to productDetail.productId,
+                                Param.ITEM_NAME to productDetail.productName,
+                                Param.ITEM_BRAND to productDetail.brand,
+                                Param.ITEM_VARIANT to viewModel.selectedVariantName
+                            ),
+                            value = viewModel.selectedVariantPrice.toDouble()
+                        )
                     }
 
                     is ViewState.Error -> {
@@ -269,10 +327,22 @@ class DetailProductFragment :
         }
 
         binding.layoutDetailError.btnErrorResetRefresh.setOnClickListener {
+            analytics.logEvent("btn_detail_error_refresh", null)
             viewModel.getDetailProduct()
         }
 
         binding.btnDetailBuy.setOnClickListener {
+            analytics.logEvent("btn_detail_buy", null)
+
+            analyticsBeginCheckout(
+                bundleOf(
+                    Param.ITEM_ID to productDetail.productId,
+                    Param.ITEM_NAME to productDetail.productName,
+                    Param.ITEM_BRAND to productDetail.brand,
+                    Param.ITEM_VARIANT to viewModel.selectedVariantName
+                ),
+                viewModel.selectedVariantPrice.toDouble()
+            )
             val bundle = bundleOf(
                 CheckoutFragment.CHECKOUT_KEY to listOf(
                     CartEntity(
@@ -280,6 +350,7 @@ class DetailProductFragment :
                         productName = productDetail.productName,
                         image = productDetail.image?.get(0),
                         productPrice = productDetail.productPrice,
+                        brand = productDetail.brand,
                         store = productDetail.store,
                         stock = productDetail.stock,
                         variantPrice = viewModel.selectedVariantPrice,
@@ -289,6 +360,44 @@ class DetailProductFragment :
                 )
             )
             (requireActivity() as MainActivity).toCheckOut(bundle)
+        }
+    }
+
+    private fun analyticsViewItem(bundle: Bundle, value: Double) {
+        analytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM) {
+            param(Param.ITEMS, bundle)
+            param(Param.CURRENCY, "Rp")
+            param(Param.VALUE, value)
+        }
+    }
+
+    private fun analyticsAddToCart(bundle: Bundle, value: Double) {
+        analytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART) {
+            param(Param.ITEMS, bundle)
+            param(Param.CURRENCY, "Rp")
+            param(Param.VALUE, value)
+        }
+    }
+
+    private fun analyticsAddToWishlist(
+        bundle: Bundle,
+        value: Double
+    ) {
+        analytics.logEvent(FirebaseAnalytics.Event.ADD_TO_WISHLIST) {
+            param(Param.ITEMS, bundle)
+            param(Param.CURRENCY, "Rp")
+            param(Param.VALUE, value)
+        }
+    }
+
+    private fun analyticsBeginCheckout(
+        bundle: Bundle,
+        value: Double
+    ) {
+        analytics.logEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT) {
+            param(Param.ITEMS, bundle)
+            param(Param.CURRENCY, "Rp")
+            param(Param.VALUE, value)
         }
     }
 

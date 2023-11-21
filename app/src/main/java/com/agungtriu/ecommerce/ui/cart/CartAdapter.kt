@@ -1,6 +1,7 @@
 package com.agungtriu.ecommerce.ui.cart
 
 import android.graphics.Color
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
@@ -18,8 +19,15 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.FirebaseAnalytics.Param
+import com.google.firebase.analytics.logEvent
 
-class CartAdapter(private val viewModel: CartViewModel, private val activity: FragmentActivity) :
+class CartAdapter(
+    private val viewModel: CartViewModel,
+    private val activity: FragmentActivity,
+    private val analytics: FirebaseAnalytics
+) :
     ListAdapter<CartEntity, CartAdapter.ViewHolder>(callback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder =
@@ -53,6 +61,16 @@ class CartAdapter(private val viewModel: CartViewModel, private val activity: Fr
 
             binding.btnItemCartDelete.setOnClickListener {
                 viewModel.deleteCart(item)
+
+                analyticsRemoveFromCart(
+                    bundleOf(
+                        Param.ITEM_ID to item.id,
+                        Param.ITEM_NAME to item.productName,
+                        Param.ITEM_BRAND to item.brand,
+                        Param.ITEM_VARIANT to item.variantName
+                    ),
+                    item.variantPrice!!.toDouble()
+                )
             }
 
             binding.cbItemCart.setOnClickListener {
@@ -62,6 +80,7 @@ class CartAdapter(private val viewModel: CartViewModel, private val activity: Fr
                         image = item.image,
                         productName = item.productName,
                         productPrice = item.productPrice,
+                        brand = item.brand,
                         store = item.store,
                         stock = item.stock,
                         variantPrice = item.variantPrice,
@@ -82,6 +101,7 @@ class CartAdapter(private val viewModel: CartViewModel, private val activity: Fr
                             image = item.image,
                             productName = item.productName,
                             productPrice = item.productPrice,
+                            brand = item.brand,
                             store = item.store,
                             stock = item.stock,
                             variantPrice = item.variantPrice,
@@ -103,6 +123,7 @@ class CartAdapter(private val viewModel: CartViewModel, private val activity: Fr
                             image = item.image,
                             productName = item.productName,
                             productPrice = item.productPrice,
+                            brand = item.brand,
                             store = item.store,
                             stock = item.stock,
                             variantPrice = item.variantPrice,
@@ -124,6 +145,14 @@ class CartAdapter(private val viewModel: CartViewModel, private val activity: Fr
                 val bundle = bundleOf(DetailProductFragment.PRODUCT_ID_KEY to item.id)
                 (activity as MainActivity).toDetail(bundle)
             }
+        }
+    }
+
+    private fun analyticsRemoveFromCart(bundle: Bundle, value: Double) {
+        analytics.logEvent(FirebaseAnalytics.Event.REMOVE_FROM_CART) {
+            param(Param.ITEMS, bundle)
+            param(Param.CURRENCY, "Rp")
+            param(Param.VALUE, value)
         }
     }
 

@@ -15,6 +15,9 @@ import com.agungtriu.ecommerce.ui.status.StatusFragment.Companion.STATE_STATUS_K
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils.attachBadgeDrawable
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -23,6 +26,12 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     private val viewModel: MainViewModel by viewModels()
     private lateinit var navController: NavController
     private lateinit var badgeWishlist: BadgeDrawable
+    private lateinit var analytics: FirebaseAnalytics
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -89,16 +98,19 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         binding.toolbarMain.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.btn_main_notification -> {
+                    analytics.logEvent("btn_main_notification", null)
                     findNavController().navigate(R.id.action_mainFragment_to_notificationFragment)
                     true
                 }
 
                 R.id.btn_main_shopping_cart -> {
+                    analytics.logEvent("btn_main_cart", null)
                     findNavController().navigate(R.id.action_mainFragment_to_cartFragment)
                     true
                 }
 
                 R.id.btn_main_menu -> {
+                    analytics.logEvent("btn_main_menu", null)
                     Snackbar.make(requireView(), "coming soon", Snackbar.LENGTH_LONG).show()
                     true
                 }
