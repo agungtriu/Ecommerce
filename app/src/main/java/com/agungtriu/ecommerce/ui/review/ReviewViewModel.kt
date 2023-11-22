@@ -6,7 +6,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.remote.model.response.DataReview
-import com.agungtriu.ecommerce.data.MainRepository
+import com.agungtriu.ecommerce.data.StoreRepository
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.review.ReviewFragment.Companion.REVIEW_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
-    private val mainRepository: MainRepository,
+    private val storeRepository: StoreRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -25,12 +25,12 @@ class ReviewViewModel @Inject constructor(
     val resultReview: LiveData<ViewState<List<DataReview>>> get() = _resultReview
 
     init {
-        getReviewProduct()
+        getReviewsByProductId()
     }
 
-    private fun getReviewProduct() {
+    private fun getReviewsByProductId() {
         viewModelScope.launch {
-            mainRepository.getReviewProduct(productId).collect {
+            storeRepository.getReviewsByProductId(productId).collect {
                 _resultReview.value = it
             }
         }

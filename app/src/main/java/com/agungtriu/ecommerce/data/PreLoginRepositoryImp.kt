@@ -9,6 +9,8 @@ import com.agungtriu.ecommerce.core.remote.model.response.DataLogin
 import com.agungtriu.ecommerce.core.remote.model.response.DataRegister
 import com.agungtriu.ecommerce.helper.Extension.toResponseError
 import com.agungtriu.ecommerce.helper.ViewState
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.ktx.messaging
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -23,30 +25,30 @@ class PreLoginRepositoryImp @Inject constructor(
         return dataStoreManager.getOnboardingStatus()
     }
 
-    override suspend fun saveOnboarding() {
-        dataStoreManager.saveOnboardingStatus()
+    override suspend fun setOnboarding() {
+        dataStoreManager.setOnboardingStatus()
     }
 
     override fun getLoginData(): Flow<LoginModel> {
         return dataStoreManager.getLoginData()
     }
 
-    override suspend fun saveLoginData(loginModel: LoginModel) {
-        dataStoreManager.saveLoginData(
+    override suspend fun setLoginData(loginModel: LoginModel) {
+        dataStoreManager.setLoginData(
             loginModel = loginModel
         )
     }
 
-    override suspend fun doRegister(requestRegister: RequestRegister): Flow<ViewState<DataRegister>> =
+    override suspend fun postRegister(requestRegister: RequestRegister): Flow<ViewState<DataRegister>> =
         flow {
             emit(ViewState.Loading)
             try {
-                val result = apiService.doRegister(
+                val result = apiService.postRegister(
                     requestRegister = requestRegister
                 )
                 val dataRegister = result.data
                 if (dataRegister != null) {
-                    dataStoreManager.saveLoginData(
+                    dataStoreManager.setLoginData(
                         LoginModel(
                             isLogin = true,
                             userName = dataRegister.userName,
@@ -56,6 +58,7 @@ class PreLoginRepositoryImp @Inject constructor(
                             isAuthorized = true
                         )
                     )
+                    Firebase.messaging.subscribeToTopic("promo")
                     emit(ViewState.Success(dataRegister))
                 } else {
                     throw Exception("Data register not found")
@@ -65,16 +68,16 @@ class PreLoginRepositoryImp @Inject constructor(
             }
         }
 
-    override suspend fun doLogin(requestLogin: RequestLogin): Flow<ViewState<DataLogin>> =
+    override suspend fun postLogin(requestLogin: RequestLogin): Flow<ViewState<DataLogin>> =
         flow {
             emit(ViewState.Loading)
             try {
-                val result = apiService.doLogin(
+                val result = apiService.postLogin(
                     requestLogin = requestLogin
                 )
                 val dataLogin = result.data
                 if (dataLogin != null) {
-                    dataStoreManager.saveLoginData(
+                    dataStoreManager.setLoginData(
                         LoginModel(
                             isLogin = true,
                             userName = dataLogin.userName,
@@ -84,6 +87,7 @@ class PreLoginRepositoryImp @Inject constructor(
                             isAuthorized = true
                         )
                     )
+                    Firebase.messaging.subscribeToTopic("promo")
                     emit(ViewState.Success(dataLogin))
                 } else {
                     throw Exception("Data login not found")
@@ -92,5 +96,4 @@ class PreLoginRepositoryImp @Inject constructor(
                 emit(ViewState.Error(t.toResponseError()))
             }
         }
-
 }

@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.databinding.FragmentWishlistBinding
 import com.agungtriu.ecommerce.ui.base.BaseFragment
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -15,16 +18,18 @@ class WishlistFragment : BaseFragment<FragmentWishlistBinding>(FragmentWishlistB
     private val viewModel: WishlistViewModel by viewModels()
     private lateinit var adapter: WishlistAdapter
     private lateinit var gridLayoutManager: GridLayoutManager
+    private lateinit var analytics: FirebaseAnalytics
     private var viewType = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel.getWishlists()
+        analytics = Firebase.analytics
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        adapter = WishlistAdapter(viewModel, viewLifecycleOwner, requireActivity())
+        adapter = WishlistAdapter(viewModel, viewLifecycleOwner, requireActivity(), analytics)
         setLayout()
         listener()
         observeData()
@@ -40,6 +45,11 @@ class WishlistFragment : BaseFragment<FragmentWishlistBinding>(FragmentWishlistB
 
     private fun listener() {
         binding.ibWishlistView.setOnClickListener {
+            if (viewModel.isGrid) {
+                analytics.logEvent("btn_wishlist_view_grid", null)
+            } else {
+                analytics.logEvent("btn_wishlist_view_linear", null)
+            }
             viewModel.isGrid = !viewModel.isGrid
             val position = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
             setLayout()

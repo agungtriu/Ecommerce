@@ -10,11 +10,11 @@ import kotlinx.coroutines.flow.Flow
 
 interface PreLoginRepository {
     fun getOnboardingStatus(): Flow<Boolean>
-    suspend fun saveOnboarding()
+    suspend fun setOnboarding()
     fun getLoginData(): Flow<LoginModel>
-    suspend fun saveLoginData(loginModel: LoginModel)
+    suspend fun setLoginData(loginModel: LoginModel)
 
-    suspend fun doRegister(requestRegister: RequestRegister): Flow<ViewState<DataRegister>>
-    suspend fun doLogin(requestLogin: RequestLogin): Flow<ViewState<DataLogin>>
+    suspend fun postRegister(requestRegister: RequestRegister): Flow<ViewState<DataRegister>>
+    suspend fun postLogin(requestLogin: RequestLogin): Flow<ViewState<DataLogin>>
 
 }

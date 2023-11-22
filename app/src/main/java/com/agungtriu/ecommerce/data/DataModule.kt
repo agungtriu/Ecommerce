@@ -12,13 +12,49 @@ abstract class DataModule {
 
     @Singleton
     @Binds
-    abstract fun bindRepository(
-        mainRepositoryImp: MainRepositoryImp
-    ): MainRepository
-
-    @Singleton
-    @Binds
     abstract fun bindPreLoginRepository(
         preLoginRepositoryImp: PreLoginRepositoryImp
     ): PreLoginRepository
+
+
+    @Singleton
+    @Binds
+    abstract fun bindMainRepository(
+        mainRepositoryImp: MainRepositoryImp
+    ): MainRepository
+
+
+    @Singleton
+    @Binds
+    abstract fun bindStoreRepository(
+        storeRepositoryImp: StoreRepositoryImp
+    ): StoreRepository
+
+
+    @Singleton
+    @Binds
+    abstract fun bindWishlistRepository(
+        wishlistRepositoryImp: WishlistRepositoryImp
+    ): WishlistRepository
+
+
+    @Singleton
+    @Binds
+    abstract fun bindCartRepository(
+        cartRepositoryImp: CartRepositoryImp
+    ): CartRepository
+
+
+    @Singleton
+    @Binds
+    abstract fun bindCheckoutRepository(
+        checkoutRepositoryImp: CheckoutRepositoryImp
+    ): CheckoutRepository
+
+
+    @Singleton
+    @Binds
+    abstract fun bindNotificationRepository(
+        notificationRepositoryImp: NotificationRepositoryImp
+    ): NotificationRepository
 }

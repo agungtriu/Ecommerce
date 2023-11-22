@@ -19,11 +19,15 @@ import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.FirebaseAnalytics.Param
+import com.google.firebase.analytics.logEvent
 
 class WishlistAdapter(
     private val viewModel: WishlistViewModel,
     private val lifecycleOwner: LifecycleOwner,
-    private val activity: FragmentActivity
+    private val activity: FragmentActivity,
+    private val analytics: FirebaseAnalytics
 ) :
     ListAdapter<WishlistEntity, RecyclerView.ViewHolder>(callback) {
 
@@ -98,6 +102,7 @@ class WishlistAdapter(
                 ).observe(lifecycleOwner) {
                     when (it) {
                         is ViewState.Success -> {
+                            analyticsAddToCart(item)
                             when (it.data) {
                                 "cart" -> {
                                     Snackbar.make(
@@ -168,6 +173,7 @@ class WishlistAdapter(
                 ).observe(lifecycleOwner) {
                     when (it) {
                         is ViewState.Success -> {
+                            analyticsAddToCart(item)
                             when (it.data) {
                                 "cart" -> {
                                     Snackbar.make(
@@ -204,6 +210,21 @@ class WishlistAdapter(
                 val bundle = bundleOf(DetailProductFragment.PRODUCT_ID_KEY to item.id)
                 (activity as MainActivity).toDetail(bundle)
             }
+        }
+    }
+
+    private fun analyticsAddToCart(item: WishlistEntity) {
+        analytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART) {
+            param(
+                Param.ITEMS, bundleOf(
+                    Param.ITEM_ID to item.id,
+                    Param.ITEM_NAME to item.productName,
+                    Param.ITEM_VARIANT to item.variantName,
+                    Param.ITEM_BRAND to item.brand
+                )
+            )
+            param(Param.CURRENCY, "Rp")
+            param(Param.VALUE, item.variantPrice!!.toDouble())
         }
     }
 

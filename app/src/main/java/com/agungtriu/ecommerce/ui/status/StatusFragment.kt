@@ -15,12 +15,22 @@ import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class StatusFragment : BaseFragment<FragmentStatusBinding>(FragmentStatusBinding::inflate) {
 
     private val viewModel: StatusViewModel by viewModels()
+    private lateinit var analytics: FirebaseAnalytics
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -45,6 +55,7 @@ class StatusFragment : BaseFragment<FragmentStatusBinding>(FragmentStatusBinding
 
     private fun listener() {
         binding.btnStatusDone.setOnClickListener {
+            analytics.logEvent("btn_status_done", null)
             val bundle = bundleOf(
                 STATE_STATUS_KEY to viewModel.stateStatus
             )

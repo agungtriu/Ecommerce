@@ -17,8 +17,14 @@ import com.agungtriu.ecommerce.ui.detail.DetailProductFragment.Companion.PRODUCT
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.FirebaseAnalytics.Param
+import com.google.firebase.analytics.logEvent
 
-class StoreAdapter(private val activity: FragmentActivity) :
+class StoreAdapter(
+    private val activity: FragmentActivity,
+    private val analytics: FirebaseAnalytics
+) :
     PagingDataAdapter<Product, RecyclerView.ViewHolder>(callback) {
 
     private var viewType = 1
@@ -46,6 +52,17 @@ class StoreAdapter(private val activity: FragmentActivity) :
 
             binding.cvItemStoreLinear.setOnClickListener {
                 if (item.productId != null) {
+                    analytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+                        param(
+                            Param.ITEMS, bundleOf(
+                                Param.ITEM_ID to item.productId,
+                                Param.ITEM_NAME to item.productName,
+                                Param.ITEM_BRAND to item.brand,
+                            )
+                        )
+                        param(Param.ITEM_LIST_NAME, "Store")
+                    }
+
                     val bundle = bundleOf(PRODUCT_ID_KEY to item.productId)
                     (activity as MainActivity).toDetail(bundle)
                 }
@@ -68,6 +85,18 @@ class StoreAdapter(private val activity: FragmentActivity) :
 
             binding.cvItemStoreGrid.setOnClickListener {
                 if (item.productId != null) {
+                    analytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+                        param(
+                            Param.ITEMS,
+                            bundleOf(
+                                Param.ITEM_ID to item.productId,
+                                Param.ITEM_NAME to item.productName,
+                                Param.ITEM_BRAND to item.brand
+                            )
+                        )
+                        param(Param.ITEM_LIST_NAME, "Store")
+                    }
+
                     val bundle = bundleOf(PRODUCT_ID_KEY to item.productId)
                     (activity as MainActivity).toDetail(bundle)
                 }

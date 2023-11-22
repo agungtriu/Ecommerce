@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "87487344333",
+    "project_id": "tokophincon-b5399",
+    "storage_bucket": "tokophincon-b5399.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:87487344333:android:5f2cbfbfc6fcfe88324384",
+        "android_client_info": {
+          "package_name": "com.agungtriu.ecommerce"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCrGREHEap-Ul-y28n_ZlWmeGoGBvmiAN8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

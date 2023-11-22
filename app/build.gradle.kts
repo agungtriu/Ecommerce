@@ -5,6 +5,8 @@ plugins {
     id("com.google.dagger.hilt.android")
     id("kotlin-parcelize")
     id("androidx.navigation.safeargs.kotlin")
+    id("com.google.gms.google-services")
+    id("com.google.firebase.crashlytics")
 }
 
 android {
@@ -56,6 +58,11 @@ dependencies {
     implementation("com.google.dagger:hilt-android:2.48.1")
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
+    implementation("com.google.firebase:firebase-crashlytics:18.6.0")
+    implementation("com.google.firebase:firebase-analytics:21.5.0")
+    implementation("com.google.firebase:firebase-config:21.6.0")
+    implementation("com.google.firebase:firebase-messaging:23.3.1")
+    implementation("androidx.work:work-runtime-ktx:2.8.1")
     kapt("com.google.dagger:hilt-android-compiler:2.48.1")
     implementation(project(":core"))
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")

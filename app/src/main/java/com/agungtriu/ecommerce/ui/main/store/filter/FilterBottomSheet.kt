@@ -19,11 +19,16 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 
 class FilterBottomSheet : BottomSheetDialogFragment() {
 
     private var _binding: BottomSheetFilterBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var analytics: FirebaseAnalytics
 
 
     private var filterModel: FilterModel = FilterModel()
@@ -31,6 +36,11 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
     private var categoryStatus = false
     private var minPriceStatus = false
     private var maxPriceStatus = false
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -120,7 +130,6 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
         binding.tietBottomsheetfilterMin.addTextChangedListener {
             minPriceStatus = it?.isNotEmpty() ?: false
             try {
-
                 if (it?.isNotEmpty() == true) {
                     filterModel.min = it.toString().toInt()
                 }
@@ -150,6 +159,7 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
         }
 
         binding.btnBottomsheetfilterReset.setOnClickListener {
+            analytics.logEvent("btn_bottom_sheet_filter_reset", null)
             binding.chipgroupBottomshettfilterSort.clearCheck()
             binding.chipgroupBottomshettfilterCategory.clearCheck()
             binding.tietBottomsheetfilterMin.text = null
@@ -170,6 +180,7 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
         }
 
         binding.btnBottomsheetfilterSubmit.setOnClickListener {
+            analytics.logEvent("btn_bottom_sheet_filter_submit", null)
             setFragmentResult(FILTER_KEY, bundleOf(RESULT_FILTER_KEY to filterModel))
             dismiss()
         }

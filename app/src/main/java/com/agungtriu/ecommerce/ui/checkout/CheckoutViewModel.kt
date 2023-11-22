@@ -9,7 +9,7 @@ import com.agungtriu.ecommerce.core.remote.model.request.RequestFulfillment
 import com.agungtriu.ecommerce.core.remote.model.response.DataFulfillment
 import com.agungtriu.ecommerce.core.remote.model.response.DataPayment
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
-import com.agungtriu.ecommerce.data.MainRepository
+import com.agungtriu.ecommerce.data.CheckoutRepository
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.checkout.CheckoutFragment.Companion.CHECKOUT_KEY
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CheckoutViewModel @Inject constructor(
-    private val mainRepository: MainRepository,
+    private val checkoutRepository: CheckoutRepository,
     savedStateHandle: SavedStateHandle
 ) :
     ViewModel() {
@@ -45,7 +45,7 @@ class CheckoutViewModel @Inject constructor(
 
     fun postFulfillment(requestFulfillment: RequestFulfillment): LiveData<ViewState<DataFulfillment>> {
         return runBlocking {
-            mainRepository.postFulfillment(requestFulfillment).asLiveData()
+            checkoutRepository.postFulfillment(requestFulfillment).asLiveData()
         }
     }
 }

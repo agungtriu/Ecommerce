@@ -20,13 +20,26 @@ import com.agungtriu.ecommerce.ui.status.StatusFragment.Companion.STATUS_KEY
 import com.agungtriu.ecommerce.ui.status.StatusModel
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.FirebaseAnalytics.Param
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.logEvent
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(FragmentCheckoutBinding::inflate) {
     private val viewModel: CheckoutViewModel by viewModels()
     private lateinit var adapter: CheckoutAdapter
+    private lateinit var analytics: FirebaseAnalytics
     private val listProduct = mutableListOf<Product>()
+    private var totalPay = 0
+    private lateinit var bundles: Array<Bundle>
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setLayout()
@@ -43,8 +56,9 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(FragmentCheckoutB
     private fun observeData() {
         viewModel.listProduct.observe(viewLifecycleOwner) {
             adapter.submitList(it)
-            var totalPay = 0
+            totalPay = 0
             listProduct.clear()
+            bundles = arrayOf(bundleOf())
             it.forEach { item ->
                 totalPay += item.variantPrice?.times(item.quantity!!) ?: 0
                 listProduct.add(
@@ -53,6 +67,13 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(FragmentCheckoutB
                         variantName = item.variantName ?: "",
                         quantity = item.quantity ?: 1
                     )
+                )
+
+                bundles += bundleOf(
+                    Param.ITEM_ID to item.id,
+                    Param.ITEM_NAME to item.productName,
+                    Param.ITEM_BRAND to item.brand,
+                    Param.ITEM_VARIANT to item.variantName,
                 )
             }
             binding.tvCheckoutTotalPay.text = totalPay.toRupiah()
@@ -66,26 +87,35 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(FragmentCheckoutB
             })
 
         viewModel.dataPayment.observe(viewLifecycleOwner) {
-            if (it != null) {
+            if (it?.label != null) {
                 Glide.with(requireContext())
                     .load(it.image)
                     .into(binding.ivCheckoutPayment)
                 binding.tvCheckoutPayment.text = it.label
                 binding.btnCheckoutBuy.isEnabled = true
+
+                analyticsAddPaymentInfo(
+                    bundles = bundles,
+                    value = totalPay.toDouble(),
+                    payment = it.label!!
+                )
             }
         }
     }
 
     private fun listener() {
         binding.toolbarCheckout.setNavigationOnClickListener {
+            analytics.logEvent("btn_checkout_back", null)
             findNavController().navigateUp()
         }
 
         binding.cvCheckoutPayment.setOnClickListener {
+            analytics.logEvent("btn_checkout_payment", null)
             findNavController().navigate(R.id.action_checkoutFragment_to_choosePaymentFragment)
         }
 
         binding.btnCheckoutBuy.setOnClickListener {
+            analytics.logEvent("btn_checkout_buy", null)
             viewModel.postFulfillment(
                 requestFulfillment = RequestFulfillment(
                     payment = binding.tvCheckoutPayment.text.toString(),
@@ -122,6 +152,12 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(FragmentCheckoutB
                                 status = it.data.status
                             )
                         )
+                        analyticsPurchase(
+                            date = it.data.date!!,
+                            bundles = bundles,
+                            transactionId = it.data.invoiceId!!,
+                            value = it.data.total!!.toDouble()
+                        )
                         findNavController().navigate(
                             R.id.action_checkoutFragment_to_statusFragment,
                             bundle
@@ -129,6 +165,36 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(FragmentCheckoutB
                     }
                 }
             }
+        }
+    }
+
+    private fun analyticsPurchase(
+        date: String,
+        bundles: Array<Bundle>,
+        transactionId: String,
+        value: Double
+    ) {
+        analytics.logEvent(FirebaseAnalytics.Event.PURCHASE) {
+            param(Param.CURRENCY, "Rp")
+            param(Param.END_DATE, date)
+            param(Param.ITEMS, bundles)
+            param(Param.START_DATE, date)
+            param(Param.TRANSACTION_ID, transactionId)
+            param(Param.VALUE, value)
+        }
+    }
+
+    private fun analyticsAddPaymentInfo(
+        bundles: Array<Bundle>,
+        value: Double,
+        payment: String
+    ) {
+        analytics.logEvent(FirebaseAnalytics.Event.ADD_PAYMENT_INFO) {
+            param(Param.ITEMS, bundles)
+            param(Param.CURRENCY, "Rp")
+            param(Param.VALUE, value)
+            param(Param.PAYMENT_TYPE, payment)
+
         }
     }
 

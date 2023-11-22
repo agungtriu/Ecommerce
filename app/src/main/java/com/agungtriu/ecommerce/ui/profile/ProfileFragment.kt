@@ -24,6 +24,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -35,6 +38,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     private lateinit var galleryResultLauncher: ActivityResultLauncher<PickVisualMediaRequest>
     private lateinit var takePictureLauncher: ActivityResultLauncher<Uri>
     private val viewModel: ProfileViewModel by viewModels()
+    private lateinit var analytics: FirebaseAnalytics
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
+    }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -84,6 +93,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
 
     private fun listener() {
         binding.ivProfile.setOnClickListener {
+            analytics.logEvent("btn_profile_image", null)
             val items = arrayOf(
                 getString(R.string.dialog_profile_camera),
                 getString(R.string.dialog_profile_gallery)
@@ -114,6 +124,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         }
 
         binding.btnProfileFinish.setOnClickListener {
+            analytics.logEvent("btn_profile_finish", null)
             closeSoftKeyboard(binding.tietProfileName, requireContext())
             observeData()
 
@@ -130,7 +141,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                         requestBody
                     )
                 }
-            viewModel.registerProfile(
+            viewModel.postProfile(
                 RequestProfile(userName = userNamePart, userImage = imagePart)
             )
 

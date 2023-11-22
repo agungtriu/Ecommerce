@@ -10,6 +10,7 @@ data class WishlistEntity(
     val productName: String? = null,
     val image: String? = null,
     val productPrice: Int? = null,
+    val brand: String? = null,
     val store: String? = null,
     val productRating: Float? = null,
     val sale: Int? = null,

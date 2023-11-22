@@ -7,14 +7,18 @@ import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
-import com.agungtriu.ecommerce.data.MainRepository
+import com.agungtriu.ecommerce.data.CartRepository
+import com.agungtriu.ecommerce.data.WishlistRepository
 import com.agungtriu.ecommerce.helper.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class WishlistViewModel @Inject constructor(private val mainRepository: MainRepository) :
+class WishlistViewModel @Inject constructor(
+    private val wishlistRepository: WishlistRepository,
+    private val cartRepository: CartRepository
+) :
     ViewModel() {
     private var _resultWishlists = MutableLiveData<List<WishlistEntity>>()
     val resultWishlist: LiveData<List<WishlistEntity>> get() = _resultWishlists
@@ -23,7 +27,7 @@ class WishlistViewModel @Inject constructor(private val mainRepository: MainRepo
 
     fun getWishlists() {
         viewModelScope.launch {
-            mainRepository.getWishlists().collect {
+            wishlistRepository.getWishlists().collect {
                 _resultWishlists.value = it
             }
         }
@@ -31,10 +35,10 @@ class WishlistViewModel @Inject constructor(private val mainRepository: MainRepo
 
     fun deleteWishlistById(id: String) {
         viewModelScope.launch {
-            mainRepository.deleteWishlist(id)
+            wishlistRepository.deleteWishlist(id)
         }
     }
 
     fun addCart(cartEntity: CartEntity): LiveData<ViewState<String>> =
-        mainRepository.insertCart(cartEntity).asLiveData()
+        cartRepository.insertCart(cartEntity).asLiveData()
 }

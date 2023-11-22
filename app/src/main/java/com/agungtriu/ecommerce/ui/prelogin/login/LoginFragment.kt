@@ -16,6 +16,10 @@ import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.google.android.material.color.MaterialColors
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.logEvent
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -26,10 +30,12 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
     private var isPasswordValid = false
 
     private val viewModel: LoginViewModel by viewModels()
+    private lateinit var analytics: FirebaseAnalytics
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         checkOnBoarding()
+        analytics = Firebase.analytics
     }
 
     private fun checkOnBoarding() {
@@ -67,6 +73,10 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
                 }
 
                 is ViewState.Success -> {
+                    analytics.logEvent(FirebaseAnalytics.Event.LOGIN) {
+                        param(FirebaseAnalytics.Param.METHOD, getString(R.string.all_email))
+                    }
+
                     binding.pbLogin.visibility = View.GONE
                     binding.btnLogin.visibility = View.VISIBLE
                     (requireActivity() as MainActivity).toMain()
@@ -84,14 +94,17 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
     private fun listener() {
         binding.btnLogin.setOnClickListener {
+            analytics.logEvent("btn_login", null)
             closeSoftKeyboard(binding.tietLoginPassword, requireContext())
-            viewModel.doLogin(
+            viewModel.postLogin(
                 email = binding.tietLoginEmail.text.toString(),
                 password = binding.tietLoginPassword.text.toString()
             )
+//            throw RuntimeException("Test Crash") // Force a crash
         }
 
         binding.btnLoginRegister.setOnClickListener {
+            analytics.logEvent("btn_login_register", null)
             findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
         }
 

@@ -10,9 +10,9 @@ import javax.inject.Inject
 class OnBoardingViewModel @Inject constructor(private val preLoginRepository: PreLoginRepository) :
     ViewModel() {
 
-    fun saveOnBoardingStatus() {
+    fun setOnBoardingStatus() {
         runBlocking {
-            preLoginRepository.saveOnboarding()
+            preLoginRepository.setOnboarding()
         }
     }
 }

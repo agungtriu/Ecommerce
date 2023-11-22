@@ -5,7 +5,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import com.agungtriu.ecommerce.core.remote.model.request.RequestRating
-import com.agungtriu.ecommerce.data.MainRepository
+import com.agungtriu.ecommerce.data.CheckoutRepository
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.status.StatusFragment.Companion.STATE_STATUS_KEY
 import com.agungtriu.ecommerce.ui.status.StatusFragment.Companion.STATUS_KEY
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class StatusViewModel @Inject constructor(
-    private val mainRepository: MainRepository,
+    private val checkoutRepository: CheckoutRepository,
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
@@ -23,5 +23,5 @@ class StatusViewModel @Inject constructor(
     val stateStatus = savedStateHandle[STATE_STATUS_KEY] ?: ""
 
     fun postRating(requestRating: RequestRating): LiveData<ViewState<String>> =
-        runBlocking { mainRepository.postRating(requestRating).asLiveData() }
+        runBlocking { checkoutRepository.postRating(requestRating).asLiveData() }
 }

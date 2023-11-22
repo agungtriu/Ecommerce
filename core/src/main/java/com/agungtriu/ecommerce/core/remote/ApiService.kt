@@ -28,24 +28,24 @@ import retrofit2.http.Query
 
 interface ApiService {
     @POST("register")
-    suspend fun doRegister(
+    suspend fun postRegister(
         @Body requestRegister: RequestRegister
     ): ResponseRegister
 
     @POST("login")
-    suspend fun doLogin(
+    suspend fun postLogin(
         @Body requestLogin: RequestLogin
     ): ResponseLogin
 
     @Multipart
     @POST("profile")
-    suspend fun registerProfile(
+    suspend fun postProfile(
         @Part userName: MultipartBody.Part,
         @Part userImage: MultipartBody.Part?
     ): ResponseProfile
 
     @POST("refresh")
-    suspend fun doRefreshToken(
+    suspend fun postRefreshToken(
         @Body token: RequestRefresh
     ): ResponseRefresh
 
@@ -62,22 +62,22 @@ interface ApiService {
     ): ResponseProducts
 
     @POST("search")
-    suspend fun doSearch(
+    suspend fun postSearch(
         @Query("query") query: String?,
     ): ResponseSearch
 
     @GET("products/{id}")
-    suspend fun getDetailProduct(
+    suspend fun getProductById(
         @Path("id") productId: String
     ): ResponseDetailProduct
 
     @GET("review/{id}")
-    suspend fun getReviewProduct(
+    suspend fun getReviewsByProductId(
         @Path("id") productId: String
     ): ResponseReviewProduct
 
     @GET("payment")
-    suspend fun getPayment(): ResponsePayment
+    suspend fun getPayments(): ResponsePayment
 
     @POST("fulfillment")
     suspend fun postFulfillment(
@@ -90,6 +90,6 @@ interface ApiService {
     ): ResponseRating
 
     @GET("transaction")
-    suspend fun getTransaction(): ResponseTransaction
+    suspend fun getTransactions(): ResponseTransaction
 
 }

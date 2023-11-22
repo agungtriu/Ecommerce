@@ -9,12 +9,22 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.agungtriu.ecommerce.databinding.FragmentReviewBinding
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.base.BaseFragment
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ReviewFragment : BaseFragment<FragmentReviewBinding>(FragmentReviewBinding::inflate) {
     private val viewModel: ReviewViewModel by viewModels()
     private lateinit var adapter: ReviewAdapter
+    private lateinit var analytics: FirebaseAnalytics
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeData()
@@ -53,6 +63,7 @@ class ReviewFragment : BaseFragment<FragmentReviewBinding>(FragmentReviewBinding
 
     private fun listener() {
         binding.toolbarReview.setNavigationOnClickListener {
+            analytics.logEvent("btn_review_back", null)
             findNavController().navigateUp()
         }
     }

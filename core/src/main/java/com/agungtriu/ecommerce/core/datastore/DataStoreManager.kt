@@ -32,7 +32,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }
     }
 
-    suspend fun saveOnboardingStatus() {
+    suspend fun setOnboardingStatus() {
         dataStore.edit { preferences ->
             preferences[ONBOARDING_KEY] = true
         }
@@ -68,7 +68,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }
     }
 
-    suspend fun saveLoginData(loginModel: LoginModel) {
+    suspend fun setLoginData(loginModel: LoginModel) {
         dataStore.edit { preferences ->
             preferences[LOGIN_KEY] = loginModel.isLogin
             preferences[NAME_KEY] = loginModel.userName ?: ""
@@ -79,20 +79,20 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }
     }
 
-    suspend fun refreshToken(refreshTokenModel: TokenModel) {
+    suspend fun setRefreshToken(refreshTokenModel: TokenModel) {
         dataStore.edit { preferences ->
             preferences[ACCESS_TOKEN_KEY] = refreshTokenModel.accessToken
             preferences[REFRESH_TOKEN_KEY] = refreshTokenModel.refreshToken
         }
     }
 
-    suspend fun changeTheme(isDark: Boolean) {
+    suspend fun setTheme(isDark: Boolean) {
         dataStore.edit { preferences ->
             preferences[THEME_KEY] = isDark
         }
     }
 
-    suspend fun changeLanguage(language: String) {
+    suspend fun setLanguage(language: String) {
         dataStore.edit { preferences ->
             preferences[LANGUAGE_KEY] = language
         }
