@@ -64,7 +64,7 @@ class TransactionFragment :
     private fun listener() {
         binding.layoutTransactionError.btnErrorResetRefresh.setOnClickListener {
             analytics.logEvent("btn_transaction_error_refresh", null)
-            viewModel.getTransaction()
+            viewModel.getTransactions()
         }
     }
 }

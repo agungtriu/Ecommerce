@@ -99,12 +99,12 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
             findNavController().navigateUp()
         }
         binding.cbCartSelectAll.setOnClickListener {
-            viewModel.updateAllCartIsSelected(!isChecked)
+            viewModel.updateCartsIsSelected(!isChecked)
         }
 
         binding.btnCartDelete.setOnClickListener {
             analytics.logEvent("btn_cart_delete_selected", null)
-            viewModel.deleteSelected()
+            viewModel.deleteCartsSelected()
         }
 
         binding.btnCartBuy.setOnClickListener {

@@ -5,13 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.room.entity.NotificationEntity
-import com.agungtriu.ecommerce.data.MainRepository
+import com.agungtriu.ecommerce.data.NotificationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class NotificationViewModel @Inject constructor(private val mainRepository: MainRepository) :
+class NotificationViewModel @Inject constructor(private val notificationRepository: NotificationRepository) :
     ViewModel() {
 
     private val _resultNotifications = MutableLiveData<List<NotificationEntity>?>()
@@ -19,7 +19,7 @@ class NotificationViewModel @Inject constructor(private val mainRepository: Main
 
     fun selectNotifications() {
         viewModelScope.launch {
-            mainRepository.selectNotifications().collect {
+            notificationRepository.selectNotifications().collect {
                 _resultNotifications.value = it
             }
         }
@@ -27,7 +27,7 @@ class NotificationViewModel @Inject constructor(private val mainRepository: Main
 
     fun updateNotifications(notificationEntity: NotificationEntity) {
         viewModelScope.launch {
-            mainRepository.updateNotification(notificationEntity)
+            notificationRepository.updateNotification(notificationEntity)
         }
     }
 }

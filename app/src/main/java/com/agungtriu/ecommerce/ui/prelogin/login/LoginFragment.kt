@@ -96,7 +96,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
         binding.btnLogin.setOnClickListener {
             analytics.logEvent("btn_login", null)
             closeSoftKeyboard(binding.tietLoginPassword, requireContext())
-            viewModel.doLogin(
+            viewModel.postLogin(
                 email = binding.tietLoginEmail.text.toString(),
                 password = binding.tietLoginPassword.text.toString()
             )

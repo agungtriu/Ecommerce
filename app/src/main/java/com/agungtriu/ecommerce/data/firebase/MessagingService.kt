@@ -9,7 +9,7 @@ import androidx.core.app.NotificationCompat
 import androidx.navigation.NavDeepLinkBuilder
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.room.entity.NotificationEntity
-import com.agungtriu.ecommerce.data.MainRepository
+import com.agungtriu.ecommerce.data.NotificationRepository
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +22,7 @@ import javax.inject.Inject
 class MessagingService : FirebaseMessagingService() {
 
     @Inject
-    lateinit var mainRepository: MainRepository
+    lateinit var notificationRepository: NotificationRepository
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         if (remoteMessage.data.isNotEmpty()) {
@@ -30,7 +30,7 @@ class MessagingService : FirebaseMessagingService() {
             sendNotification(notification)
 
             CoroutineScope(Dispatchers.IO).launch {
-                mainRepository.insertNotification(notification)
+                notificationRepository.insertNotification(notification)
             }
         }
     }

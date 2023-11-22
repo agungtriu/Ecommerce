@@ -30,7 +30,7 @@ class AuthAuthenticator @Inject constructor(
                     val token = dataStoreManager.getToken().first()
                     val refresh = refreshToken(token.refreshToken)
                     if (refresh.data != null) {
-                        dataStoreManager.refreshToken(
+                        dataStoreManager.setRefreshToken(
                             TokenModel(
                                 accessToken = refresh.data!!.accessToken!!,
                                 refreshToken = refresh.data!!.refreshToken!!
@@ -66,6 +66,6 @@ class AuthAuthenticator @Inject constructor(
             .client(client)
             .build()
         val service = retrofit.create(ApiService::class.java)
-        return service.doRefreshToken(RequestRefresh(token = token))
+        return service.postRefreshToken(RequestRefresh(token = token))
     }
 }

@@ -166,7 +166,7 @@ class DetailProductFragment :
             }
         }
 
-        viewModel.getWishlist().distinctUntilChanged().observe(viewLifecycleOwner) {
+        viewModel.getWishlistByProductId().distinctUntilChanged().observe(viewLifecycleOwner) {
             if (it != null) {
                 wishlistState = true
                 binding.ivDetailWishlist.setBackgroundResource(R.drawable.ic_favorite)
@@ -328,7 +328,7 @@ class DetailProductFragment :
 
         binding.layoutDetailError.btnErrorResetRefresh.setOnClickListener {
             analytics.logEvent("btn_detail_error_refresh", null)
-            viewModel.getDetailProduct()
+            viewModel.getProductById()
         }
 
         binding.btnDetailBuy.setOnClickListener {

@@ -27,7 +27,7 @@ interface CartDao {
     fun selectCartById(id: String): Flow<CartEntity?>
 
     @Query("SELECT COUNT(*) FROM carts")
-    fun selectQuantity(): Flow<Int?>
+    fun selectCountCart(): Flow<Int?>
 
     @Query("DELETE FROM carts WHERE isSelected = 1")
     suspend fun deleteCartsSelected()

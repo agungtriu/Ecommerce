@@ -19,15 +19,15 @@ class HomeViewModel @Inject constructor(private val mainRepository: MainReposito
         }
     }
 
-    fun changeTheme(isDark: Boolean) {
+    fun setTheme(isDark: Boolean) {
         viewModelScope.launch {
-            mainRepository.changeTheme(isDark)
+            mainRepository.setTheme(isDark)
         }
     }
 
-    fun changeLanguage(language: String) {
+    fun setLanguage(language: String) {
         viewModelScope.launch {
-            mainRepository.changeLang(language)
+            mainRepository.setLanguage(language)
         }
     }
 

@@ -141,7 +141,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                         requestBody
                     )
                 }
-            viewModel.registerProfile(
+            viewModel.postProfile(
                 RequestProfile(userName = userNamePart, userImage = imagePart)
             )
 

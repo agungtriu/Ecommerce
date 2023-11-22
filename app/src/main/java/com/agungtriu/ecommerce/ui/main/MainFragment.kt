@@ -63,7 +63,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             badgeWishlist.isVisible = it.isNotEmpty()
             badgeWishlist.number = it.size
         }
-        viewModel.getQuantity().observe(viewLifecycleOwner) {
+        viewModel.selectCountCart().observe(viewLifecycleOwner) {
             val badgeCart = BadgeDrawable.create(requireContext())
 
             badgeCart.isVisible = it != 0
@@ -75,12 +75,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             }
         }
 
-        viewModel.selectNotification().observe(viewLifecycleOwner) {
+        viewModel.selectCountNotification().observe(viewLifecycleOwner) {
             val badgeCart = BadgeDrawable.create(requireContext())
-            val quantity = it?.filter { notification -> !notification.isRead }?.size
-
-            badgeCart.isVisible = quantity != 0
-            badgeCart.number = quantity ?: 0
+            badgeCart.isVisible = it != 0
+            badgeCart.number = it ?: 0
             if (it != null) {
                 attachBadgeDrawable(badgeCart, binding.toolbarMain, R.id.btn_main_notification)
             } else {

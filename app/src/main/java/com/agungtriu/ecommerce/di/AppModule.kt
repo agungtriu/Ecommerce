@@ -1,4 +1,4 @@
-package com.agungtriu.ecommerce.data
+package com.agungtriu.ecommerce.di
 
 import com.agungtriu.ecommerce.R
 import com.google.firebase.ktx.Firebase

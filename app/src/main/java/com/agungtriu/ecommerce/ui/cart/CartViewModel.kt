@@ -5,45 +5,45 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
-import com.agungtriu.ecommerce.data.MainRepository
+import com.agungtriu.ecommerce.data.CartRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CartViewModel @Inject constructor(private val mainRepository: MainRepository) : ViewModel() {
+class CartViewModel @Inject constructor(private val cartRepository: CartRepository) : ViewModel() {
     private val _resultCarts = MutableLiveData<List<CartEntity>>()
     val resultCarts: LiveData<List<CartEntity>> get() = _resultCarts
 
     fun getCarts() {
         viewModelScope.launch {
-            mainRepository.getAllCart().collect {
+            cartRepository.getCarts().collect {
                 _resultCarts.value = it
             }
         }
     }
+
     fun updateCart(cartEntity: CartEntity) {
         viewModelScope.launch {
-            mainRepository.updateCart(cartEntity)
+            cartRepository.updateCart(cartEntity)
         }
     }
 
-    fun deleteSelected() {
+    fun deleteCartsSelected() {
         viewModelScope.launch {
-            mainRepository.deleteAllCartSelected()
+            cartRepository.deleteCartsSelected()
         }
     }
 
     fun deleteCart(cartEntity: CartEntity) {
         viewModelScope.launch {
-            mainRepository.deleteCart(cartEntity)
+            cartRepository.deleteCart(cartEntity)
         }
     }
 
-    fun updateAllCartIsSelected(isSelected: Boolean) {
+    fun updateCartsIsSelected(isSelected: Boolean) {
         viewModelScope.launch {
-            mainRepository.updateAllCartSelected(isSelected)
+            cartRepository.updateCartsSelected(isSelected)
         }
     }
 }

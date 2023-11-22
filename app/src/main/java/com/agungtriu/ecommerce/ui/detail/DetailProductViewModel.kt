@@ -9,16 +9,19 @@ import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.remote.model.response.DataDetailProduct
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
-import com.agungtriu.ecommerce.data.MainRepository
+import com.agungtriu.ecommerce.data.CartRepository
+import com.agungtriu.ecommerce.data.StoreRepository
+import com.agungtriu.ecommerce.data.WishlistRepository
 import com.agungtriu.ecommerce.helper.ViewState
-import com.google.android.material.chip.Chip
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class DetailProductViewModel @Inject constructor(
-    private val mainRepository: MainRepository,
+    private val storeRepository: StoreRepository,
+    private val wishlistRepository: WishlistRepository,
+    private val cartRepository: CartRepository,
     savedStateHandle: SavedStateHandle
 ) :
     ViewModel() {
@@ -32,33 +35,33 @@ class DetailProductViewModel @Inject constructor(
     val resultDetail: LiveData<ViewState<DataDetailProduct>?> get() = _resultDetail
 
     init {
-        getDetailProduct()
+        getProductById()
     }
 
-    fun getDetailProduct() {
+    fun getProductById() {
         viewModelScope.launch {
-            mainRepository.getDetailProduct(productId).collect {
+            storeRepository.getProductById(productId).collect {
                 _resultDetail.value = it
             }
         }
     }
 
-    fun getWishlist(): LiveData<WishlistEntity> =
-        mainRepository.getWishlistById(productId).asLiveData()
+    fun getWishlistByProductId(): LiveData<WishlistEntity> =
+        wishlistRepository.getWishlistById(productId).asLiveData()
 
 
     fun insertWishlist(wishlistEntity: WishlistEntity) {
         viewModelScope.launch {
-            mainRepository.insertWishlist(wishlistEntity)
+            wishlistRepository.insertWishlist(wishlistEntity)
         }
     }
 
     fun deleteWishlistById(id: String) {
         viewModelScope.launch {
-            mainRepository.deleteWishlist(id)
+            wishlistRepository.deleteWishlist(id)
         }
     }
 
     fun addCart(cartEntity: CartEntity): LiveData<ViewState<String>> =
-        mainRepository.insertCart(cartEntity).asLiveData()
+        cartRepository.insertCart(cartEntity).asLiveData()
 }

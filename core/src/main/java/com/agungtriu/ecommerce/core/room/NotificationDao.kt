@@ -17,6 +17,9 @@ interface NotificationDao {
     @Query("SELECT * FROM notifications ORDER BY id DESC")
     fun selectNotifications(): Flow<List<NotificationEntity>?>
 
+    @Query("SELECT COUNT(*) FROM notifications WHERE isRead == 0")
+    fun selectCountNotifications(): Flow<Int?>
+
     @Update(onConflict = OnConflictStrategy.REPLACE)
     suspend fun updateNotification(notificationEntity: NotificationEntity)
 }

@@ -35,14 +35,14 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
         }
 
         binding.switchHomeTheme.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.changeTheme(isChecked)
+            viewModel.setTheme(isChecked)
         }
 
         binding.switchHomeLang.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                viewModel.changeLanguage(Language.id.name)
+                viewModel.setLanguage(Language.id.name)
             } else {
-                viewModel.changeLanguage(Language.en.name)
+                viewModel.setLanguage(Language.en.name)
             }
         }
     }

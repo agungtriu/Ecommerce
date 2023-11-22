@@ -2,7 +2,6 @@ package com.agungtriu.ecommerce.helper
 
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.widget.TextView
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProducts
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseError

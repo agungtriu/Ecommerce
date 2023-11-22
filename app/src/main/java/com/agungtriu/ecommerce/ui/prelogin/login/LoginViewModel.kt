@@ -29,14 +29,14 @@ class LoginViewModel @Inject constructor(private val preLoginRepository: PreLogi
     private val _resultLogin = MutableLiveData<ViewState<DataLogin>>()
     val resultLogin: LiveData<ViewState<DataLogin>> get() = _resultLogin
 
-    fun doLogin(email: String, password: String) {
+    fun postLogin(email: String, password: String) {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 return@OnCompleteListener
             }
             val token = task.result
             viewModelScope.launch {
-                preLoginRepository.doLogin(
+                preLoginRepository.postLogin(
                     RequestLogin(
                         email = email,
                         password = password,

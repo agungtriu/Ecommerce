@@ -56,12 +56,12 @@ class OnBoardingFragment :
         }
         binding.btnOnboardingJoin.setOnClickListener {
             analytics.logEvent("btn_onboarding_join", null)
-            viewModel.saveOnBoardingStatus()
+            viewModel.setOnBoardingStatus()
             findNavController().navigate(R.id.action_onBoardingFragment_to_registerFragment)
         }
         binding.btnOnboardingSkip.setOnClickListener {
             analytics.logEvent("btn_onboarding_skip", null)
-            viewModel.saveOnBoardingStatus()
+            viewModel.setOnBoardingStatus()
             findNavController().navigate(R.id.action_onBoardingFragment_to_loginFragment)
         }
 

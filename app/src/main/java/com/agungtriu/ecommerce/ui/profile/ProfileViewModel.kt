@@ -18,9 +18,9 @@ class ProfileViewModel @Inject constructor(private val mainRepository: MainRepos
     private val _resultRegisterProfile = MutableLiveData<ViewState<DataProfile>>()
     val resultRegisterProfile: LiveData<ViewState<DataProfile>> get() = _resultRegisterProfile
 
-    fun registerProfile(requestProfile: RequestProfile) {
+    fun postProfile(requestProfile: RequestProfile) {
         viewModelScope.launch {
-            mainRepository.registerProfile(
+            mainRepository.postProfile(
                 requestProfile = requestProfile
             ).collect {
                 _resultRegisterProfile.value = it

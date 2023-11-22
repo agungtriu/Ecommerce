@@ -90,7 +90,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
         binding.btnRegister.setOnClickListener {
             analytics.logEvent("btn_register", null)
             closeSoftKeyboard(binding.tietRegisterPassword, requireContext())
-            viewModel.doRegister(
+            viewModel.postRegister(
                 email = binding.tietRegisterEmail.text.toString(),
                 password = binding.tietRegisterPassword.text.toString()
             )

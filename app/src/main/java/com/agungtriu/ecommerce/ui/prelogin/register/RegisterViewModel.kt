@@ -21,14 +21,14 @@ class RegisterViewModel @Inject constructor(private val preLoginRepository: PreL
     private val _resultRegister = MutableLiveData<ViewState<DataRegister>>()
     val resultRegister: LiveData<ViewState<DataRegister>> = _resultRegister
 
-    fun doRegister(email: String, password: String) {
+    fun postRegister(email: String, password: String) {
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 return@OnCompleteListener
             }
             val token = task.result
             viewModelScope.launch {
-                preLoginRepository.doRegister(
+                preLoginRepository.postRegister(
                     RequestRegister(
                         email = email,
                         password = password,
