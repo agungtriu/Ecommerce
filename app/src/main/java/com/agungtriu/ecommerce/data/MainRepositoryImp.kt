@@ -75,8 +75,6 @@ class MainRepositoryImp @Inject constructor(
                         )
                     )
                     emit(ViewState.Success(dataRegister))
-                } else {
-                    throw Exception("Data register profile not found")
                 }
             } catch (t: Throwable) {
                 emit(ViewState.Error(t.toResponseError()))

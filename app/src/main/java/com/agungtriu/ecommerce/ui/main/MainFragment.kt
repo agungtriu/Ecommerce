@@ -60,8 +60,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         }
 
         viewModel.getWishlists().observe(viewLifecycleOwner) {
-            badgeWishlist.isVisible = it.isNotEmpty()
-            badgeWishlist.number = it.size
+            if (it != null) {
+                badgeWishlist.isVisible = true
+                badgeWishlist.number = it.size
+            }
         }
         viewModel.selectCountCart().observe(viewLifecycleOwner) {
             val badgeCart = BadgeDrawable.create(requireContext())

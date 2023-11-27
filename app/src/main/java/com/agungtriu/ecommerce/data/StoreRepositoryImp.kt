@@ -32,28 +32,25 @@ class StoreRepositoryImp @Inject constructor(
             val data = result.data
             if (data != null) {
                 emit(ViewState.Success(data))
-            } else {
-                throw Exception("Data Product not found")
             }
         } catch (t: Throwable) {
             emit(ViewState.Error(t.toResponseError()))
         }
     }
 
-    override fun getReviewsByProductId(productId: String): Flow<ViewState<List<DataReview>>> = flow {
-        emit(ViewState.Loading)
-        try {
-            val result = apiService.getReviewsByProductId(productId)
-            val data = result.data
-            if (data != null) {
-                emit(ViewState.Success(data))
-            } else {
-                throw Exception("Data review not found")
+    override fun getReviewsByProductId(productId: String): Flow<ViewState<List<DataReview>>> =
+        flow {
+            emit(ViewState.Loading)
+            try {
+                val result = apiService.getReviewsByProductId(productId)
+                val data = result.data
+                if (data != null) {
+                    emit(ViewState.Success(data))
+                }
+            } catch (t: Throwable) {
+                emit(ViewState.Error(t.toResponseError()))
             }
-        } catch (t: Throwable) {
-            emit(ViewState.Error(t.toResponseError()))
         }
-    }
 
     override suspend fun postSearch(query: String): Flow<ViewState<List<String>>> = flow {
         emit(ViewState.Loading)
@@ -62,8 +59,6 @@ class StoreRepositoryImp @Inject constructor(
             val data = result.data
             if (data != null) {
                 emit(ViewState.Success(data))
-            } else {
-                throw Exception("Data search not found")
             }
         } catch (t: Throwable) {
             emit(ViewState.Error(t.toResponseError()))

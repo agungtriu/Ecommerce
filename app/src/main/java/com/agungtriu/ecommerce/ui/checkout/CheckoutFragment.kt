@@ -9,7 +9,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.agungtriu.ecommerce.R
-import com.agungtriu.ecommerce.core.remote.model.request.Product
+import com.agungtriu.ecommerce.core.remote.model.request.ProductFulfillment
 import com.agungtriu.ecommerce.core.remote.model.request.RequestFulfillment
 import com.agungtriu.ecommerce.core.remote.model.response.DataPayment
 import com.agungtriu.ecommerce.databinding.FragmentCheckoutBinding
@@ -32,7 +32,7 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(FragmentCheckoutB
     private val viewModel: CheckoutViewModel by viewModels()
     private lateinit var adapter: CheckoutAdapter
     private lateinit var analytics: FirebaseAnalytics
-    private val listProduct = mutableListOf<Product>()
+    private val listProduct = mutableListOf<ProductFulfillment>()
     private var totalPay = 0
     private lateinit var bundles: Array<Bundle>
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,7 +62,7 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(FragmentCheckoutB
             it.forEach { item ->
                 totalPay += item.variantPrice?.times(item.quantity!!) ?: 0
                 listProduct.add(
-                    Product(
+                    ProductFulfillment(
                         productId = item.id,
                         variantName = item.variantName ?: "",
                         quantity = item.quantity ?: 1

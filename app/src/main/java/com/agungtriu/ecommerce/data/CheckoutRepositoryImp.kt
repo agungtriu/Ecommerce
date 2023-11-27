@@ -27,8 +27,6 @@ class CheckoutRepositoryImp @Inject constructor(
             val data = result.data
             if (data != null) {
                 emit(ViewState.Success(data))
-            } else {
-                throw Exception("Data Product not found")
             }
         } catch (t: Throwable) {
             emit(ViewState.Error(t.toResponseError()))
@@ -49,8 +47,6 @@ class CheckoutRepositoryImp @Inject constructor(
                 val data = result.data
                 if (data != null) {
                     emit(ViewState.Success(data))
-                } else {
-                    throw Exception("Data search not found")
                 }
             } catch (t: Throwable) {
                 emit(ViewState.Error(t.toResponseError()))

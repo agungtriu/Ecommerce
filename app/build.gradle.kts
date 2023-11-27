@@ -72,7 +72,15 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("com.airbnb.android:lottie:6.1.0")
     implementation("androidx.paging:paging-runtime:3.2.1")
-    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation ("com.facebook.shimmer:shimmer:0.5.0")
-
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    implementation("com.facebook.shimmer:shimmer:0.5.0")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
+    testImplementation("com.squareup.okhttp3:okhttp-tls:4.11.0")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.1")
+    testImplementation("androidx.test.ext:junit:1.1.5")
+    testImplementation("org.mockito:mockito-core:5.3.1")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    testImplementation("org.mockito:mockito-inline:3.12.4")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
 }

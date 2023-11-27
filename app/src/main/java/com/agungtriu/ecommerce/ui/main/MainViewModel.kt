@@ -22,7 +22,9 @@ class MainViewModel @Inject constructor(
         return preLoginRepository.getLoginData().asLiveData()
     }
 
-    fun getWishlists(): LiveData<List<WishlistEntity>> = wishlistRepository.getWishlists().asLiveData()
+    fun getWishlists(): LiveData<List<WishlistEntity>?> =
+        wishlistRepository.getWishlists().asLiveData()
+
     fun selectCountCart(): LiveData<Int?> = mainRepository.selectCountCart().asLiveData()
 
     fun selectCountNotification(): LiveData<Int?> =

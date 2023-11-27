@@ -60,7 +60,7 @@ class WishlistFragment : BaseFragment<FragmentWishlistBinding>(FragmentWishlistB
 
     private fun observeData() {
         viewModel.resultWishlist.observe(viewLifecycleOwner) {
-            if (it.isNotEmpty()) {
+            if (it != null) {
                 binding.tvWishlistCount.text =
                     it.size.toString().plus(" ${getString(R.string.all_item)}")
                 adapter.submitList(it)

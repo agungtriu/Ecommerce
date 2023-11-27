@@ -181,16 +181,6 @@ class DetailProductFragment :
                         Snackbar.LENGTH_LONG
                     ).show()
                 }
-
-                analyticsAddToWishlist(
-                    bundle = bundleOf(
-                        Param.ITEM_ID to productDetail.productId,
-                        Param.ITEM_NAME to productDetail.productName,
-                        Param.ITEM_BRAND to productDetail.brand,
-                        Param.ITEM_VARIANT to viewModel.selectedVariantName
-                    ),
-                    value = viewModel.selectedVariantPrice.toDouble()
-                )
             } else {
                 wishlistState = false
                 binding.ivDetailWishlist.setBackgroundResource(R.drawable.ic_favorite_border)
@@ -246,6 +236,15 @@ class DetailProductFragment :
                         variantName = viewModel.selectedVariantName,
                         variantPrice = viewModel.selectedVariantPrice,
                     )
+                )
+                analyticsAddToWishlist(
+                    bundle = bundleOf(
+                        Param.ITEM_ID to productDetail.productId,
+                        Param.ITEM_NAME to productDetail.productName,
+                        Param.ITEM_BRAND to productDetail.brand,
+                        Param.ITEM_VARIANT to viewModel.selectedVariantName
+                    ),
+                    value = viewModel.selectedVariantPrice.toDouble()
                 )
             }
         }

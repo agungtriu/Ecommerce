@@ -31,8 +31,8 @@ class DetailProductViewModel @Inject constructor(
     var selectedVariantName = ""
     var selectedVariantPrice = 0
 
-    private val _resultDetail = MutableLiveData<ViewState<DataDetailProduct>?>(null)
-    val resultDetail: LiveData<ViewState<DataDetailProduct>?> get() = _resultDetail
+    private val _resultDetail = MutableLiveData<ViewState<DataDetailProduct>>()
+    val resultDetail: LiveData<ViewState<DataDetailProduct>> get() = _resultDetail
 
     init {
         getProductById()
@@ -46,7 +46,7 @@ class DetailProductViewModel @Inject constructor(
         }
     }
 
-    fun getWishlistByProductId(): LiveData<WishlistEntity> =
+    fun getWishlistByProductId(): LiveData<WishlistEntity?> =
         wishlistRepository.getWishlistById(productId).asLiveData()
 
 
