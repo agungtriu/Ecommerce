@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -43,14 +43,14 @@ class PreLoginRepositoryTest {
     fun getOnboardingStatus() = runTest {
         whenever(dataStoreManager.getOnboardingStatus()).thenReturn(flowOf(true))
         val actual = preLoginRepository.getOnboardingStatus().first()
-        assertEquals(true, actual)
+        Assert.assertEquals(true, actual)
     }
 
     @Test
     fun getLoginData() = runTest {
         whenever(dataStoreManager.getLoginData()).thenReturn(flowOf(DataDummy.dummyLoginModel))
         val actual = preLoginRepository.getLoginData().first()
-        assertEquals(DataDummy.dummyLoginModel, actual)
+        Assert.assertEquals(DataDummy.dummyLoginModel, actual)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -71,7 +71,7 @@ class PreLoginRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyRegisterResponse.data)
@@ -98,7 +98,7 @@ class PreLoginRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyRegisterResponseEmailAlreadyRegister)
@@ -125,7 +125,7 @@ class PreLoginRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyLoginResponse.data)
@@ -152,7 +152,7 @@ class PreLoginRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError400Response)

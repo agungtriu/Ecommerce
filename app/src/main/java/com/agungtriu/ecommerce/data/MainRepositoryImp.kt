@@ -64,7 +64,8 @@ class MainRepositoryImp @Inject constructor(
             emit(ViewState.Loading)
             try {
                 val result = apiService.postProfile(
-                    requestProfile.userName, requestProfile.userImage
+                    requestProfile.userName,
+                    requestProfile.userImage
                 )
                 val dataRegister = result.data
                 if (dataRegister != null) {

@@ -7,7 +7,7 @@ import com.agungtriu.ecommerce.core.datastore.model.RegisterProfileModel
 import com.agungtriu.ecommerce.core.utils.Language
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -31,38 +31,38 @@ class DataStoreManagerTest {
     fun setAndGetOnboardingStatus() = runTest {
         dataStoreManager.setOnboardingStatus()
         val actual = dataStoreManager.getOnboardingStatus().first()
-        assertEquals(true, actual)
+        Assert.assertEquals(true, actual)
     }
 
     @Test
     fun setLoginData_getLoginData_getToken_getAuthorized() = runTest {
         dataStoreManager.setLoginData(loginModel = DataDummy.dummyLoginModel)
         val actual = dataStoreManager.getLoginData().first()
-        assertEquals(DataDummy.dummyLoginModel, actual)
+        Assert.assertEquals(DataDummy.dummyLoginModel, actual)
 
         val actualToken = dataStoreManager.getToken().first()
-        assertEquals(DataDummy.dummyLoginModel.accessToken, actualToken.accessToken)
-        assertEquals(DataDummy.dummyLoginModel.refreshToken, actualToken.refreshToken)
+        Assert.assertEquals(DataDummy.dummyLoginModel.accessToken, actualToken.accessToken)
+        Assert.assertEquals(DataDummy.dummyLoginModel.refreshToken, actualToken.refreshToken)
 
         val actualAuthorized = dataStoreManager.getAuthorizedStatus().first()
-        assertEquals(true, actualAuthorized.isAuthorized)
+        Assert.assertEquals(true, actualAuthorized.isAuthorized)
     }
 
     @Test
     fun setRefreshToken_getToken() = runTest {
         dataStoreManager.setRefreshToken(refreshTokenModel = DataDummy.dummyTokenModel)
         val actual = dataStoreManager.getToken().first()
-        assertEquals(DataDummy.dummyTokenModel.accessToken, actual.accessToken)
-        assertEquals(DataDummy.dummyTokenModel.refreshToken, actual.refreshToken)
+        Assert.assertEquals(DataDummy.dummyTokenModel.accessToken, actual.accessToken)
+        Assert.assertEquals(DataDummy.dummyTokenModel.refreshToken, actual.refreshToken)
     }
 
     @Test
     fun setLanguage_setTheme_getThemeLang() = runTest {
-        dataStoreManager.setLanguage(language = Language.en.name)
+        dataStoreManager.setLanguage(language = Language.EN.name)
         dataStoreManager.setTheme(isDark = true)
         val actual = dataStoreManager.getThemeLang().first()
-        assertEquals(Language.en.name, actual.language)
-        assertEquals(true, actual.isDark)
+        Assert.assertEquals(Language.EN.name, actual.language)
+        Assert.assertEquals(true, actual.isDark)
     }
 
     @Test
@@ -77,8 +77,8 @@ class DataStoreManagerTest {
             )
         )
         val actual = dataStoreManager.getLoginData().first()
-        assertEquals(username, actual.userName)
-        assertEquals(userImage, actual.userImage)
+        Assert.assertEquals(username, actual.userName)
+        Assert.assertEquals(userImage, actual.userImage)
     }
 
     @Test
@@ -86,11 +86,11 @@ class DataStoreManagerTest {
         dataStoreManager.setLoginData(loginModel = DataDummy.dummyLoginModel)
         dataStoreManager.deleteLoginStatus()
         val actual = dataStoreManager.getLoginData().first()
-        assertEquals(false, actual.isLogin)
-        assertEquals("", actual.userName)
-        assertEquals("", actual.userImage)
-        assertEquals("", actual.accessToken)
-        assertEquals("", actual.refreshToken)
-        assertEquals(false, actual.isAuthorized)
+        Assert.assertEquals(false, actual.isLogin)
+        Assert.assertEquals("", actual.userName)
+        Assert.assertEquals("", actual.userImage)
+        Assert.assertEquals("", actual.accessToken)
+        Assert.assertEquals("", actual.refreshToken)
+        Assert.assertEquals(false, actual.isAuthorized)
     }
 }

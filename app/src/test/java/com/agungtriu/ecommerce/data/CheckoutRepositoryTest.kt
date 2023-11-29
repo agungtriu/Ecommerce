@@ -16,7 +16,7 @@ import com.agungtriu.ecommerce.utils.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -52,7 +52,7 @@ class CheckoutRepositoryTest {
             actual.add(it)
         }
 
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyPaymentsResponse.data)
@@ -69,7 +69,7 @@ class CheckoutRepositoryTest {
             actual.add(it)
         }
 
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError404Response)
@@ -93,7 +93,7 @@ class CheckoutRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyPaymentsResponse.data!!)
@@ -117,7 +117,7 @@ class CheckoutRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError404Response)
@@ -140,7 +140,7 @@ class CheckoutRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyPaymentsResponse.data!!)
@@ -163,7 +163,7 @@ class CheckoutRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError404Response)
@@ -194,7 +194,7 @@ class CheckoutRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyFulfillmentResponse.data)
@@ -225,7 +225,7 @@ class CheckoutRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError401Response)
@@ -258,7 +258,7 @@ class CheckoutRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyRating.message)
@@ -291,7 +291,7 @@ class CheckoutRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError401Response)
@@ -309,7 +309,7 @@ class CheckoutRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyTransactionResponse.data)
@@ -327,7 +327,7 @@ class CheckoutRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError401Response)

@@ -7,7 +7,7 @@ import com.agungtriu.ecommerce.utils.DataDummy
 import com.agungtriu.ecommerce.utils.MainDispatcherRule
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -41,7 +41,7 @@ class WishlistViewModelTest {
         whenever(wishlistRepository.getWishlists()).thenReturn(flowOf(listOf(DataDummy.dummyWishlistEntity)))
         wishlistViewModel.getWishlists()
         wishlistViewModel.resultWishlist.observeForever {
-            assertEquals(listOf(DataDummy.dummyWishlistEntity), it)
+            Assert.assertEquals(listOf(DataDummy.dummyWishlistEntity), it)
         }
     }
 
@@ -50,7 +50,7 @@ class WishlistViewModelTest {
         whenever(wishlistRepository.getWishlists()).thenReturn(flowOf(null))
         wishlistViewModel.getWishlists()
         wishlistViewModel.resultWishlist.observeForever {
-            assertEquals(null, it)
+            Assert.assertEquals(null, it)
         }
     }
 }

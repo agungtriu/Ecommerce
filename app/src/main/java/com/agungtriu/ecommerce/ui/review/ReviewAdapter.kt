@@ -10,7 +10,6 @@ import com.agungtriu.ecommerce.core.remote.model.response.DataReview
 import com.agungtriu.ecommerce.databinding.ItemReviewBinding
 import com.bumptech.glide.Glide
 
-
 class ReviewAdapter : ListAdapter<DataReview, ReviewAdapter.ViewHolder>(callback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(
@@ -25,7 +24,6 @@ class ReviewAdapter : ListAdapter<DataReview, ReviewAdapter.ViewHolder>(callback
     inner class ViewHolder(private val binding: ItemReviewBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DataReview) {
-
             Glide.with(itemView.context)
                 .load(item.userImage)
                 .placeholder(R.drawable.ic_account_outline_circle)
@@ -45,7 +43,6 @@ class ReviewAdapter : ListAdapter<DataReview, ReviewAdapter.ViewHolder>(callback
 
             override fun areContentsTheSame(oldItem: DataReview, newItem: DataReview): Boolean =
                 oldItem.userReview == newItem.userReview
-
         }
     }
 }

@@ -7,7 +7,6 @@ data class ResponseSearch(
     @field:SerializedName("code")
     val code: Int? = null,
 
-
     @field:SerializedName("message")
     val message: String? = null,
 

@@ -76,7 +76,6 @@ class ApiServiceTest {
         assertEquals(expectedData, actualData)
     }
 
-
     @Test
     fun postRefreshToken() = runTest {
         val response = MockResponse()
@@ -182,7 +181,8 @@ class ApiServiceTest {
 
         val actualData = apiService.postFulfillment(
             requestFulfillment = RequestFulfillment(
-                payment = "", items = listOf(
+                payment = "",
+                items = listOf(
                     ProductFulfillment(productId = "", variantName = "", quantity = 1)
                 )
             )
@@ -193,7 +193,6 @@ class ApiServiceTest {
 
     @Test
     fun postRating() = runTest {
-
         val response = MockResponse()
             .setResponseCode(HttpURLConnection.HTTP_OK)
             .setBody(Helper.readTestResourceFile("rating.json"))

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.core.os.bundleOf
 import androidx.core.view.forEach
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.setFragmentResult
 import com.agungtriu.ecommerce.R
@@ -30,7 +31,6 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
 
     private lateinit var analytics: FirebaseAnalytics
 
-
     private var filterModel: FilterModel = FilterModel()
     private var sortStatus = false
     private var categoryStatus = false
@@ -43,7 +43,8 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         val contextThemeWrapper = ContextThemeWrapper(requireActivity(), R.style.Theme_Ecommerce)
@@ -133,7 +134,7 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
                 if (it?.isNotEmpty() == true) {
                     filterModel.min = it.toString().toInt()
                 }
-            } catch (t: Throwable) {
+            } catch (e: NumberFormatException) {
                 binding.tietBottomsheetfilterMin.setText(filterModel.min.toString())
                 binding.tietBottomsheetfilterMin.setSelection(filterModel.min.toString().length)
                 binding.tietBottomsheetfilterMin.error =
@@ -142,14 +143,13 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
             statusReset(sortStatus, categoryStatus, minPriceStatus, maxPriceStatus)
         }
 
-
         binding.tietBottomsheetfilterMax.addTextChangedListener {
             maxPriceStatus = it?.isNotEmpty() ?: false
             try {
                 if (it?.isNotEmpty() == true) {
                     filterModel.max = it.toString().toInt()
                 }
-            } catch (t: Throwable) {
+            } catch (e: NumberFormatException) {
                 binding.tietBottomsheetfilterMax.setText(filterModel.max.toString())
                 binding.tietBottomsheetfilterMax.setSelection(filterModel.max.toString().length)
                 binding.tietBottomsheetfilterMax.error =
@@ -201,11 +201,8 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
         minPriceStatus: Boolean,
         maxPriceStatus: Boolean
     ) {
-        if (sortStatus || categoryStatus || minPriceStatus || maxPriceStatus) {
-            binding.btnBottomsheetfilterReset.visibility = View.VISIBLE
-        } else {
-            binding.btnBottomsheetfilterReset.visibility = View.GONE
-        }
+        binding.btnBottomsheetfilterReset.isVisible =
+            sortStatus || categoryStatus || minPriceStatus || maxPriceStatus
     }
 
     override fun onDestroyView() {

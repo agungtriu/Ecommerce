@@ -6,7 +6,7 @@ import com.agungtriu.ecommerce.utils.DataDummy
 import com.agungtriu.ecommerce.utils.MainDispatcherRule
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -35,10 +35,12 @@ class NotificationViewModelTest {
 
     @Test
     fun getResultNotifications_success_notNull() = runTest {
-        whenever(notificationRepository.selectNotifications()).thenReturn(flowOf(listOf(DataDummy.dummyNotificationEntity)))
+        whenever(
+            notificationRepository.selectNotifications()
+        ).thenReturn(flowOf(listOf(DataDummy.dummyNotificationEntity)))
         notificationViewModel.selectNotifications()
         notificationViewModel.resultNotifications.observeForever {
-            assertEquals(listOf(DataDummy.dummyNotificationEntity), it)
+            Assert.assertEquals(listOf(DataDummy.dummyNotificationEntity), it)
         }
     }
 
@@ -47,7 +49,7 @@ class NotificationViewModelTest {
         whenever(notificationRepository.selectNotifications()).thenReturn(flowOf(null))
         notificationViewModel.selectNotifications()
         notificationViewModel.resultNotifications.observeForever {
-            assertEquals(null, it)
+            Assert.assertEquals(null, it)
         }
     }
 }

@@ -33,6 +33,7 @@ import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import java.net.HttpURLConnection
 
 @AndroidEntryPoint
 class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::inflate) {
@@ -72,9 +73,11 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
         gridLayoutManager = GridLayoutManager(view?.context, viewType)
         binding.rvStore.layoutManager = gridLayoutManager
         storeAdapter.setItemViewType(viewType)
-        binding.rvStore.adapter = storeAdapter.withLoadStateFooter(footer = LoadingStateAdapter {
-            storeAdapter.retry()
-        })
+        binding.rvStore.adapter = storeAdapter.withLoadStateFooter(
+            footer = LoadingStateAdapter {
+                storeAdapter.retry()
+            }
+        )
 
         gridLayoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
@@ -85,16 +88,18 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
 
     private fun listener() {
         binding.ibStoreView.setOnClickListener {
-            if (viewModel.isGrid) {
-                analytics.logEvent("btn_store_view_linear", null)
-            } else {
-                analytics.logEvent("btn_store_view_grid", null)
-            }
+            analytics.logEvent(
+                if (viewModel.isGrid) "btn_store_view_linear" else "btn_store_view_grid",
+                null
+            )
+
             viewModel.isGrid = !viewModel.isGrid
             val position = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
             setLayout()
             gridLayoutManager.scrollToPosition(position)
-            binding.ibStoreView.setBackgroundResource(if (viewModel.isGrid) R.drawable.ic_linear_view else R.drawable.ic_grid_view)
+            binding.ibStoreView.setBackgroundResource(
+                if (viewModel.isGrid) R.drawable.ic_linear_view else R.drawable.ic_grid_view
+            )
         }
 
         binding.swiperStore.setOnRefreshListener {
@@ -134,7 +139,8 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
 
     private fun resultListener() {
         childFragmentManager.setFragmentResultListener(
-            FILTER_KEY, viewLifecycleOwner
+            FILTER_KEY,
+            viewLifecycleOwner
         ) { _, bundle ->
             filterModel = if (VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                 bundle.getParcelable(RESULT_FILTER_KEY, FilterModel::class.java)
@@ -143,7 +149,6 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
             } ?: FilterModel()
 
             observeFilter(filterModel)
-
 
             viewModel.requestProducts = RequestProducts(
                 search = viewModel.requestProducts.search,
@@ -156,7 +161,8 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
         }
 
         childFragmentManager.setFragmentResultListener(
-            SEARCH_KEY, viewLifecycleOwner
+            SEARCH_KEY,
+            viewLifecycleOwner
         ) { _, bundle ->
             querySearch = bundle.getString(RESULT_SEARCH_KEY)
             binding.tietStoreSearch.setText(querySearch)
@@ -213,16 +219,20 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
     private fun observeFilter(filterModel: FilterModel) {
         binding.chipgroupBottomshettfilter.removeAllViews()
         addChip(
-            !filterModel.sort.isNullOrBlank(), filterModel.sort
+            !filterModel.sort.isNullOrBlank(),
+            filterModel.sort
         )
         addChip(
-            !filterModel.category.isNullOrBlank(), filterModel.category
+            !filterModel.category.isNullOrBlank(),
+            filterModel.category
         )
         addChip(
-            filterModel.min != null, "> ".plus(filterModel.min?.toRupiah())
+            filterModel.min != null,
+            "> ".plus(filterModel.min?.toRupiah())
         )
         addChip(
-            filterModel.max != null, "< ".plus(filterModel.max?.toRupiah())
+            filterModel.max != null,
+            "< ".plus(filterModel.max?.toRupiah())
         )
 
         var bundles = arrayOf(bundleOf())
@@ -283,7 +293,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
                             viewModel.error = error
                         }
                         when (viewModel.error.code) {
-                            404 -> {
+                            HttpURLConnection.HTTP_NOT_FOUND -> {
                                 binding.layoutStoreError.btnErrorResetRefresh.text =
                                     getString(R.string.all_reset)
                                 binding.layoutStoreError.tvErrorTitle.text =
@@ -292,7 +302,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
                                     getString(R.string.store_empty_desc)
                             }
 
-                            503 -> {
+                            HttpURLConnection.HTTP_GATEWAY_TIMEOUT -> {
                                 binding.layoutStoreError.btnErrorResetRefresh.text =
                                     getString(R.string.all_refresh)
                                 binding.layoutStoreError.tvErrorTitle.text =
@@ -342,5 +352,4 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
         const val TO_FILTER_KEY = "FilterKey"
         const val TO_SEARCH_KEY = "SearchKey"
     }
-
 }

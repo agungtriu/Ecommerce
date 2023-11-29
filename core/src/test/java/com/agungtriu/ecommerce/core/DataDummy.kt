@@ -67,7 +67,6 @@ object DataDummy {
         )
     )
 
-
     val dummyProfileResponse = ResponseProfile(
         code = 200,
         message = "OK",
@@ -204,7 +203,8 @@ object DataDummy {
                         status = true
                     ),
                 )
-            ), DataTypePayment(
+            ),
+            DataTypePayment(
                 title = "Transfer Bank",
                 item = listOf(
                     DataPayment(
@@ -229,7 +229,8 @@ object DataDummy {
                         status = true
                     )
                 )
-            ), DataTypePayment(
+            ),
+            DataTypePayment(
                 title = "Pembayaran Instan",
                 item = listOf(
                     DataPayment(
@@ -237,7 +238,8 @@ object DataDummy {
                         image = "https://gopay.co.id/icon.png",
                         status = true
 
-                    ), DataPayment(
+                    ),
+                    DataPayment(
                         label = "OVO",
                         image = "https://theme.zdassets.com/theme_assets/1379487/2cb35fe96fa1191f49c2b769b50cf8b546fff65e.png",
                         status = true
@@ -340,7 +342,6 @@ object DataDummy {
         time = "12:34",
         isRead = true
     )
-
 
     val dummyWishlistEntity = WishlistEntity(
         id = "17b4714d-527a-4be2-84e2-e4c37c2b3292",

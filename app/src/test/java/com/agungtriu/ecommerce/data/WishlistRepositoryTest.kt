@@ -6,8 +6,7 @@ import com.agungtriu.ecommerce.utils.DataDummy
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
-
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,7 +35,7 @@ class WishlistRepositoryTest {
         ).thenReturn(flowOf(listOf(DataDummy.dummyWishlistEntity)))
 
         val actual = wishlistRepository.getWishlists().first()
-        assertEquals(listOf(DataDummy.dummyWishlistEntity), actual)
+        Assert.assertEquals(listOf(DataDummy.dummyWishlistEntity), actual)
     }
 
     @Test
@@ -47,7 +46,7 @@ class WishlistRepositoryTest {
         ).thenReturn(flowOf(null))
 
         val actual = wishlistRepository.getWishlists().first()
-        assertEquals(null, actual)
+        Assert.assertEquals(null, actual)
     }
 
     @Test
@@ -58,7 +57,7 @@ class WishlistRepositoryTest {
         ).thenReturn(flowOf(DataDummy.dummyWishlistEntity))
 
         val actual = wishlistRepository.getWishlistById("").first()
-        assertEquals(DataDummy.dummyWishlistEntity, actual)
+        Assert.assertEquals(DataDummy.dummyWishlistEntity, actual)
     }
 
     @Test
@@ -69,6 +68,6 @@ class WishlistRepositoryTest {
         ).thenReturn(flowOf(null))
 
         val actual = wishlistRepository.getWishlistById("").first()
-        assertEquals(null, actual)
+        Assert.assertEquals(null, actual)
     }
 }

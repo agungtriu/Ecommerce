@@ -14,7 +14,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -53,7 +53,7 @@ class CheckoutViewModelTest {
         list = savedStateHandle.get<List<CartEntity>>(CHECKOUT_KEY)!!
         checkoutViewModel = CheckoutViewModel(checkoutRepository, savedStateHandle)
         checkoutViewModel.listProduct.observeForever {
-            assertEquals(listOf(DataDummy.dummyCartEntity), it)
+            Assert.assertEquals(listOf(DataDummy.dummyCartEntity), it)
         }
     }
 
@@ -62,7 +62,7 @@ class CheckoutViewModelTest {
         val expectedPayment = DataDummy.dummyPaymentsResponse.data?.get(0)?.item?.get(0)
         checkoutViewModel.setDataPayment(expectedPayment)
         checkoutViewModel.dataPayment.observeForever {
-            assertEquals(expectedPayment, it)
+            Assert.assertEquals(expectedPayment, it)
         }
     }
 
@@ -70,7 +70,7 @@ class CheckoutViewModelTest {
     fun getDataPayment_success_null() {
         checkoutViewModel.setDataPayment(null)
         checkoutViewModel.dataPayment.observeForever {
-            assertEquals(null, it)
+            Assert.assertEquals(null, it)
         }
     }
 
@@ -97,7 +97,7 @@ class CheckoutViewModelTest {
             }
 
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyFulfillmentResponse.data!!)
@@ -129,7 +129,7 @@ class CheckoutViewModelTest {
             }
 
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyFulfillmentErrorResponse)

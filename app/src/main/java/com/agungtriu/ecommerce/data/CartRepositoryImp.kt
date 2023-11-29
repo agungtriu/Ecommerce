@@ -1,6 +1,6 @@
 package com.agungtriu.ecommerce.data
 
-import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
+import com.agungtriu.ecommerce.core.remote.model.response.stockUnavailableError
 import com.agungtriu.ecommerce.core.room.AppDatabase
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.helper.ViewState
@@ -12,6 +12,7 @@ import javax.inject.Inject
 class CartRepositoryImp @Inject constructor(private val appDatabase: AppDatabase) : CartRepository {
 
     override fun insertCart(cartEntity: CartEntity): Flow<ViewState<String>> = flow {
+        emit(ViewState.Loading)
         val check = appDatabase.cartDao().selectCartById(cartEntity.id).first()
         if (check != null) {
             if ((check.stock ?: 0) > (check.quantity ?: 0)) {
@@ -31,7 +32,7 @@ class CartRepositoryImp @Inject constructor(private val appDatabase: AppDatabase
                 )
                 emit(ViewState.Success("quantity"))
             } else {
-                emit(ViewState.Error(ResponseError(404, "stock tidak tersedia")))
+                emit(ViewState.Error(stockUnavailableError))
             }
         } else {
             appDatabase.cartDao().insertCart(cartEntity)

@@ -49,7 +49,6 @@ interface ApiService {
         @Body token: RequestRefresh
     ): ResponseRefresh
 
-
     @POST("products")
     suspend fun getProducts(
         @Query("search") search: String? = null,
@@ -91,5 +90,4 @@ interface ApiService {
 
     @GET("transaction")
     suspend fun getTransactions(): ResponseTransaction
-
 }

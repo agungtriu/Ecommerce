@@ -19,5 +19,4 @@ interface WishlistDao {
 
     @Query("DELETE FROM wishlists WHERE id = :id")
     suspend fun deleteWishlistById(id: String)
-
 }

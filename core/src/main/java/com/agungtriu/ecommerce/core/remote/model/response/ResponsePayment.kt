@@ -25,7 +25,6 @@ data class DataTypePayment(
     val title: String? = null
 )
 
-
 @Parcelize
 data class DataPayment(
 

@@ -128,7 +128,6 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
         }
     }
 
-
     private fun analyticsViewCart(bundle: Array<Bundle>, value: Double) {
         analytics.logEvent(FirebaseAnalytics.Event.VIEW_CART) {
             param(Param.ITEMS, bundle)

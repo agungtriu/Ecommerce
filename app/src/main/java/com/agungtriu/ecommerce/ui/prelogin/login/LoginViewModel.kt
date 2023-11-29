@@ -14,7 +14,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-
 @HiltViewModel
 class LoginViewModel @Inject constructor(private val preLoginRepository: PreLoginRepository) :
     ViewModel() {

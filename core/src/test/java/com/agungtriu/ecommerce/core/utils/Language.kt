@@ -1,3 +1,3 @@
 package com.agungtriu.ecommerce.core.utils
 
-enum class Language { en, id }
+enum class Language { EN, ID }

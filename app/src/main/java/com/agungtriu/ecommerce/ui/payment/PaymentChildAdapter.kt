@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.agungtriu.ecommerce.core.remote.model.response.DataPayment
 import com.agungtriu.ecommerce.databinding.ItemPaymentChildBinding
+import com.agungtriu.ecommerce.helper.Utils.alfaSize
 import com.agungtriu.ecommerce.ui.checkout.CheckoutFragment.Companion.RESULT_FROM_PAYMENT
 import com.bumptech.glide.Glide
 
@@ -32,11 +33,10 @@ class PaymentChildAdapter(
                 .load(item.image)
                 .into(binding.ivItemPaymentChild)
 
-
             if (item.status != true) {
                 binding.constraintItemPaymentChild.isClickable = false
                 binding.constraintItemPaymentChild.isEnabled = false
-                binding.constraintItemPaymentChild.alpha = 0.5f
+                binding.constraintItemPaymentChild.alpha = alfaSize
             } else {
                 binding.constraintItemPaymentChild.setOnClickListener {
                     val savedStateHandle = navController.previousBackStackEntry?.savedStateHandle
@@ -54,7 +54,6 @@ class PaymentChildAdapter(
 
             override fun areContentsTheSame(oldItem: DataPayment, newItem: DataPayment): Boolean =
                 oldItem.label == newItem.label
-
         }
     }
 }

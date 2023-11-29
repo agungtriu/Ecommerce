@@ -7,7 +7,7 @@ import com.agungtriu.ecommerce.utils.DataDummy
 import com.agungtriu.ecommerce.utils.MainDispatcherRule
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -40,14 +40,14 @@ class MainViewModelTest {
     fun getLoginStatus() = runTest {
         whenever(preLoginRepository.getLoginData()).thenReturn(flowOf(DataDummy.dummyLoginModel))
         val actual = mainViewModel.getLoginStatus()
-        assertEquals(DataDummy.dummyLoginModel.isLogin, actual)
+        Assert.assertEquals(DataDummy.dummyLoginModel.isLogin, actual)
     }
 
     @Test
     fun getAuthorizedStatus() = runTest {
         whenever(mainRepository.getAuthorizedStatus()).thenReturn(flowOf(DataDummy.dummyAuthorizeModel))
         mainViewModel.getAuthorizedStatus().observeForever {
-            assertEquals(DataDummy.dummyAuthorizeModel, it)
+            Assert.assertEquals(DataDummy.dummyAuthorizeModel, it)
         }
     }
 
@@ -55,7 +55,7 @@ class MainViewModelTest {
     fun getThemeLang() = runTest {
         whenever(mainRepository.getThemeLang()).thenReturn(flowOf(DataDummy.dummyThemeLangModel))
         mainViewModel.getThemeLang().observeForever {
-            assertEquals(DataDummy.dummyThemeLangModel, it)
+            Assert.assertEquals(DataDummy.dummyThemeLangModel, it)
         }
     }
 }

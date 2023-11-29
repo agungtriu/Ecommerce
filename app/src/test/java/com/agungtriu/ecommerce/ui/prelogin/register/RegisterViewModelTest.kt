@@ -11,7 +11,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -59,9 +59,10 @@ class RegisterViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
-                ViewState.Loading, ViewState.Success(DataDummy.dummyRegisterResponse.data!!)
+                ViewState.Loading,
+                ViewState.Success(DataDummy.dummyRegisterResponse.data!!)
             ),
             actual
         )
@@ -91,7 +92,7 @@ class RegisterViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyRegisterResponseEmailAlreadyRegister)

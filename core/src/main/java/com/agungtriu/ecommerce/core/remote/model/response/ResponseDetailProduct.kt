@@ -71,4 +71,3 @@ data class ProductVariantItem(
     @field:SerializedName("variantName")
     val variantName: String? = null
 ) : Parcelable
-

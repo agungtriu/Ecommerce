@@ -9,8 +9,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
-
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -51,7 +50,7 @@ class SearchViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(listOf("asus"))
@@ -75,7 +74,7 @@ class SearchViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError404Response)

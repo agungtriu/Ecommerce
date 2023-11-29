@@ -6,7 +6,7 @@ import com.agungtriu.ecommerce.utils.DataDummy
 import com.agungtriu.ecommerce.utils.MainDispatcherRule
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.assertEquals
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -14,7 +14,6 @@ import org.junit.runner.RunWith
 import org.mockito.junit.MockitoJUnitRunner
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
-
 
 @RunWith(MockitoJUnitRunner::class)
 class CartViewModelTest {
@@ -35,20 +34,20 @@ class CartViewModelTest {
     }
 
     @Test
-    fun getResultCarts_success_notNull() = runTest{
+    fun getResultCarts_success_notNull() = runTest {
         whenever(cartRepository.getCarts()).thenReturn(flowOf(listOf(DataDummy.dummyCartEntity)))
         cartViewModel.getCarts()
         cartViewModel.resultCarts.observeForever {
-            assertEquals(listOf(DataDummy.dummyCartEntity), it)
+            Assert.assertEquals(listOf(DataDummy.dummyCartEntity), it)
         }
     }
 
     @Test
-    fun getResultCarts_success_null() = runTest{
+    fun getResultCarts_success_null() = runTest {
         whenever(cartRepository.getCarts()).thenReturn(flowOf(listOf()))
         cartViewModel.getCarts()
         cartViewModel.resultCarts.observeForever {
-            assertEquals(0, it.size)
+            Assert.assertEquals(0, it.size)
         }
     }
 }

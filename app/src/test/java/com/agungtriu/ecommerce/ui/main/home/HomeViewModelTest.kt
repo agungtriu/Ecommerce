@@ -6,8 +6,7 @@ import com.agungtriu.ecommerce.utils.DataDummy
 import com.agungtriu.ecommerce.utils.MainDispatcherRule
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
-
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -20,7 +19,7 @@ import org.mockito.kotlin.whenever
 class HomeViewModelTest {
 
     @get:Rule
-    val rule= InstantTaskExecutorRule()
+    val rule = InstantTaskExecutorRule()
 
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
@@ -35,10 +34,10 @@ class HomeViewModelTest {
     }
 
     @Test
-    fun getThemeLang()= runTest{
+    fun getThemeLang() = runTest {
         whenever(mainRepository.getThemeLang()).thenReturn(flowOf(DataDummy.dummyThemeLangModel))
         homeViewModel.getThemeLang().observeForever {
-            assertEquals(DataDummy.dummyThemeLangModel, it)
+            Assert.assertEquals(DataDummy.dummyThemeLangModel, it)
         }
     }
 }

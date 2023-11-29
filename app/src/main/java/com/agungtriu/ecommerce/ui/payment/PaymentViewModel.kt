@@ -18,5 +18,4 @@ class PaymentViewModel @Inject constructor(
 
     fun updateFirebasePayment(): LiveData<ViewState<List<DataTypePayment>>> =
         checkoutRepository.updateFirebasePayments()
-
 }

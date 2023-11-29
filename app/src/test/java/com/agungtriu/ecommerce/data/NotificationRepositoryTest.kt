@@ -6,8 +6,7 @@ import com.agungtriu.ecommerce.utils.DataDummy
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
-
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -41,7 +40,7 @@ class NotificationRepositoryTest {
         )
 
         val actual = notificationRepository.selectNotifications().first()
-        assertEquals(listOf(DataDummy.dummyNotificationEntity), actual)
+        Assert.assertEquals(listOf(DataDummy.dummyNotificationEntity), actual)
     }
 
     @Test
@@ -54,6 +53,6 @@ class NotificationRepositoryTest {
         )
 
         val actual = notificationRepository.selectNotifications().first()
-        assertEquals(null, actual)
+        Assert.assertEquals(null, actual)
     }
 }

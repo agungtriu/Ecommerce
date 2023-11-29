@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -53,13 +53,13 @@ class MainRepositoryTest {
             flowOf(
                 ThemeLangModel(
                     isDark = true,
-                    language = Language.en.name
+                    language = Language.EN.name
                 )
             )
         )
         val actual = mainRepository.getThemeLang().first()
-        assertEquals(true, actual.isDark)
-        assertEquals(Language.en.name, actual.language)
+        Assert.assertEquals(true, actual.isDark)
+        Assert.assertEquals(Language.EN.name, actual.language)
     }
 
     @Test
@@ -72,7 +72,7 @@ class MainRepositoryTest {
             )
         )
         val actual = mainRepository.getAuthorizedStatus().first()
-        assertEquals(true, actual.isAuthorized)
+        Assert.assertEquals(true, actual.isAuthorized)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -87,7 +87,7 @@ class MainRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyProfileResponse.data)
@@ -109,7 +109,7 @@ class MainRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError401Response)
@@ -123,7 +123,7 @@ class MainRepositoryTest {
         whenever(appDatabase.cartDao()).thenReturn(cartDao)
         whenever(appDatabase.cartDao().selectCountCart()).thenReturn(flowOf(1))
         val actual = mainRepository.selectCountCart().first()
-        assertEquals(1, actual)
+        Assert.assertEquals(1, actual)
     }
 
     @Test
@@ -131,7 +131,7 @@ class MainRepositoryTest {
         whenever(appDatabase.cartDao()).thenReturn(cartDao)
         whenever(appDatabase.cartDao().selectCountCart()).thenReturn(flowOf(null))
         val actual = mainRepository.selectCountCart().first()
-        assertEquals(null, actual)
+        Assert.assertEquals(null, actual)
     }
 
     @Test
@@ -139,13 +139,14 @@ class MainRepositoryTest {
         whenever(appDatabase.notificationDao()).thenReturn(notificationDao)
         whenever(appDatabase.notificationDao().selectCountNotifications()).thenReturn(flowOf(1))
         val actual = mainRepository.selectCountNotification().first()
-        assertEquals(1, actual)
+        Assert.assertEquals(1, actual)
     }
+
     @Test
     fun selectCountNotification_success_null() = runTest {
         whenever(appDatabase.notificationDao()).thenReturn(notificationDao)
         whenever(appDatabase.notificationDao().selectCountNotifications()).thenReturn(flowOf(null))
         val actual = mainRepository.selectCountNotification().first()
-        assertEquals(null, actual)
+        Assert.assertEquals(null, actual)
     }
 }

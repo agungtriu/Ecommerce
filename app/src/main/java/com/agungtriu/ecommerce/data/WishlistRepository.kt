@@ -8,5 +8,4 @@ interface WishlistRepository {
     suspend fun deleteWishlist(id: String)
     fun getWishlists(): Flow<List<WishlistEntity>?>
     fun getWishlistById(id: String): Flow<WishlistEntity?>
-
 }

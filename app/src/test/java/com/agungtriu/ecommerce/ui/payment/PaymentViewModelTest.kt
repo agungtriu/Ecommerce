@@ -10,7 +10,7 @@ import com.agungtriu.ecommerce.utils.MainDispatcherRule
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -52,7 +52,7 @@ class PaymentViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyPaymentsResponse.data!!)
@@ -76,7 +76,7 @@ class PaymentViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError404Response)
@@ -97,7 +97,7 @@ class PaymentViewModelTest {
 
         paymentViewModel.updateFirebasePayment().observeForever {
             if (it is ViewState.Success) {
-                assertEquals(DataDummy.dummyPaymentsResponse.data, it.data)
+                Assert.assertEquals(DataDummy.dummyPaymentsResponse.data, it.data)
             }
         }
 
@@ -106,7 +106,7 @@ class PaymentViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyPaymentsResponse.data!!)
@@ -127,7 +127,7 @@ class PaymentViewModelTest {
 
         paymentViewModel.updateFirebasePayment().observeForever {
             if (it is ViewState.Success) {
-                assertEquals(DataDummy.dummyPaymentsResponse.data, it.data)
+                Assert.assertEquals(DataDummy.dummyPaymentsResponse.data, it.data)
             }
         }
 
@@ -136,7 +136,7 @@ class PaymentViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError404Response)

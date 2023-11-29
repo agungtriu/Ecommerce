@@ -82,9 +82,12 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(FragmentCheckoutB
         val currentBackStackEntry = findNavController().currentBackStackEntry
         val savedStateHandle = currentBackStackEntry?.savedStateHandle
         savedStateHandle?.getLiveData<DataPayment>(RESULT_FROM_PAYMENT)
-            ?.observe(currentBackStackEntry, Observer { result ->
-                viewModel.setDataPayment(result)
-            })
+            ?.observe(
+                currentBackStackEntry,
+                Observer { result ->
+                    viewModel.setDataPayment(result)
+                }
+            )
 
         viewModel.dataPayment.observe(viewLifecycleOwner) {
             if (it?.label != null) {
@@ -194,7 +197,6 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(FragmentCheckoutB
             param(Param.CURRENCY, "Rp")
             param(Param.VALUE, value)
             param(Param.PAYMENT_TYPE, payment)
-
         }
     }
 

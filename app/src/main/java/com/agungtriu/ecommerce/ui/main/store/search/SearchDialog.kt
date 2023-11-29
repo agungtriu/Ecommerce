@@ -28,7 +28,9 @@ class SearchDialog : DialogFragment() {
     private lateinit var adapter: SearchAdapter
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View {
         _binding = DialogSearchBinding.inflate(inflater, container, false)
         getArguments(arguments)

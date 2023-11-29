@@ -60,7 +60,6 @@ class NotificationAdapter(private val viewModel: NotificationViewModel) :
                     )
                 }
             }
-
         }
     }
 
@@ -75,7 +74,6 @@ class NotificationAdapter(private val viewModel: NotificationViewModel) :
                 oldItem: NotificationEntity,
                 newItem: NotificationEntity
             ): Boolean = oldItem.id == newItem.id
-
         }
     }
 }

@@ -54,13 +54,15 @@ class WishlistFragment : BaseFragment<FragmentWishlistBinding>(FragmentWishlistB
             val position = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
             setLayout()
             gridLayoutManager.scrollToPosition(position)
-            binding.ibWishlistView.setBackgroundResource(if (viewModel.isGrid) R.drawable.ic_linear_view else R.drawable.ic_grid_view)
+            binding.ibWishlistView.setBackgroundResource(
+                if (viewModel.isGrid) R.drawable.ic_linear_view else R.drawable.ic_grid_view
+            )
         }
     }
 
     private fun observeData() {
         viewModel.resultWishlist.observe(viewLifecycleOwner) {
-            if (it != null) {
+            if (!it.isNullOrEmpty()) {
                 binding.tvWishlistCount.text =
                     it.size.toString().plus(" ${getString(R.string.all_item)}")
                 adapter.submitList(it)

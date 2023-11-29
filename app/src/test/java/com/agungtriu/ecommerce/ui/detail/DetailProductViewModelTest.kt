@@ -16,7 +16,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -84,7 +84,7 @@ class DetailProductViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyProductByIdResponse.data!!)
@@ -114,11 +114,12 @@ class DetailProductViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError404Response)
-            ), actual
+            ),
+            actual
         )
     }
 
@@ -126,7 +127,7 @@ class DetailProductViewModelTest {
     fun getWishlistByProductId_success_found() = runTest {
         whenever(wishlistRepository.getWishlistById(id)).thenReturn(flowOf(DataDummy.dummyWishlistEntity))
         detailProductViewModel.getWishlistByProductId().observeForever {
-            assertEquals(DataDummy.dummyWishlistEntity, it)
+            Assert.assertEquals(DataDummy.dummyWishlistEntity, it)
         }
     }
 
@@ -134,7 +135,7 @@ class DetailProductViewModelTest {
     fun getWishlistByProductId_success_notFound() = runTest {
         whenever(wishlistRepository.getWishlistById(id)).thenReturn(flowOf(null))
         detailProductViewModel.getWishlistByProductId().observeForever {
-            assertEquals(null, it)
+            Assert.assertEquals(null, it)
         }
     }
 
@@ -183,7 +184,7 @@ class DetailProductViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success("cart")
@@ -234,7 +235,7 @@ class DetailProductViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success("quantity")
@@ -290,7 +291,7 @@ class DetailProductViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(

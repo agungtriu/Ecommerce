@@ -12,5 +12,4 @@ interface CartRepository {
     suspend fun deleteCartsSelected()
     fun getCarts(): Flow<List<CartEntity>?>
     fun getCartById(id: String): Flow<CartEntity?>
-
 }

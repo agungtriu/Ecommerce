@@ -11,8 +11,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
-
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -36,7 +35,7 @@ class StoreRepositoryTest {
     fun getProducts() = runTest {
         whenever(apiService.getProducts()).thenReturn(DataDummy.dummyProductsResponse)
         val actual = storeRepository.getProducts(requestProducts = RequestProducts()).first()
-        assertNotNull(actual)
+        Assert.assertNotNull(actual)
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -52,7 +51,7 @@ class StoreRepositoryTest {
                 actual.add(it)
             }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyProductByIdResponse.data)
@@ -74,7 +73,7 @@ class StoreRepositoryTest {
                 actual.add(it)
             }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError404Response)
@@ -92,7 +91,7 @@ class StoreRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyReviewByProductId.data)
@@ -110,7 +109,7 @@ class StoreRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError404Response)
@@ -129,7 +128,7 @@ class StoreRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummySearchResponse.data)
@@ -148,7 +147,7 @@ class StoreRepositoryTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError404Response)

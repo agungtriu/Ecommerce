@@ -49,7 +49,6 @@ class DetailProductViewModel @Inject constructor(
     fun getWishlistByProductId(): LiveData<WishlistEntity?> =
         wishlistRepository.getWishlistById(productId).asLiveData()
 
-
     fun insertWishlist(wishlistEntity: WishlistEntity) {
         viewModelScope.launch {
             wishlistRepository.insertWishlist(wishlistEntity)

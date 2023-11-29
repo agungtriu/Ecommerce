@@ -7,7 +7,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.os.LocaleListCompat
 
 object Utils {
-
+    const val rounded = 8
+    const val alfaSize = 0.5f
+    const val warningStock = 10
     fun closeSoftKeyboard(view: View, context: Context) {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)

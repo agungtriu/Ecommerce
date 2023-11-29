@@ -17,5 +17,4 @@ class MainDispatcherRule(private val dispatcher: TestDispatcher = StandardTestDi
 
     @OptIn(ExperimentalCoroutinesApi::class)
     override fun finished(description: Description) = Dispatchers.resetMain()
-
 }

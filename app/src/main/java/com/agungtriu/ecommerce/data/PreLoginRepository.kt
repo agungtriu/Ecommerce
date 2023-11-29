@@ -18,5 +18,4 @@ interface PreLoginRepository {
     suspend fun postLogin(requestLogin: RequestLogin): Flow<ViewState<DataLogin>>
 
     suspend fun getFirebaseToken(): String
-
 }

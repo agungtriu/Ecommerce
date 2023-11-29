@@ -6,8 +6,7 @@ import com.agungtriu.ecommerce.utils.DataDummy
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
-
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -37,7 +36,7 @@ class CartRepositoryTest {
         ).thenReturn(flowOf(listOf(DataDummy.dummyCartEntity)))
 
         val actual = cartRepository.getCarts().first()
-        assertEquals(listOf(DataDummy.dummyCartEntity), actual)
+        Assert.assertEquals(listOf(DataDummy.dummyCartEntity), actual)
     }
 
     @Test
@@ -48,7 +47,7 @@ class CartRepositoryTest {
         ).thenReturn(flowOf(null))
 
         val actual = cartRepository.getCarts().first()
-        assertEquals(null, actual)
+        Assert.assertEquals(null, actual)
     }
 
     @Test
@@ -59,7 +58,7 @@ class CartRepositoryTest {
         ).thenReturn(flowOf(DataDummy.dummyCartEntity))
 
         val actual = cartRepository.getCartById("").first()
-        assertEquals(DataDummy.dummyCartEntity, actual)
+        Assert.assertEquals(DataDummy.dummyCartEntity, actual)
     }
 
     @Test
@@ -70,6 +69,6 @@ class CartRepositoryTest {
         ).thenReturn(flowOf(null))
 
         val actual = cartRepository.getCartById("").first()
-        assertEquals(null, actual)
+        Assert.assertEquals(null, actual)
     }
 }

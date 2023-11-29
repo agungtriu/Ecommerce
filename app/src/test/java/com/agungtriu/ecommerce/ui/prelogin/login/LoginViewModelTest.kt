@@ -11,7 +11,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import org.junit.Assert.*
+import org.junit.Assert
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -41,9 +41,8 @@ class LoginViewModelTest {
     fun getOnBoardingStatus() {
         whenever(preLoginRepository.getOnboardingStatus()).thenReturn(flowOf(true))
         val actual = loginViewModel.getOnBoardingStatus()
-        assertEquals(true, actual)
+        Assert.assertEquals(true, actual)
     }
-
 
     @OptIn(ExperimentalCoroutinesApi::class)
     @Test
@@ -71,7 +70,7 @@ class LoginViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Success(DataDummy.dummyLoginResponse.data!!)
@@ -106,7 +105,7 @@ class LoginViewModelTest {
             actual.add(it)
         }
         advanceUntilIdle()
-        assertEquals(
+        Assert.assertEquals(
             listOf(
                 ViewState.Loading,
                 ViewState.Error(DataDummy.dummyError400Response)
