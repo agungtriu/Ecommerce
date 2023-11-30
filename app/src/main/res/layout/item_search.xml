@@ -5,6 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="24dp"
+    android:gravity="center_vertical"
+    android:drawablePadding="8dp"
+    android:includeFontPadding="false"
     android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
     app:drawableEndCompat="@drawable/ic_arrow_forward"
     app:drawableStartCompat="@drawable/ic_search" />

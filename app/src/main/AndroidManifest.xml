@@ -20,7 +20,8 @@
         <activity
             android:name=".ui.MainActivity"
             android:exported="true"
-            android:theme="@style/Theme.Ecommerce.Starting">
+            android:theme="@style/Theme.Ecommerce.Starting"
+            android:windowSoftInputMode="adjustPan|adjustResize">
             <nav-graph android:value="@navigation/app_navigation" />
 
             <intent-filter>

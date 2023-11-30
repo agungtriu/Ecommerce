@@ -67,7 +67,7 @@ class StatusFragment : BaseFragment<FragmentStatusBinding>(FragmentStatusBinding
                 if (viewModel.stateStatus == "transaction") {
                     findNavController().navigateUp()
                 } else {
-                    (requireActivity() as MainActivity).toMain()
+                    (requireActivity() as MainActivity).navigate(R.id.action_global_to_main_navigation)
                 }
             } else {
                 viewModel.postRating(
@@ -98,7 +98,10 @@ class StatusFragment : BaseFragment<FragmentStatusBinding>(FragmentStatusBinding
                         is ViewState.Success -> {
                             binding.btnStatusDone.visibility = View.VISIBLE
                             binding.pbStatus.isVisible = false
-                            (requireActivity() as MainActivity).toMain(bundle)
+                            (requireActivity() as MainActivity).navigate(
+                                R.id.action_global_to_main_navigation,
+                                bundle
+                            )
                         }
                     }
                 }

@@ -15,6 +15,7 @@ import androidx.fragment.app.setFragmentResult
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.databinding.BottomSheetFilterBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
+import com.agungtriu.ecommerce.helper.Sort
 import com.agungtriu.ecommerce.ui.main.store.StoreFragment.Companion.TO_FILTER_KEY
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -69,17 +70,21 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
             arguments?.getParcelable(TO_FILTER_KEY)
         } ?: FilterModel()
 
-        binding.chipgroupBottomshettfilterSort.forEach { chip ->
-            if ((chip as Chip).text == filterModel.sort) {
-                sortStatus = true
-                chip.isChecked = true
+        if (filterModel.sort != null) {
+            binding.chipgroupBottomshettfilterSort.forEach { chip ->
+                if ((chip as Chip).text == Sort.valueOf(filterModel.sort!!).en || (chip as Chip).text == Sort.valueOf(filterModel.sort!!).id) {
+                    sortStatus = true
+                    chip.isChecked = true
+                }
             }
         }
 
-        binding.chipgroupBottomshettfilterCategory.forEach { chip ->
-            if ((chip as Chip).text == filterModel.category) {
-                categoryStatus = true
-                chip.isChecked = true
+        if (filterModel.category != null) {
+            binding.chipgroupBottomshettfilterCategory.forEach { chip ->
+                if ((chip as Chip).text == filterModel.category) {
+                    categoryStatus = true
+                    chip.isChecked = true
+                }
             }
         }
 
@@ -111,11 +116,14 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
             } else {
                 sortStatus = true
                 val selectedChip = group.findViewById<Chip>(group.checkedChipId)
-                filterModel.sort = selectedChip.text.toString()
+                Sort.entries.forEach {
+                    if (selectedChip.text.toString() == it.en || selectedChip.text.toString() == it.id) {
+                        filterModel.sort = it.name
+                    }
+                }
             }
             statusReset(sortStatus, categoryStatus, minPriceStatus, maxPriceStatus)
         }
-
         binding.chipgroupBottomshettfilterCategory.setOnCheckedStateChangeListener { group, _ ->
             if (group.checkedChipId == -1) {
                 categoryStatus = false

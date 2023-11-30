@@ -84,19 +84,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-    fun toMain(bundle: Bundle? = null) {
-        navController.navigate(R.id.action_global_to_main_navigation, bundle)
-    }
-
-    fun toDetail(bundle: Bundle) {
-        navController.navigate(R.id.action_global_to_detail_fragment, bundle)
-    }
-
-    fun toCheckOut(bundle: Bundle) {
-        navController.navigate(R.id.action_global_to_checkout_fragment, bundle)
-    }
-
-    fun toStatus(bundle: Bundle) {
-        navController.navigate(R.id.action_global_to_status_fragment, bundle)
+    fun navigate(action: Int, bundle: Bundle? = null) {
+        navController.navigate(action, bundle)
     }
 }

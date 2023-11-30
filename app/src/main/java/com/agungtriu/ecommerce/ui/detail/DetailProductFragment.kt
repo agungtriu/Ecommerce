@@ -16,6 +16,7 @@ import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.databinding.FragmentDetailProductBinding
 import com.agungtriu.ecommerce.helper.Config.BASE_DEEPLINK
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
+import com.agungtriu.ecommerce.helper.Screen
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
@@ -46,11 +47,14 @@ class DetailProductFragment :
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        productDetail = DataDetailProduct()
         analytics = Firebase.analytics
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        adapter = DetailProductAdapter()
+        binding.vpDetailImage.adapter = adapter
         observeData()
         listener()
     }
@@ -88,6 +92,16 @@ class DetailProductFragment :
         viewModel.getWishlistByProductId().distinctUntilChanged().observe(viewLifecycleOwner) {
             if (it != null) {
                 wishlistState = true
+                if (viewModel.stateDetail == Screen.WISHLIST.name || viewModel.stateDetail == Screen.CART.name) {
+                    viewModel.selectedVariantName = it.variantName ?: ""
+                    viewModel.selectedVariantPrice = it.variantPrice ?: 0
+                } else if (viewModel.stateDetail == Screen.STORE.name) {
+                    viewModel.selectedVariantName =
+                        productDetail.productVariant?.get(0)?.variantName ?: ""
+                    viewModel.selectedVariantPrice = (productDetail.productPrice?.plus(
+                        (productDetail.productVariant?.get(0)?.variantPrice ?: 0)
+                    )) ?: 0
+                }
                 binding.ivDetailWishlist.setBackgroundResource(R.drawable.ic_favorite)
                 if (wishlistPress) {
                     Snackbar.make(
@@ -113,6 +127,13 @@ class DetailProductFragment :
                         }",
                         Snackbar.LENGTH_LONG
                     ).show()
+                } else {
+                    viewModel.selectedVariantName =
+                        productDetail.productVariant?.get(0)?.variantName ?: ""
+                    viewModel.selectedVariantPrice = (productDetail.productPrice?.plus(
+                        (productDetail.productVariant?.get(0)?.variantPrice ?: 0)
+                    )) ?: 0
+
                 }
             }
             wishlistPress = false
@@ -140,7 +161,7 @@ class DetailProductFragment :
                 viewModel.deleteWishlistById(productDetail.productId!!)
             } else {
                 analytics.logEvent("btn_detail_wishlist_insert", null)
-                viewModel.insertWishlist(productDetail.toWishlist())
+                viewModel.insertWishlist(productDetail.toWishlist(viewModel))
                 analyticsEvent(FirebaseAnalytics.Event.ADD_TO_WISHLIST)
             }
         }
@@ -173,8 +194,8 @@ class DetailProductFragment :
                 putExtra(
                     Intent.EXTRA_TEXT,
                     "${getString(R.string.all_name)} : ${productDetail.productName}\n" +
-                        "${getString(R.string.all_price)} : ${productDetail.productPrice?.toRupiah()}\n" +
-                        "${getString(R.string.all_link)} : $BASE_DEEPLINK${productDetail.productId}"
+                            "${getString(R.string.all_price)} : ${productDetail.productPrice?.toRupiah()}\n" +
+                            "${getString(R.string.all_link)} : $BASE_DEEPLINK${productDetail.productId}"
                 )
                 type = "text/plain"
             }
@@ -185,7 +206,7 @@ class DetailProductFragment :
 
         binding.btnDetailCart.setOnClickListener {
             analytics.logEvent("btn_detail_cart", null)
-            viewModel.addCart(productDetail.toCart()).observe(viewLifecycleOwner) {
+            viewModel.addCart(productDetail.toCart(viewModel)).observe(viewLifecycleOwner) {
                 when (it) {
                     is ViewState.Loading -> binding.pbDetail.visibility = View.VISIBLE
                     is ViewState.Success -> {
@@ -227,21 +248,26 @@ class DetailProductFragment :
             analytics.logEvent("btn_detail_buy", null)
             analyticsEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT)
 
-            (requireActivity() as MainActivity).toCheckOut(
-                bundle = bundleOf(CheckoutFragment.CHECKOUT_KEY to listOf(productDetail.toCart()))
+            (requireActivity() as MainActivity).navigate(
+                action = R.id.action_global_to_checkout_fragment,
+                bundle = bundleOf(
+                    CheckoutFragment.CHECKOUT_KEY to listOf(
+                        productDetail.toCart(
+                            viewModel
+                        )
+                    )
+                )
             )
         }
     }
 
     private fun sliderImage(images: List<String>) {
-        adapter = DetailProductAdapter()
-        binding.vpDetailImage.adapter = adapter
         adapter.submitList(images)
-
         if (adapter.itemCount > 1) {
             TabLayoutMediator(binding.tlDetail, binding.vpDetailImage) { tab, _ ->
                 tab.setCustomView(R.layout.custom_tab_indicator)
             }.attach()
+            binding.vpDetailImage.setCurrentItem(viewModel.sliderPosition ?: 0, false)
         } else {
             binding.tlDetail.visibility = View.GONE
         }
@@ -256,11 +282,8 @@ class DetailProductFragment :
             if (viewModel.selectedVariantName == "") {
                 chip.isChecked = true
                 viewModel.selectedVariantName = variant.variantName ?: ""
-                viewModel.selectedVariantPrice = (
-                    item.productPrice?.plus(
-                        (variant.variantPrice ?: 0)
-                    )
-                    ) ?: 0
+                viewModel.selectedVariantPrice =
+                    (item.productPrice?.plus((variant.variantPrice ?: 0))) ?: 0
                 binding.tvDetailPrice.text = viewModel.selectedVariantPrice.toRupiah()
             } else if (viewModel.selectedVariantName == variant.variantName) {
                 chip.isChecked = true
@@ -301,7 +324,7 @@ class DetailProductFragment :
         }
     }
 
-    private fun DataDetailProduct.toWishlist(): WishlistEntity {
+    private fun DataDetailProduct.toWishlist(viewModel: DetailProductViewModel): WishlistEntity {
         return WishlistEntity(
             id = this.productId ?: System.currentTimeMillis().toString(),
             image = this.image?.get(0),
@@ -317,7 +340,7 @@ class DetailProductFragment :
         )
     }
 
-    private fun DataDetailProduct.toCart(): CartEntity {
+    private fun DataDetailProduct.toCart(viewModel: DetailProductViewModel): CartEntity {
         return CartEntity(
             id = this.productId ?: System.currentTimeMillis().toString(),
             image = this.image?.get(0),
@@ -331,7 +354,13 @@ class DetailProductFragment :
         )
     }
 
+    override fun onDestroyView() {
+        viewModel.sliderPosition = binding.vpDetailImage.currentItem
+        super.onDestroyView()
+    }
+
     companion object {
         const val PRODUCT_ID_KEY = "productId"
+        const val FROM_KEY = "from"
     }
 }

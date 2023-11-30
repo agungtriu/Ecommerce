@@ -32,9 +32,11 @@ object AppModule {
     @Provides
     fun provideAuthAuthentication(
         dataStoreManager: DataStoreManager,
+        appDatabase: AppDatabase,
         chuckerInterceptor: ChuckerInterceptor,
         authInterceptor: AuthInterceptor
-    ): Authenticator = AuthAuthenticator(dataStoreManager, chuckerInterceptor, authInterceptor)
+    ): Authenticator =
+        AuthAuthenticator(dataStoreManager, appDatabase, chuckerInterceptor, authInterceptor)
 
     @Provides
     fun provideChuckerCollector(@ApplicationContext appContext: Context): ChuckerCollector {

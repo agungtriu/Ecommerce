@@ -27,9 +27,11 @@ class DetailProductViewModel @Inject constructor(
     ViewModel() {
 
     private val productId: String = savedStateHandle[DetailProductFragment.PRODUCT_ID_KEY] ?: ""
+    var stateDetail: String = savedStateHandle[DetailProductFragment.FROM_KEY] ?: ""
 
     var selectedVariantName = ""
     var selectedVariantPrice = 0
+    var sliderPosition: Int? = 0
 
     private val _resultDetail = MutableLiveData<ViewState<DataDetailProduct>>()
     val resultDetail: LiveData<ViewState<DataDetailProduct>> get() = _resultDetail

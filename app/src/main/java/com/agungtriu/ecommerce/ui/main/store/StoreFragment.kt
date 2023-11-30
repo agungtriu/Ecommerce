@@ -16,6 +16,8 @@ import com.agungtriu.ecommerce.databinding.FragmentStoreBinding
 import com.agungtriu.ecommerce.helper.Extension.toFilterModel
 import com.agungtriu.ecommerce.helper.Extension.toResponseError
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
+import com.agungtriu.ecommerce.helper.Language
+import com.agungtriu.ecommerce.helper.Sort
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.agungtriu.ecommerce.ui.main.store.filter.FilterBottomSheet
 import com.agungtriu.ecommerce.ui.main.store.filter.FilterBottomSheet.Companion.FILTER_KEY
@@ -50,6 +52,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
     private lateinit var chip: Chip
     private var querySearch: String? = null
     private var viewType: Int = 1
+    private var language: String? = Language.EN.name
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -177,13 +180,11 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
         }
     }
 
-    private fun addChip(condition: Boolean, text: String?) {
-        if (condition) {
-            chip = Chip(requireActivity())
-            chip.setTextAppearanceResource(R.style.Theme_Ecommerce_ChipGroup_Chip)
-            chip.text = text
-            binding.chipgroupBottomshettfilter.addView(chip)
-        }
+    private fun addChip(text: String?) {
+        chip = Chip(requireActivity())
+        chip.setTextAppearanceResource(R.style.Theme_Ecommerce_ChipGroup_Chip)
+        chip.text = text
+        binding.chipgroupBottomshettfilter.addView(chip)
     }
 
     private fun observeData() {
@@ -214,35 +215,38 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
                 }
             }
         }
+        viewModel.getLangTheme().observe(viewLifecycleOwner) {
+            language = it.language
+        }
     }
 
     private fun observeFilter(filterModel: FilterModel) {
         binding.chipgroupBottomshettfilter.removeAllViews()
-        addChip(
-            !filterModel.sort.isNullOrBlank(),
-            filterModel.sort
-        )
-        addChip(
-            !filterModel.category.isNullOrBlank(),
-            filterModel.category
-        )
-        addChip(
-            filterModel.min != null,
-            "> ".plus(filterModel.min?.toRupiah())
-        )
-        addChip(
-            filterModel.max != null,
-            "< ".plus(filterModel.max?.toRupiah())
-        )
+        if (filterModel.sort != null) {
+            addChip(
+                if (language == Language.EN.name) Sort.valueOf(filterModel.sort!!).en else Sort.valueOf(
+                    filterModel.sort!!
+                ).id
+            )
+        }
+        if (filterModel.category != null) {
+            addChip(filterModel.category)
+        }
+        if (filterModel.min != null) {
+            addChip("> ".plus(filterModel.min?.toRupiah()))
+        }
+        if (filterModel.max != null) {
+            addChip("< ".plus(filterModel.max?.toRupiah()))
+        }
 
         var bundles = arrayOf(bundleOf())
-        if (!filterModel.sort.isNullOrBlank()) {
+        if (filterModel.sort != null) {
             bundles += bundleOf(
                 Param.ITEM_NAME to filterModel.sort,
                 Param.ITEM_CATEGORY to "Sort"
             )
         }
-        if (!filterModel.category.isNullOrBlank()) {
+        if (filterModel.category != null) {
             bundles += bundleOf(
                 Param.ITEM_NAME to filterModel.category,
                 Param.ITEM_CATEGORY to "Category"
@@ -324,6 +328,11 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        observeFilter(viewModel.requestProducts.toFilterModel())
     }
 
     private fun showShimmer() {

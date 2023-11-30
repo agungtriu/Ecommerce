@@ -24,6 +24,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/poppins_600"
+        android:includeFontPadding="false"
         android:text="@string/all_username_hint"
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@id/tv_item_review_rating"
@@ -49,6 +50,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="8dp"
+        android:includeFontPadding="false"
         android:text="@string/all_lorem_ipsum"
         android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
         app:layout_constraintTop_toBottomOf="@id/tv_item_review_rating" />

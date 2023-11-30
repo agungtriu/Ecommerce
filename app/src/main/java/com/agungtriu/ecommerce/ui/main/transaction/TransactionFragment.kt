@@ -1,6 +1,7 @@
 package com.agungtriu.ecommerce.ui.main.transaction
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels

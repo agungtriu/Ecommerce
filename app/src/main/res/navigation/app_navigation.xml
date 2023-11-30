@@ -183,6 +183,11 @@
             <argument
                 android:name="productId"
                 app:argType="string" />
+
+            <argument
+                android:name="from"
+                android:defaultValue="STORE"
+                app:argType="string" />
             <action
                 android:id="@+id/action_detailProductFragment_to_reviewFragment"
                 app:destination="@id/reviewFragment" />

@@ -78,7 +78,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::i
 
                     binding.pbLogin.visibility = View.GONE
                     binding.btnLogin.visibility = View.VISIBLE
-                    (requireActivity() as MainActivity).toMain()
+                    (requireActivity() as MainActivity).navigate(R.id.action_global_to_main_navigation)
                 }
 
                 is ViewState.Error -> {

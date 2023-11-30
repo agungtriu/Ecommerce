@@ -12,6 +12,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
         android:fontFamily="@font/poppins_600"
+        android:includeFontPadding="false"
         android:text="@string/payment_virtual_account_hint"
         android:textColor="?attr/colorOnSurfaceVariant"
         android:textSize="16sp"

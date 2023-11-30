@@ -3,20 +3,25 @@ package com.agungtriu.ecommerce.ui.main.store
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
+import com.agungtriu.ecommerce.core.datastore.model.ThemeLangModel
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProducts
 import com.agungtriu.ecommerce.core.remote.model.response.Product
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
+import com.agungtriu.ecommerce.data.MainRepository
 import com.agungtriu.ecommerce.data.StoreRepository
+import com.agungtriu.ecommerce.ui.main.store.filter.FilterModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class StoreVideModel @Inject constructor(
-    private val storeRepository: StoreRepository
+    private val storeRepository: StoreRepository,
+    private val mainRepository: MainRepository
 ) : ViewModel() {
 
     private var _resultProducts = MutableLiveData<PagingData<Product>>()
@@ -36,4 +41,6 @@ class StoreVideModel @Inject constructor(
             }
         }
     }
+
+    fun getLangTheme(): LiveData<ThemeLangModel> = mainRepository.getThemeLang().asLiveData()
 }

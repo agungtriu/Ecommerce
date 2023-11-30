@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:drawablePadding="16dp"
         android:fontFamily="@font/poppins_500"
+        android:includeFontPadding="false"
         android:padding="16dp"
         android:text="@string/payment_virtual_account_hint"
         android:textColor="?attr/colorOnSurfaceVariant"

@@ -3,18 +3,20 @@ package com.agungtriu.ecommerce.ui.main
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.databinding.FragmentMainBinding
+import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.agungtriu.ecommerce.ui.status.StatusFragment.Companion.STATE_STATUS_KEY
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils.attachBadgeDrawable
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -26,6 +28,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     private lateinit var navController: NavController
     private lateinit var badgeWishlist: BadgeDrawable
     private lateinit var analytics: FirebaseAnalytics
+    private var screenWidth: Int = 0
+    private lateinit var wishlist: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,9 +42,18 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.fcv_main_fragment) as NavHostFragment
         navController = navHostFragment.findNavController()
-        binding.bnvMainFragment.setupWithNavController(navController)
+        screenWidth = getScreenWidth()
 
-        badgeWishlist = binding.bnvMainFragment.getOrCreateBadge(R.id.wishlistFragment)
+        // Select the appropriate layout
+        if (screenWidth < 600) {
+            binding.bnvMainFragment?.setupWithNavController(navController)
+            badgeWishlist = binding.bnvMainFragment!!.getOrCreateBadge(R.id.wishlistFragment)
+        } else if (screenWidth in 600..839) {
+            binding.nrvMainFragment?.setupWithNavController(navController)
+            badgeWishlist = binding.nrvMainFragment!!.getOrCreateBadge(R.id.wishlistFragment)
+        } else if (screenWidth > 840) {
+            binding.nvMainFragment?.setupWithNavController(navController)
+        }
 
         observeData()
         listener()
@@ -59,7 +72,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         }
 
         viewModel.getWishlists().observe(viewLifecycleOwner) {
-            if (it != null) {
+            if (it != null && screenWidth < 840) {
                 badgeWishlist.isVisible = it.isNotEmpty()
                 badgeWishlist.number = it.size
             }
@@ -88,7 +101,13 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         }
 
         if (arguments?.getString(STATE_STATUS_KEY) == "transaction") {
-            binding.bnvMainFragment.selectedItemId = R.id.transactionFragment
+            if (screenWidth < 600) {
+                binding.bnvMainFragment?.selectedItemId = R.id.transactionFragment
+            } else if (screenWidth in 600..839) {
+                binding.nrvMainFragment?.selectedItemId = R.id.transactionFragment
+            } else if (screenWidth > 840) {
+                binding.nvMainFragment?.menu?.getItem(3)?.isChecked = true
+            }
         }
     }
 
@@ -109,12 +128,42 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
                 R.id.btn_main_menu -> {
                     analytics.logEvent("btn_main_menu", null)
-                    Snackbar.make(requireView(), "coming soon", Snackbar.LENGTH_LONG).show()
+                    if (screenWidth > 840) {
+                        binding.dlMainFragment?.open()
+                    }
                     true
                 }
 
                 else -> false
             }
         }
+
+        binding.nvMainFragment?.setNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.homeFragment -> {
+                    binding.fcvMainFragment.findNavController().navigate(R.id.action_global_to_home_fragment)
+                }
+
+                R.id.storeFragment -> {
+                    binding.fcvMainFragment.findNavController().navigate(R.id.action_global_to_store_fragment)
+                }
+
+                R.id.wishlistFragment -> {
+                    binding.fcvMainFragment.findNavController().navigate(R.id.action_global_to_wishlist_fragment)
+                }
+
+                R.id.transactionFragment -> {
+                    binding.fcvMainFragment.findNavController().navigate(R.id.action_global_to_transaction_fragment)
+                }
+            }
+            menuItem.isChecked = true
+            binding.dlMainFragment?.close()
+            true
+        }
+    }
+
+    private fun getScreenWidth(): Int {
+        val displayMetrics = resources.displayMetrics
+        return displayMetrics.widthPixels
     }
 }

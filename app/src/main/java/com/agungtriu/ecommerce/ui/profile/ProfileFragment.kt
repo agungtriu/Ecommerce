@@ -48,6 +48,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerActivityResult()
+        observeData()
         listener()
 
         binding.tvProfileAgreement.setColor(
@@ -123,7 +124,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         binding.btnProfileFinish.setOnClickListener {
             analytics.logEvent("btn_profile_finish", null)
             closeSoftKeyboard(binding.tietProfileName, requireContext())
-            observeData()
 
             val textBody =
                 binding.tietProfileName.text.toString().toRequestBody("text/plain".toMediaType())

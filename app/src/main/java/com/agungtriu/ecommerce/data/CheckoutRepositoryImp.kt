@@ -7,6 +7,7 @@ import com.agungtriu.ecommerce.core.remote.model.request.RequestRating
 import com.agungtriu.ecommerce.core.remote.model.response.DataFulfillment
 import com.agungtriu.ecommerce.core.remote.model.response.DataTransaction
 import com.agungtriu.ecommerce.core.remote.model.response.DataTypePayment
+import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
 import com.agungtriu.ecommerce.data.firebase.RemoteConfig
 import com.agungtriu.ecommerce.helper.Extension.toResponseError
 import com.agungtriu.ecommerce.helper.ViewState
@@ -72,7 +73,11 @@ class CheckoutRepositoryImp @Inject constructor(
             val result = apiService.getTransactions()
             val data = result.data
             if (data != null) {
-                emit(ViewState.Success(data))
+                if (data.isNotEmpty()) {
+                    emit(ViewState.Success(data))
+                } else {
+                    emit(ViewState.Error(ResponseError(code = 404, message = "Not Found")))
+                }
             }
         } catch (t: Throwable) {
             emit(ViewState.Error(t.toResponseError()))

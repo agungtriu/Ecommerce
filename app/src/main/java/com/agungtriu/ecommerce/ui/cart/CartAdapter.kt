@@ -13,6 +13,7 @@ import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.databinding.ItemCartBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
+import com.agungtriu.ecommerce.helper.Screen
 import com.agungtriu.ecommerce.helper.Utils.rounded
 import com.agungtriu.ecommerce.helper.Utils.warningStock
 import com.agungtriu.ecommerce.ui.MainActivity
@@ -98,8 +99,11 @@ class CartAdapter(
         }
 
         binding.constraintItemCart.setOnClickListener {
-            val bundle = bundleOf(DetailProductFragment.PRODUCT_ID_KEY to item.id)
-            (activity as MainActivity).toDetail(bundle)
+            val bundle = bundleOf(
+                DetailProductFragment.PRODUCT_ID_KEY to item.id,
+                DetailProductFragment.FROM_KEY to Screen.CART.name
+            )
+            (activity as MainActivity).navigate(R.id.action_global_to_detail_fragment, bundle)
         }
     }
 

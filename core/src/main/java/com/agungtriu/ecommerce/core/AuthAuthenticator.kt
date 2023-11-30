@@ -5,6 +5,7 @@ import com.agungtriu.ecommerce.core.datastore.model.TokenModel
 import com.agungtriu.ecommerce.core.remote.ApiService
 import com.agungtriu.ecommerce.core.remote.model.request.RequestRefresh
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseRefresh
+import com.agungtriu.ecommerce.core.room.AppDatabase
 import com.agungtriu.ecommerce.core.utils.Config.API_BASE_URL
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import kotlinx.coroutines.flow.first
@@ -20,6 +21,7 @@ import javax.inject.Inject
 
 class AuthAuthenticator @Inject constructor(
     private val dataStoreManager: DataStoreManager,
+    private val appDatabase: AppDatabase,
     private val chuckerInterceptor: ChuckerInterceptor,
     private val authInterceptor: AuthInterceptor
 ) : Authenticator {
@@ -47,6 +49,7 @@ class AuthAuthenticator @Inject constructor(
                     }
                 } catch (e: Exception) {
                     dataStoreManager.deleteLoginStatus()
+                    appDatabase.clearAllTables()
                     return@runBlocking null
                 }
             }

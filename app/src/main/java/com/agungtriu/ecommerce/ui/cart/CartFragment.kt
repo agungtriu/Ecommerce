@@ -7,6 +7,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.databinding.FragmentCartBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
@@ -124,7 +125,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
             analyticsBeginCheckout(bundles, totalPay.toDouble())
 
             val bundle = bundleOf(CHECKOUT_KEY to selectedProducts)
-            (requireActivity() as MainActivity).toCheckOut(bundle)
+            (requireActivity() as MainActivity).navigate(R.id.action_global_to_checkout_fragment, bundle)
         }
     }
 

@@ -1,10 +1,13 @@
 package com.agungtriu.ecommerce.helper
 
+import android.content.Context
 import android.text.Spannable
 import android.text.style.ForegroundColorSpan
 import android.widget.TextView
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProducts
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
+import com.agungtriu.ecommerce.helper.Utils.filterCategoriesInt
+import com.agungtriu.ecommerce.helper.Utils.filterSortInt
 import com.agungtriu.ecommerce.ui.main.store.filter.FilterModel
 import com.google.gson.Gson
 import retrofit2.HttpException

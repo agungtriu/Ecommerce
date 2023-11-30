@@ -15,7 +15,7 @@
         android:id="@+id/storeFragment"
         android:name="com.agungtriu.ecommerce.ui.main.store.StoreFragment"
         android:label="@string/all_store"
-        tools:layout="@layout/fragment_store"/>
+        tools:layout="@layout/fragment_store" />
 
     <fragment
         android:id="@+id/wishlistFragment"
@@ -28,5 +28,27 @@
         android:name="com.agungtriu.ecommerce.ui.main.transaction.TransactionFragment"
         android:label="@string/all_transaction"
         tools:layout="@layout/fragment_transaction" />
+
+    <action
+        android:id="@+id/action_global_to_home_fragment"
+        app:destination="@id/homeFragment"
+        app:popUpTo="@id/bnv_navigation"
+        app:popUpToInclusive="true" />
+
+    <action
+        android:id="@+id/action_global_to_store_fragment"
+        app:destination="@id/storeFragment"
+        app:popUpTo="@id/bnv_navigation"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_to_wishlist_fragment"
+        app:destination="@id/wishlistFragment"
+        app:popUpTo="@id/bnv_navigation"
+        app:popUpToInclusive="true" />
+    <action
+        android:id="@+id/action_global_to_transaction_fragment"
+        app:destination="@id/transactionFragment"
+        app:popUpTo="@id/bnv_navigation"
+        app:popUpToInclusive="true" />
 
 </navigation>

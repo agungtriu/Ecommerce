@@ -112,7 +112,7 @@ class RegisterFragment : BaseFragment<FragmentRegisterBinding>(FragmentRegisterB
 
                     binding.pbRegister.visibility = View.GONE
                     binding.btnRegister.visibility = View.VISIBLE
-                    (requireActivity() as MainActivity).toMain()
+                    (requireActivity() as MainActivity).navigate(R.id.action_global_to_main_navigation)
                 }
 
                 is ViewState.Error -> {

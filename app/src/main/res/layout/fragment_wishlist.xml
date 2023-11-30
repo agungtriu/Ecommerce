@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:includeFontPadding="false"
             android:text="@string/wishlist_count_hint"
             android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyMedium"
             android:textColor="?attr/colorOnSurfaceVariant"

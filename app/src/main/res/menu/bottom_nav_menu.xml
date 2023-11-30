@@ -2,18 +2,22 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/homeFragment"
+        android:checkable="true"
         android:icon="@drawable/ic_home"
         android:title="@string/all_home" />
     <item
         android:id="@+id/storeFragment"
+        android:checkable="true"
         android:icon="@drawable/ic_store"
         android:title="@string/all_store" />
     <item
         android:id="@+id/wishlistFragment"
+        android:checkable="true"
         android:icon="@drawable/ic_favorite"
         android:title="@string/all_wishlist" />
     <item
         android:id="@+id/transactionFragment"
+        android:checkable="true"
         android:icon="@drawable/ic_list_alt"
         android:title="@string/all_transaction" />
 </menu>

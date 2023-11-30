@@ -12,8 +12,10 @@ import com.agungtriu.ecommerce.core.remote.model.response.Product
 import com.agungtriu.ecommerce.databinding.ItemStoreGridBinding
 import com.agungtriu.ecommerce.databinding.ItemStoreLinearBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
+import com.agungtriu.ecommerce.helper.Screen
 import com.agungtriu.ecommerce.helper.Utils.rounded
 import com.agungtriu.ecommerce.ui.MainActivity
+import com.agungtriu.ecommerce.ui.detail.DetailProductFragment.Companion.FROM_KEY
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment.Companion.PRODUCT_ID_KEY
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterInside
@@ -41,7 +43,8 @@ class StoreAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Product) {
             Glide.with(itemView.context).load(item.image)
-                .transform(CenterInside(), RoundedCorners(rounded)).placeholder(R.mipmap.ic_thumbnail)
+                .transform(CenterInside(), RoundedCorners(rounded))
+                .placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemStoreLinear)
 
             binding.tvItemStoreLinearTitle.text = item.productName
@@ -65,8 +68,14 @@ class StoreAdapter(
                         param(Param.ITEM_LIST_NAME, "Store")
                     }
 
-                    val bundle = bundleOf(PRODUCT_ID_KEY to item.productId)
-                    (activity as MainActivity).toDetail(bundle)
+                    val bundle = bundleOf(
+                        PRODUCT_ID_KEY to item.productId,
+                        FROM_KEY to Screen.STORE.name
+                    )
+                    (activity as MainActivity).navigate(
+                        R.id.action_global_to_detail_fragment,
+                        bundle
+                    )
                 }
             }
         }
@@ -99,8 +108,14 @@ class StoreAdapter(
                         param(Param.ITEM_LIST_NAME, "Store")
                     }
 
-                    val bundle = bundleOf(PRODUCT_ID_KEY to item.productId)
-                    (activity as MainActivity).toDetail(bundle)
+                    val bundle = bundleOf(
+                        PRODUCT_ID_KEY to item.productId,
+                        FROM_KEY to Screen.STORE.name
+                    )
+                    (activity as MainActivity).navigate(
+                        R.id.action_global_to_detail_fragment,
+                        bundle
+                    )
                 }
             }
         }

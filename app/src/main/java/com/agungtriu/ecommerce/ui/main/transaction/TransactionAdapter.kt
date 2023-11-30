@@ -36,7 +36,8 @@ class TransactionAdapter(private val activity: FragmentActivity) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DataTransaction) {
             Glide.with(itemView.context)
-                .load(item.image).transform(CenterInside(), RoundedCorners(rounded))
+                .load(item.image)
+                .transform(CenterInside(), RoundedCorners(rounded))
                 .placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemTransaction)
 
@@ -66,7 +67,7 @@ class TransactionAdapter(private val activity: FragmentActivity) :
                     ),
                     STATE_STATUS_KEY to "transaction"
                 )
-                (activity as MainActivity).toStatus(bundle)
+                (activity as MainActivity).navigate(R.id.action_global_to_status_fragment, bundle)
             }
         }
     }

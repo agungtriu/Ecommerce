@@ -46,6 +46,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionNext"
+            android:includeFontPadding="false"
             android:inputType="textEmailAddress"
             android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge" />
 
@@ -72,6 +73,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:imeOptions="actionSend"
+            android:includeFontPadding="false"
             android:inputType="textPassword"
             android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodyLarge" />
 
@@ -84,6 +86,7 @@
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="24dp"
         android:enabled="false"
+        android:includeFontPadding="false"
         android:text="@string/all_register"
         android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
         app:layout_constraintTop_toBottomOf="@id/til_register_password" />
@@ -103,6 +106,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:includeFontPadding="false"
         android:text="@string/register_separate"
         android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
         app:layout_constraintEnd_toStartOf="@id/divider_register_after"
@@ -126,6 +130,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginTop="16dp"
+        android:includeFontPadding="false"
         android:text="@string/all_login"
         android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
         app:layout_constraintTop_toBottomOf="@id/tv_register_separate" />
@@ -136,6 +141,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="24dp"
+        android:includeFontPadding="false"
         android:text="@string/all_agreement_register"
         android:textAlignment="center"
         android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
