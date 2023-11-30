@@ -12,6 +12,7 @@ import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.remote.model.response.DataTransaction
 import com.agungtriu.ecommerce.databinding.ItemTransactionBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
+import com.agungtriu.ecommerce.helper.Utils.rounded
 import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.status.StatusFragment
 import com.agungtriu.ecommerce.ui.status.StatusFragment.Companion.STATE_STATUS_KEY
@@ -35,16 +36,17 @@ class TransactionAdapter(private val activity: FragmentActivity) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DataTransaction) {
             Glide.with(itemView.context)
-                .load(item.image).transform(CenterInside(), RoundedCorners(8))
+                .load(item.image).transform(CenterInside(), RoundedCorners(rounded))
                 .placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemTransaction)
 
             binding.tvItemTransactionDate.text = item.date
             binding.tvItemTransactionStatus.text =
-                if (item.status == true)
+                if (item.status == true) {
                     itemView.context.getString(R.string.all_done)
-                else
+                } else {
                     itemView.context.getString(R.string.all_payment)
+                }
             binding.tvItemTransactionProductName.text = item.name
             binding.tvItemTransactionQuantity.text = item.items?.size.toString()
                 .plus(" ${itemView.context.getString(R.string.all_item)}")
@@ -80,7 +82,6 @@ class TransactionAdapter(private val activity: FragmentActivity) :
                 oldItem: DataTransaction,
                 newItem: DataTransaction
             ): Boolean = oldItem.invoiceId == newItem.invoiceId
-
         }
     }
 }

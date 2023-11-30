@@ -40,12 +40,10 @@ class PaymentParentAdapter(private val navController: NavController) :
             ): Boolean =
                 oldItem == newItem
 
-
             override fun areContentsTheSame(
                 oldItem: DataTypePayment,
                 newItem: DataTypePayment
             ): Boolean = oldItem.title == newItem.title
-
         }
     }
 }

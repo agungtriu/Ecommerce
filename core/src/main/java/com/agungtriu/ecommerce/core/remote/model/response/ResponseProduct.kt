@@ -13,7 +13,7 @@ data class ResponseProducts(
     @field:SerializedName("data")
     val data: DataProducts? = null,
 
-    )
+)
 
 data class DataProducts(
 

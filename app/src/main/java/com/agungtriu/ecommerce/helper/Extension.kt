@@ -9,7 +9,7 @@ import com.agungtriu.ecommerce.ui.main.store.filter.FilterModel
 import com.google.gson.Gson
 import retrofit2.HttpException
 import java.io.IOException
-
+import java.net.HttpURLConnection
 
 object Extension {
 
@@ -25,13 +25,14 @@ object Extension {
         )
     }
 
+    private const val section = 3
     fun Int.toRupiah(): String {
         val stringNumber = this.toString()
-        val rest = stringNumber.length % 3
+        val rest = stringNumber.length % section
         var rupiah = "Rp${stringNumber.slice(0 until rest)}"
         val thousand = stringNumber.slice(rest until stringNumber.length)
         for (index in thousand.indices) {
-            rupiah += if (index % 3 == 0) {
+            rupiah += if (index % section == 0) {
                 if (rest == 0 && index == 0) {
                     "${thousand[index]}"
                 } else {
@@ -53,7 +54,10 @@ object Extension {
             }
 
             is IOException -> {
-                ResponseError(code = 503, message = this.message.toString())
+                ResponseError(
+                    code = HttpURLConnection.HTTP_GATEWAY_TIMEOUT,
+                    message = this.message.toString()
+                )
             }
 
             else -> {
@@ -61,7 +65,6 @@ object Extension {
             }
         }
     }
-
 
     fun RequestProducts.toFilterModel(): FilterModel {
         return FilterModel(

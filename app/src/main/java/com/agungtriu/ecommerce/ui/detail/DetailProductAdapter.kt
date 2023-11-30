@@ -26,7 +26,6 @@ class DetailProductAdapter : ListAdapter<String, DetailProductAdapter.ViewHolder
                 .placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemImage)
         }
-
     }
 
     companion object {
@@ -36,7 +35,6 @@ class DetailProductAdapter : ListAdapter<String, DetailProductAdapter.ViewHolder
 
             override fun areContentsTheSame(oldItem: String, newItem: String): Boolean =
                 oldItem == newItem
-
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.agungtriu.ecommerce.ui.main.wishlist
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
@@ -83,62 +84,7 @@ class WishlistAdapter(
             binding.tvItemWishlistGridSold.text =
                 itemView.context.getString(R.string.item_sold_title).plus(" ${item.sale}")
             binding.tvItemWishlistGridStore.text = item.store
-            binding.btnWishlistRemoveGrid.setOnClickListener {
-                viewModel.deleteWishlistById(item.id)
-                viewModel.getWishlists()
-            }
-            binding.btnWishlistCartGrid.setOnClickListener {
-                viewModel.addCart(
-                    cartEntity = CartEntity(
-                        id = item.id,
-                        image = item.image,
-                        productName = item.productName,
-                        productPrice = item.productPrice,
-                        store = item.store,
-                        stock = item.stock,
-                        variantPrice = item.variantPrice,
-                        variantName = item.variantName
-                    )
-                ).observe(lifecycleOwner) {
-                    when (it) {
-                        is ViewState.Success -> {
-                            analyticsAddToCart(item)
-                            when (it.data) {
-                                "cart" -> {
-                                    Snackbar.make(
-                                        itemView,
-                                        itemView.context.getString(R.string.all_success_add_cart),
-                                        Snackbar.LENGTH_LONG
-                                    ).show()
-                                }
-
-                                "quantity" -> {
-                                    Snackbar.make(
-                                        itemView,
-                                        itemView.context.getString(R.string.all_success_update_quantity),
-                                        Snackbar.LENGTH_LONG
-                                    ).show()
-                                }
-                            }
-                        }
-
-                        is ViewState.Error -> {
-                            Snackbar.make(
-                                itemView,
-                                itemView.context.getString(R.string.all_stock_not_available),
-                                Snackbar.LENGTH_LONG
-                            ).show()
-                        }
-
-                        else -> {}
-                    }
-                }
-            }
-
-            binding.cvItemWishlistGrid.setOnClickListener {
-                val bundle = bundleOf(DetailProductFragment.PRODUCT_ID_KEY to item.id)
-                (activity as MainActivity).toDetail(bundle)
-            }
+            listenerGrid(binding, item, itemView)
         }
     }
 
@@ -154,69 +100,141 @@ class WishlistAdapter(
             binding.tvItemWishlistLinearSold.text =
                 itemView.context.getString(R.string.item_sold_title).plus(" ${item.sale}")
             binding.tvItemWishlistLinearStore.text = item.store
-            binding.btnWishlistRemoveLinear.setOnClickListener {
-                viewModel.deleteWishlistById(item.id)
-                viewModel.getWishlists()
-            }
-            binding.btnWishlistCartLinear.setOnClickListener {
-                viewModel.addCart(
-                    cartEntity = CartEntity(
-                        id = item.id,
-                        image = item.image,
-                        productName = item.productName,
-                        productPrice = item.productPrice,
-                        store = item.store,
-                        stock = item.stock,
-                        variantPrice = item.variantPrice,
-                        variantName = item.variantName
-                    )
-                ).observe(lifecycleOwner) {
-                    when (it) {
-                        is ViewState.Success -> {
-                            analyticsAddToCart(item)
-                            when (it.data) {
-                                "cart" -> {
-                                    Snackbar.make(
-                                        itemView,
-                                        itemView.context.getString(R.string.all_success_add_cart),
-                                        Snackbar.LENGTH_LONG
-                                    ).show()
-                                }
+            listenerLinear(binding, item, itemView)
+        }
+    }
 
-                                "quantity" -> {
-                                    Snackbar.make(
-                                        itemView,
-                                        itemView.context.getString(R.string.all_success_update_quantity),
-                                        Snackbar.LENGTH_LONG
-                                    ).show()
-                                }
+    private fun listenerGrid(
+        binding: ItemWishlistGridBinding,
+        item: WishlistEntity,
+        itemView: View
+    ) {
+        binding.btnWishlistRemoveGrid.setOnClickListener {
+            viewModel.deleteWishlistById(item.id)
+            viewModel.getWishlists()
+        }
+        binding.btnWishlistCartGrid.setOnClickListener {
+            viewModel.addCart(
+                cartEntity = CartEntity(
+                    id = item.id,
+                    image = item.image,
+                    productName = item.productName,
+                    productPrice = item.productPrice,
+                    store = item.store,
+                    stock = item.stock,
+                    variantPrice = item.variantPrice,
+                    variantName = item.variantName
+                )
+            ).observe(lifecycleOwner) {
+                when (it) {
+                    is ViewState.Success -> {
+                        analyticsAddToCart(item)
+                        when (it.data) {
+                            "cart" -> {
+                                Snackbar.make(
+                                    itemView,
+                                    itemView.context.getString(R.string.all_success_add_cart),
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            }
+
+                            "quantity" -> {
+                                Snackbar.make(
+                                    itemView,
+                                    itemView.context.getString(R.string.all_success_update_quantity),
+                                    Snackbar.LENGTH_LONG
+                                ).show()
                             }
                         }
-
-                        is ViewState.Error -> {
-                            Snackbar.make(
-                                itemView,
-                                itemView.context.getString(R.string.all_stock_not_available),
-                                Snackbar.LENGTH_LONG
-                            ).show()
-                        }
-
-                        else -> {}
                     }
+
+                    is ViewState.Error -> {
+                        Snackbar.make(
+                            itemView,
+                            itemView.context.getString(R.string.all_stock_not_available),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+
+                    else -> {}
                 }
             }
+        }
 
-            binding.cvItemWishlistLinear.setOnClickListener {
-                val bundle = bundleOf(DetailProductFragment.PRODUCT_ID_KEY to item.id)
-                (activity as MainActivity).toDetail(bundle)
+        binding.cvItemWishlistGrid.setOnClickListener {
+            val bundle = bundleOf(DetailProductFragment.PRODUCT_ID_KEY to item.id)
+            (activity as MainActivity).toDetail(bundle)
+        }
+    }
+
+    private fun listenerLinear(
+        binding: ItemWishlistLinearBinding,
+        item: WishlistEntity,
+        itemView: View
+    ) {
+        binding.btnWishlistRemoveLinear.setOnClickListener {
+            viewModel.deleteWishlistById(item.id)
+            viewModel.getWishlists()
+        }
+        binding.btnWishlistCartLinear.setOnClickListener {
+            viewModel.addCart(
+                cartEntity = CartEntity(
+                    id = item.id,
+                    image = item.image,
+                    productName = item.productName,
+                    productPrice = item.productPrice,
+                    store = item.store,
+                    stock = item.stock,
+                    variantPrice = item.variantPrice,
+                    variantName = item.variantName
+                )
+            ).observe(lifecycleOwner) {
+                when (it) {
+                    is ViewState.Success -> {
+                        analyticsAddToCart(item)
+                        when (it.data) {
+                            "cart" -> {
+                                Snackbar.make(
+                                    itemView,
+                                    itemView.context.getString(R.string.all_success_add_cart),
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            }
+
+                            "quantity" -> {
+                                Snackbar.make(
+                                    itemView,
+                                    itemView.context.getString(R.string.all_success_update_quantity),
+                                    Snackbar.LENGTH_LONG
+                                ).show()
+                            }
+                        }
+                    }
+
+                    is ViewState.Error -> {
+                        Snackbar.make(
+                            itemView,
+                            itemView.context.getString(R.string.all_stock_not_available),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+
+                    else -> {}
+                }
             }
+        }
+
+        binding.cvItemWishlistLinear.setOnClickListener {
+            val bundle = bundleOf(DetailProductFragment.PRODUCT_ID_KEY to item.id)
+            (activity as MainActivity).toDetail(bundle)
         }
     }
 
     private fun analyticsAddToCart(item: WishlistEntity) {
         analytics.logEvent(FirebaseAnalytics.Event.ADD_TO_CART) {
             param(
-                Param.ITEMS, bundleOf(
+                Param.ITEMS,
+                bundleOf(
                     Param.ITEM_ID to item.id,
                     Param.ITEM_NAME to item.productName,
                     Param.ITEM_VARIANT to item.variantName,
@@ -241,7 +259,6 @@ class WishlistAdapter(
                 newItem: WishlistEntity
             ): Boolean =
                 oldItem.id == newItem.id
-
         }
 
         const val VIEW_TYPE_ONE = 1

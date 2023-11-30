@@ -15,9 +15,9 @@ class WishlistRepositoryImp @Inject constructor(private val appDatabase: AppData
         appDatabase.wishlistDao().deleteWishlistById(id)
     }
 
-    override fun getWishlists(): Flow<List<WishlistEntity>> =
+    override fun getWishlists(): Flow<List<WishlistEntity>?> =
         appDatabase.wishlistDao().selectWishlists()
 
-    override fun getWishlistById(id: String): Flow<WishlistEntity> =
+    override fun getWishlistById(id: String): Flow<WishlistEntity?> =
         appDatabase.wishlistDao().selectWishlistById(id)
 }

@@ -40,9 +40,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
 
         binding.switchHomeLang.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
-                viewModel.setLanguage(Language.id.name)
+                viewModel.setLanguage(Language.ID.name)
             } else {
-                viewModel.setLanguage(Language.en.name)
+                viewModel.setLanguage(Language.EN.name)
             }
         }
     }
@@ -50,7 +50,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::infl
     private fun observeData() {
         viewModel.getThemeLang().observe(viewLifecycleOwner) {
             binding.switchHomeTheme.isChecked = it.isDark
-            binding.switchHomeLang.isChecked = it.language == Language.id.name
+            binding.switchHomeLang.isChecked = it.language == Language.ID.name
         }
     }
 }

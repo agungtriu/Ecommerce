@@ -42,9 +42,13 @@ class StatusFragment : BaseFragment<FragmentStatusBinding>(FragmentStatusBinding
     private fun setLayout() {
         binding.tvStatusId.text = viewModel.dataFulfillment.invoiceId
         binding.tvStatusStatus.text =
-            if (viewModel.dataFulfillment.status == true) getString(R.string.all_success) else getString(
-                R.string.all_fail
-            )
+            if (viewModel.dataFulfillment.status == true) {
+                getString(R.string.all_success)
+            } else {
+                getString(
+                    R.string.all_fail
+                )
+            }
         binding.tvStatusDate.text = viewModel.dataFulfillment.date
         binding.tvStatusTime.text = viewModel.dataFulfillment.time
         binding.tvStatusPayment.text = viewModel.dataFulfillment.payment

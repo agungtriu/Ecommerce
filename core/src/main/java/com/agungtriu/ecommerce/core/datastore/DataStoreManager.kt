@@ -98,12 +98,11 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         }
     }
 
-
     fun getThemeLang(): Flow<ThemeLangModel> {
         return dataStore.data.map { preferences ->
             ThemeLangModel(
                 isDark = preferences[THEME_KEY] ?: false,
-                language = preferences[LANGUAGE_KEY] ?: "en",
+                language = preferences[LANGUAGE_KEY] ?: "EN",
             )
         }
     }

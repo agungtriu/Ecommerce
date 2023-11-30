@@ -6,3 +6,8 @@ data class ResponseError(
     @field:SerializedName("code") val code: Int? = null,
     @field:SerializedName("message") val message: String? = null
 )
+
+val stockUnavailableError = ResponseError(
+    code = 404,
+    message = "stock tidak tersedia"
+)

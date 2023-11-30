@@ -17,4 +17,5 @@ interface PreLoginRepository {
     suspend fun postRegister(requestRegister: RequestRegister): Flow<ViewState<DataRegister>>
     suspend fun postLogin(requestLogin: RequestLogin): Flow<ViewState<DataLogin>>
 
+    suspend fun getFirebaseToken(): String
 }

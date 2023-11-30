@@ -43,7 +43,7 @@ class AuthAuthenticator @Inject constructor(
                             )
                             .build()
                     } else {
-                        throw Exception()
+                        throw Exception("Refresh token return null")
                     }
                 } catch (e: Exception) {
                     dataStoreManager.deleteLoginStatus()

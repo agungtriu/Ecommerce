@@ -49,16 +49,15 @@ interface ApiService {
         @Body token: RequestRefresh
     ): ResponseRefresh
 
-
     @POST("products")
     suspend fun getProducts(
-        @Query("search") search: String?,
-        @Query("brand") brand: String?,
-        @Query("lowest") lowest: Int?,
-        @Query("highest") highest: Int?,
-        @Query("sort") sort: String?,
-        @Query("limit") limit: Int?,
-        @Query("page") page: Int?,
+        @Query("search") search: String? = null,
+        @Query("brand") brand: String? = null,
+        @Query("lowest") lowest: Int? = null,
+        @Query("highest") highest: Int? = null,
+        @Query("sort") sort: String? = null,
+        @Query("limit") limit: Int? = null,
+        @Query("page") page: Int? = null,
     ): ResponseProducts
 
     @POST("search")
@@ -91,5 +90,4 @@ interface ApiService {
 
     @GET("transaction")
     suspend fun getTransactions(): ResponseTransaction
-
 }

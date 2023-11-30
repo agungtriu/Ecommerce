@@ -16,13 +16,11 @@ abstract class DataModule {
         preLoginRepositoryImp: PreLoginRepositoryImp
     ): PreLoginRepository
 
-
     @Singleton
     @Binds
     abstract fun bindMainRepository(
         mainRepositoryImp: MainRepositoryImp
     ): MainRepository
-
 
     @Singleton
     @Binds
@@ -30,13 +28,11 @@ abstract class DataModule {
         storeRepositoryImp: StoreRepositoryImp
     ): StoreRepository
 
-
     @Singleton
     @Binds
     abstract fun bindWishlistRepository(
         wishlistRepositoryImp: WishlistRepositoryImp
     ): WishlistRepository
-
 
     @Singleton
     @Binds
@@ -44,13 +40,11 @@ abstract class DataModule {
         cartRepositoryImp: CartRepositoryImp
     ): CartRepository
 
-
     @Singleton
     @Binds
     abstract fun bindCheckoutRepository(
         checkoutRepositoryImp: CheckoutRepositoryImp
     ): CheckoutRepository
-
 
     @Singleton
     @Binds

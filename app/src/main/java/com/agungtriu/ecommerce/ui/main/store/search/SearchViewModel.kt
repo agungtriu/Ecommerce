@@ -30,8 +30,12 @@ class SearchViewModel @Inject constructor(private val storeRepository: StoreRepo
     fun searchDebounced(query: String) {
         searchJob?.cancel()
         searchJob = viewModelScope.launch {
-            delay(1000)
+            delay(delayInMillis)
             postSearch(query)
         }
+    }
+
+    companion object {
+        private const val delayInMillis = 1000L
     }
 }

@@ -36,7 +36,6 @@ object AppModule {
         authInterceptor: AuthInterceptor
     ): Authenticator = AuthAuthenticator(dataStoreManager, chuckerInterceptor, authInterceptor)
 
-
     @Provides
     fun provideChuckerCollector(@ApplicationContext appContext: Context): ChuckerCollector {
         return ChuckerCollector(

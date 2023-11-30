@@ -16,5 +16,4 @@ interface CheckoutRepository {
     suspend fun postFulfillment(requestFulfillment: RequestFulfillment): Flow<ViewState<DataFulfillment>>
     suspend fun postRating(requestRating: RequestRating): Flow<ViewState<String>>
     suspend fun getTransactions(): Flow<ViewState<List<DataTransaction>>>
-
 }

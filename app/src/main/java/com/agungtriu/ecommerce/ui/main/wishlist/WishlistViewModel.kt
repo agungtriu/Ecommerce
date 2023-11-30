@@ -20,8 +20,8 @@ class WishlistViewModel @Inject constructor(
     private val cartRepository: CartRepository
 ) :
     ViewModel() {
-    private var _resultWishlists = MutableLiveData<List<WishlistEntity>>()
-    val resultWishlist: LiveData<List<WishlistEntity>> get() = _resultWishlists
+    private var _resultWishlists = MutableLiveData<List<WishlistEntity>?>()
+    val resultWishlist: LiveData<List<WishlistEntity>?> get() = _resultWishlists
 
     var isGrid = false
 

@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
         navController = navHostFragment.navController
     }
 
-
     private fun observeData() {
         if (!viewModel.getLoginStatus()) {
             navController.navigate(R.id.action_global_to_prelogin_navigation)
@@ -54,7 +53,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.getThemeLang().distinctUntilChanged().observe(this) {
-            AppCompatDelegate.setDefaultNightMode(if (it.isDark) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO)
+            AppCompatDelegate.setDefaultNightMode(
+                if (it.isDark) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+            )
             setLanguage(it.language)
         }
     }
@@ -62,8 +63,9 @@ class MainActivity : AppCompatActivity() {
     private fun checkNotificationPermission() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             val notificationPermission = Manifest.permission.POST_NOTIFICATIONS
-            if (!isPermissionsGranted(notificationPermission))
+            if (!isPermissionsGranted(notificationPermission)) {
                 requestPermissionLauncher.launch(notificationPermission)
+            }
         }
     }
 
@@ -77,10 +79,10 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
-            if (!isGranted)
+            if (!isGranted) {
                 finish()
+            }
         }
-
 
     fun toMain(bundle: Bundle? = null) {
         navController.navigate(R.id.action_global_to_main_navigation, bundle)
@@ -90,7 +92,6 @@ class MainActivity : AppCompatActivity() {
         navController.navigate(R.id.action_global_to_detail_fragment, bundle)
     }
 
-
     fun toCheckOut(bundle: Bundle) {
         navController.navigate(R.id.action_global_to_checkout_fragment, bundle)
     }
@@ -98,5 +99,4 @@ class MainActivity : AppCompatActivity() {
     fun toStatus(bundle: Bundle) {
         navController.navigate(R.id.action_global_to_status_fragment, bundle)
     }
-
 }

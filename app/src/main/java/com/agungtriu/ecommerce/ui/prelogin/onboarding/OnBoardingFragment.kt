@@ -46,7 +46,6 @@ class OnBoardingFragment :
         TabLayoutMediator(binding.tlOnboarding, binding.vpOnboarding) { tab, _ ->
             tab.setCustomView(R.layout.custom_tab_indicator)
         }.attach()
-
     }
 
     private fun listener() {

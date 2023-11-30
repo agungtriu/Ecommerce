@@ -12,6 +12,7 @@ import com.agungtriu.ecommerce.core.remote.model.response.Product
 import com.agungtriu.ecommerce.databinding.ItemStoreGridBinding
 import com.agungtriu.ecommerce.databinding.ItemStoreLinearBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
+import com.agungtriu.ecommerce.helper.Utils.rounded
 import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment.Companion.PRODUCT_ID_KEY
 import com.bumptech.glide.Glide
@@ -40,7 +41,7 @@ class StoreAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Product) {
             Glide.with(itemView.context).load(item.image)
-                .transform(CenterInside(), RoundedCorners(8)).placeholder(R.mipmap.ic_thumbnail)
+                .transform(CenterInside(), RoundedCorners(rounded)).placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemStoreLinear)
 
             binding.tvItemStoreLinearTitle.text = item.productName
@@ -54,7 +55,8 @@ class StoreAdapter(
                 if (item.productId != null) {
                     analytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
                         param(
-                            Param.ITEMS, bundleOf(
+                            Param.ITEMS,
+                            bundleOf(
                                 Param.ITEM_ID to item.productId,
                                 Param.ITEM_NAME to item.productName,
                                 Param.ITEM_BRAND to item.brand,

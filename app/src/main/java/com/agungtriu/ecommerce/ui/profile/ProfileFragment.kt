@@ -45,7 +45,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
         analytics = Firebase.analytics
     }
 
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         registerActivityResult()
@@ -76,7 +75,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             }
         }
 
-
         galleryResultLauncher = registerForActivityResult(
             ActivityResultContracts.PickVisualMedia()
         ) { uri: Uri? ->
@@ -88,7 +86,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                 }
             }
         }
-
     }
 
     private fun listener() {
@@ -137,14 +134,14 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
             val imagePart =
                 fileBody?.let { requestBody ->
                     MultipartBody.Part.createFormData(
-                        "userImage", file.name,
+                        "userImage",
+                        file.name,
                         requestBody
                     )
                 }
             viewModel.postProfile(
                 RequestProfile(userName = userNamePart, userImage = imagePart)
             )
-
         }
         binding.tietProfileName.addTextChangedListener {
             binding.btnProfileFinish.isEnabled = it?.length!! > 0
@@ -179,10 +176,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>(FragmentProfileBind
                     binding.btnProfileFinish.visibility = View.VISIBLE
                     Snackbar.make(requireView(), it.error.message ?: "", Snackbar.LENGTH_LONG)
                         .show()
-
                 }
             }
         }
     }
-
 }

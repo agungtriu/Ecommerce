@@ -1,8 +1,8 @@
 package com.agungtriu.ecommerce.ui.cart
 
 import android.graphics.Color
-import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
@@ -13,6 +13,8 @@ import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.databinding.ItemCartBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
+import com.agungtriu.ecommerce.helper.Utils.rounded
+import com.agungtriu.ecommerce.helper.Utils.warningStock
 import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment
 import com.bumptech.glide.Glide
@@ -43,12 +45,12 @@ class CartAdapter(
         fun bind(item: CartEntity) {
             Glide.with(itemView.context)
                 .load(item.image)
-                .transform(CenterInside(), RoundedCorners(8))
+                .transform(CenterInside(), RoundedCorners(rounded))
                 .into(binding.ivCart)
             binding.tvItemCartName.text = item.productName
             binding.tvItemCartPrice.text = item.variantPrice?.toRupiah()
             binding.tvItemCartVariant.text = item.variantName
-            if ((item.stock ?: 0) < 10) {
+            if ((item.stock ?: 0) < warningStock) {
                 binding.tvItemCartStock.text =
                     itemView.context.getString(R.string.cart_remains).plus(" ${item.stock}")
                 binding.tvItemCartStock.setTextColor(Color.RED)
@@ -59,101 +61,80 @@ class CartAdapter(
             binding.tvItemCartQuantity.text = item.quantity.toString()
             binding.cbItemCart.isChecked = item.isSelected!!
 
-            binding.btnItemCartDelete.setOnClickListener {
-                viewModel.deleteCart(item)
-
-                analyticsRemoveFromCart(
-                    bundleOf(
-                        Param.ITEM_ID to item.id,
-                        Param.ITEM_NAME to item.productName,
-                        Param.ITEM_BRAND to item.brand,
-                        Param.ITEM_VARIANT to item.variantName
-                    ),
-                    item.variantPrice!!.toDouble()
-                )
-            }
-
-            binding.cbItemCart.setOnClickListener {
-                viewModel.updateCart(
-                    cartEntity = CartEntity(
-                        id = item.id,
-                        image = item.image,
-                        productName = item.productName,
-                        productPrice = item.productPrice,
-                        brand = item.brand,
-                        store = item.store,
-                        stock = item.stock,
-                        variantPrice = item.variantPrice,
-                        variantName = item.variantName,
-                        quantity = item.quantity,
-                        isSelected = !item.isSelected!!
-                    )
-                )
-            }
-
-            binding.btnItemCartToggleMin.setOnClickListener {
-                if ((binding.tvItemCartQuantity.text as String).toInt() > 1) {
-                    binding.tvItemCartQuantity.text =
-                        (binding.tvItemCartQuantity.text as String).toInt().minus(1).toString()
-                    viewModel.updateCart(
-                        cartEntity = CartEntity(
-                            id = item.id,
-                            image = item.image,
-                            productName = item.productName,
-                            productPrice = item.productPrice,
-                            brand = item.brand,
-                            store = item.store,
-                            stock = item.stock,
-                            variantPrice = item.variantPrice,
-                            variantName = item.variantName,
-                            quantity = (binding.tvItemCartQuantity.text as String).toInt(),
-                            isSelected = item.isSelected
-                        )
-                    )
-                }
-            }
-
-            binding.btnItemCartTogglePlus.setOnClickListener {
-                if ((binding.tvItemCartQuantity.text as String).toInt() < item.stock!!) {
-                    binding.tvItemCartQuantity.text =
-                        (binding.tvItemCartQuantity.text as String).toInt().plus(1).toString()
-                    viewModel.updateCart(
-                        cartEntity = CartEntity(
-                            id = item.id,
-                            image = item.image,
-                            productName = item.productName,
-                            productPrice = item.productPrice,
-                            brand = item.brand,
-                            store = item.store,
-                            stock = item.stock,
-                            variantPrice = item.variantPrice,
-                            variantName = item.variantName,
-                            quantity = (binding.tvItemCartQuantity.text as String).toInt(),
-                            isSelected = item.isSelected
-                        )
-                    )
-                } else {
-                    Snackbar.make(
-                        itemView,
-                        itemView.context.getString(R.string.all_stock_not_available),
-                        Snackbar.LENGTH_LONG
-                    ).show()
-                }
-            }
-
-            binding.constraintItemCart.setOnClickListener {
-                val bundle = bundleOf(DetailProductFragment.PRODUCT_ID_KEY to item.id)
-                (activity as MainActivity).toDetail(bundle)
-            }
+            listener(binding, item, itemView)
         }
     }
 
-    private fun analyticsRemoveFromCart(bundle: Bundle, value: Double) {
-        analytics.logEvent(FirebaseAnalytics.Event.REMOVE_FROM_CART) {
-            param(Param.ITEMS, bundle)
-            param(Param.CURRENCY, "Rp")
-            param(Param.VALUE, value)
+    private fun listener(binding: ItemCartBinding, item: CartEntity, itemView: View) {
+        binding.btnItemCartDelete.setOnClickListener {
+            viewModel.deleteCart(item)
+            analyticsRemoveFromCart(item)
         }
+
+        binding.cbItemCart.setOnClickListener {
+            updateCart(item, binding, true)
+        }
+
+        binding.btnItemCartToggleMin.setOnClickListener {
+            if ((binding.tvItemCartQuantity.text as String).toInt() > 1) {
+                binding.tvItemCartQuantity.text =
+                    (binding.tvItemCartQuantity.text as String).toInt().minus(1).toString()
+                updateCart(item, binding, false)
+            }
+        }
+
+        binding.btnItemCartTogglePlus.setOnClickListener {
+            if ((binding.tvItemCartQuantity.text as String).toInt() < item.stock!!) {
+                binding.tvItemCartQuantity.text =
+                    (binding.tvItemCartQuantity.text as String).toInt().plus(1).toString()
+                updateCart(item, binding, false)
+            } else {
+                Snackbar.make(
+                    itemView,
+                    itemView.context.getString(R.string.all_stock_not_available),
+                    Snackbar.LENGTH_LONG
+                ).show()
+            }
+        }
+
+        binding.constraintItemCart.setOnClickListener {
+            val bundle = bundleOf(DetailProductFragment.PRODUCT_ID_KEY to item.id)
+            (activity as MainActivity).toDetail(bundle)
+        }
+    }
+
+    private fun analyticsRemoveFromCart(item: CartEntity) {
+        analytics.logEvent(FirebaseAnalytics.Event.REMOVE_FROM_CART) {
+            param(
+                Param.ITEMS,
+                bundleOf(
+                    Param.ITEM_ID to item.id,
+                    Param.ITEM_NAME to item.productName,
+                    Param.ITEM_BRAND to item.brand,
+                    Param.ITEM_VARIANT to item.variantName
+                )
+            )
+            param(Param.CURRENCY, "Rp")
+            param(Param.VALUE, item.variantPrice!!.toDouble())
+        }
+    }
+
+    private fun updateCart(item: CartEntity, binding: ItemCartBinding, isCheckBox: Boolean) {
+        viewModel.updateCart(
+            cartEntity = CartEntity(
+                id = item.id,
+                image = item.image,
+                productName = item.productName,
+                productPrice = item.productPrice,
+                brand = item.brand,
+                store = item.store,
+                stock = item.stock,
+                variantPrice = item.variantPrice,
+                variantName = item.variantName,
+                quantity = (binding.tvItemCartQuantity.text as String).toInt(),
+                isSelected = if (isCheckBox) !item.isSelected!! else item.isSelected
+            )
+        )
     }
 
     companion object {
@@ -163,7 +144,6 @@ class CartAdapter(
 
             override fun areContentsTheSame(oldItem: CartEntity, newItem: CartEntity): Boolean =
                 oldItem.id == newItem.id
-
         }
     }
 }

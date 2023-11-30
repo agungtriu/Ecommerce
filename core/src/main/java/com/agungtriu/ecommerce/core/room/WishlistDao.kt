@@ -12,12 +12,11 @@ interface WishlistDao {
     suspend fun insertWishlist(wishlist: WishlistEntity)
 
     @Query("SELECT * FROM wishlists")
-    fun selectWishlists(): Flow<List<WishlistEntity>>
+    fun selectWishlists(): Flow<List<WishlistEntity>?>
 
     @Query("SELECT * FROM wishlists WHERE id = :id")
-    fun selectWishlistById(id: String): Flow<WishlistEntity>
+    fun selectWishlistById(id: String): Flow<WishlistEntity?>
 
     @Query("DELETE FROM wishlists WHERE id = :id")
     suspend fun deleteWishlistById(id: String)
-
 }

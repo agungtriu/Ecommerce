@@ -9,17 +9,18 @@ import com.agungtriu.ecommerce.core.remote.model.response.DataLogin
 import com.agungtriu.ecommerce.core.remote.model.response.DataRegister
 import com.agungtriu.ecommerce.helper.Extension.toResponseError
 import com.agungtriu.ecommerce.helper.ViewState
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.ktx.messaging
+import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class PreLoginRepositoryImp @Inject constructor(
     private val dataStoreManager: DataStoreManager,
-    private val apiService: ApiService
+    private val apiService: ApiService,
+    private val firebaseMessaging: com.agungtriu.ecommerce.data.firebase.FirebaseMessaging
 ) : PreLoginRepository {
     override fun getOnboardingStatus(): Flow<Boolean> {
         return dataStoreManager.getOnboardingStatus()
@@ -58,10 +59,8 @@ class PreLoginRepositoryImp @Inject constructor(
                             isAuthorized = true
                         )
                     )
-                    Firebase.messaging.subscribeToTopic("promo")
+                    firebaseMessaging.subscribeTopic("promo")
                     emit(ViewState.Success(dataRegister))
-                } else {
-                    throw Exception("Data register not found")
                 }
             } catch (t: Throwable) {
                 emit(ViewState.Error(t.toResponseError()))
@@ -87,13 +86,13 @@ class PreLoginRepositoryImp @Inject constructor(
                             isAuthorized = true
                         )
                     )
-                    Firebase.messaging.subscribeToTopic("promo")
+                    firebaseMessaging.subscribeTopic("promo")
                     emit(ViewState.Success(dataLogin))
-                } else {
-                    throw Exception("Data login not found")
                 }
             } catch (t: Throwable) {
                 emit(ViewState.Error(t.toResponseError()))
             }
         }
+
+    override suspend fun getFirebaseToken(): String = FirebaseMessaging.getInstance().token.await()
 }

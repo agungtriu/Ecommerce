@@ -20,7 +20,6 @@ import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
-
 @AndroidEntryPoint
 class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
     private val viewModel: MainViewModel by viewModels()
@@ -60,8 +59,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         }
 
         viewModel.getWishlists().observe(viewLifecycleOwner) {
-            badgeWishlist.isVisible = it.isNotEmpty()
-            badgeWishlist.number = it.size
+            if (it != null) {
+                badgeWishlist.isVisible = it.isNotEmpty()
+                badgeWishlist.number = it.size
+            }
         }
         viewModel.selectCountCart().observe(viewLifecycleOwner) {
             val badgeCart = BadgeDrawable.create(requireContext())
@@ -90,7 +91,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             binding.bnvMainFragment.selectedItemId = R.id.transactionFragment
         }
     }
-
 
     private fun listener() {
         binding.toolbarMain.setOnMenuItemClickListener { menuItem ->
