@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.paging.PagingData
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProducts
 import com.agungtriu.ecommerce.core.remote.model.response.Product
+import com.agungtriu.ecommerce.data.MainRepository
 import com.agungtriu.ecommerce.data.StoreRepository
 import com.agungtriu.ecommerce.utils.DataDummy
 import com.agungtriu.ecommerce.utils.Extension.collectDataForTest
@@ -32,10 +33,12 @@ class StoreVideModelTest {
 
     private lateinit var storeVideModel: StoreVideModel
     private lateinit var storeRepository: StoreRepository
+    private lateinit var mainRepository: MainRepository
 
     @Before
     fun setUp() {
         storeRepository = mock()
+        mainRepository = mock()
     }
 
     @OptIn(ExperimentalCoroutinesApi::class)
@@ -46,7 +49,7 @@ class StoreVideModelTest {
                 PagingData.from(DataDummy.dummyProductsResponse.data?.items!!)
             )
         )
-        storeVideModel = StoreVideModel(storeRepository)
+        storeVideModel = StoreVideModel(storeRepository, mainRepository)
         var actual: PagingData<Product> = PagingData.from(listOf())
         storeVideModel.resultProducts.observeForever {
             actual = it

@@ -137,33 +137,38 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 else -> false
             }
         }
+        if (screenWidth > 840) {
+            binding.nvMainFragment?.setNavigationItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.homeFragment -> {
+                        binding.fcvMainFragment.findNavController()
+                            .navigate(R.id.action_global_to_home_fragment)
+                    }
 
-        binding.nvMainFragment?.setNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.homeFragment -> {
-                    binding.fcvMainFragment.findNavController().navigate(R.id.action_global_to_home_fragment)
-                }
+                    R.id.storeFragment -> {
+                        binding.fcvMainFragment.findNavController()
+                            .navigate(R.id.action_global_to_store_fragment)
+                    }
 
-                R.id.storeFragment -> {
-                    binding.fcvMainFragment.findNavController().navigate(R.id.action_global_to_store_fragment)
-                }
+                    R.id.wishlistFragment -> {
+                        binding.fcvMainFragment.findNavController()
+                            .navigate(R.id.action_global_to_wishlist_fragment)
+                    }
 
-                R.id.wishlistFragment -> {
-                    binding.fcvMainFragment.findNavController().navigate(R.id.action_global_to_wishlist_fragment)
+                    R.id.transactionFragment -> {
+                        binding.fcvMainFragment.findNavController()
+                            .navigate(R.id.action_global_to_transaction_fragment)
+                    }
                 }
-
-                R.id.transactionFragment -> {
-                    binding.fcvMainFragment.findNavController().navigate(R.id.action_global_to_transaction_fragment)
-                }
+                menuItem.isChecked = true
+                binding.dlMainFragment?.close()
+                true
             }
-            menuItem.isChecked = true
-            binding.dlMainFragment?.close()
-            true
         }
     }
 
     private fun getScreenWidth(): Int {
         val displayMetrics = resources.displayMetrics
-        return displayMetrics.widthPixels
+        return 500
     }
 }
