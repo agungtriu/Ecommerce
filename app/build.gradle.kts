@@ -94,6 +94,8 @@ dependencies {
     implementation("com.google.firebase:firebase-config:21.6.0")
     implementation("com.google.firebase:firebase-messaging:23.3.1")
     implementation("androidx.work:work-runtime-ktx:2.8.1")
+    implementation("androidx.window:window:1.2.0")
+    implementation("androidx.window:window-core:1.2.0")
     kapt("com.google.dagger:hilt-android-compiler:2.48.1")
     implementation(project(":core"))
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.2")

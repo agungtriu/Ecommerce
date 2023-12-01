@@ -3,16 +3,20 @@ package com.agungtriu.ecommerce.ui.main
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.window.core.layout.WindowSizeClass
+import androidx.window.core.layout.WindowWidthSizeClass
+import androidx.window.core.layout.WindowWidthSizeClass.Companion.COMPACT
+import androidx.window.core.layout.WindowWidthSizeClass.Companion.EXPANDED
+import androidx.window.core.layout.WindowWidthSizeClass.Companion.MEDIUM
+import androidx.window.layout.WindowMetricsCalculator
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.databinding.FragmentMainBinding
-import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.agungtriu.ecommerce.ui.status.StatusFragment.Companion.STATE_STATUS_KEY
 import com.google.android.material.badge.BadgeDrawable
@@ -28,8 +32,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
     private lateinit var navController: NavController
     private lateinit var badgeWishlist: BadgeDrawable
     private lateinit var analytics: FirebaseAnalytics
-    private var screenWidth: Int = 0
-    private lateinit var wishlist: TextView
+    private lateinit var screenWidth: WindowWidthSizeClass
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,17 +45,23 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.fcv_main_fragment) as NavHostFragment
         navController = navHostFragment.findNavController()
-        screenWidth = getScreenWidth()
+        screenWidth = computeWindowSizeClasses()
 
         // Select the appropriate layout
-        if (screenWidth < 600) {
-            binding.bnvMainFragment?.setupWithNavController(navController)
-            badgeWishlist = binding.bnvMainFragment!!.getOrCreateBadge(R.id.wishlistFragment)
-        } else if (screenWidth in 600..839) {
-            binding.nrvMainFragment?.setupWithNavController(navController)
-            badgeWishlist = binding.nrvMainFragment!!.getOrCreateBadge(R.id.wishlistFragment)
-        } else if (screenWidth > 840) {
-            binding.nvMainFragment?.setupWithNavController(navController)
+        when (screenWidth) {
+            COMPACT -> {
+                binding.bnvMainFragment?.setupWithNavController(navController)
+                badgeWishlist = binding.bnvMainFragment!!.getOrCreateBadge(R.id.wishlistFragment)
+            }
+
+            MEDIUM -> {
+                binding.nrvMainFragment?.setupWithNavController(navController)
+                badgeWishlist = binding.nrvMainFragment!!.getOrCreateBadge(R.id.wishlistFragment)
+            }
+
+            EXPANDED -> {
+                binding.nvMainFragment?.setupWithNavController(navController)
+            }
         }
 
         observeData()
@@ -72,7 +81,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         }
 
         viewModel.getWishlists().observe(viewLifecycleOwner) {
-            if (it != null && screenWidth < 840) {
+            if (it != null && (screenWidth == COMPACT || screenWidth == MEDIUM)) {
                 badgeWishlist.isVisible = it.isNotEmpty()
                 badgeWishlist.number = it.size
             }
@@ -101,12 +110,18 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         }
 
         if (arguments?.getString(STATE_STATUS_KEY) == "transaction") {
-            if (screenWidth < 600) {
-                binding.bnvMainFragment?.selectedItemId = R.id.transactionFragment
-            } else if (screenWidth in 600..839) {
-                binding.nrvMainFragment?.selectedItemId = R.id.transactionFragment
-            } else if (screenWidth > 840) {
-                binding.nvMainFragment?.menu?.getItem(3)?.isChecked = true
+            when (screenWidth) {
+                COMPACT -> {
+                    binding.bnvMainFragment?.selectedItemId = R.id.transactionFragment
+                }
+
+                MEDIUM -> {
+                    binding.nrvMainFragment?.selectedItemId = R.id.transactionFragment
+                }
+
+                EXPANDED -> {
+                    binding.nvMainFragment?.menu?.getItem(3)?.isChecked = true
+                }
             }
         }
     }
@@ -128,7 +143,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
                 R.id.btn_main_menu -> {
                     analytics.logEvent("btn_main_menu", null)
-                    if (screenWidth > 840) {
+                    if (screenWidth == EXPANDED) {
                         binding.dlMainFragment?.open()
                     }
                     true
@@ -137,7 +152,7 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 else -> false
             }
         }
-        if (screenWidth > 840) {
+        if (screenWidth == EXPANDED) {
             binding.nvMainFragment?.setNavigationItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
                     R.id.homeFragment -> {
@@ -167,8 +182,14 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         }
     }
 
-    private fun getScreenWidth(): Int {
-        val displayMetrics = resources.displayMetrics
-        return 500
+    private fun computeWindowSizeClasses(): WindowWidthSizeClass {
+        val metrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(requireActivity())
+        val width = metrics.bounds.width()
+        val height = metrics.bounds.height()
+        val density = resources.displayMetrics.density
+        val windowSizeClass = WindowSizeClass.compute(width / density, height / density)
+        // COMPACT, MEDIUM, or EXPANDED
+        return windowSizeClass.windowWidthSizeClass
+
     }
 }
