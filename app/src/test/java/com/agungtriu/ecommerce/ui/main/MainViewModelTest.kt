@@ -40,6 +40,13 @@ class MainViewModelTest {
     }
 
     @Test
+    fun getLoginStatus() = runTest {
+        whenever(preLoginRepository.getLoginData()).thenReturn(flowOf(DataDummy.dummyLoginModel))
+        val actual = mainViewModel.getLoginStatus()
+        Assert.assertEquals(DataDummy.dummyLoginModel.isLogin, actual)
+    }
+
+    @Test
     fun getLoginData() = runTest {
         whenever(preLoginRepository.getLoginData()).thenReturn(flowOf(DataDummy.dummyLoginModel))
         mainViewModel.getLoginData().observeForever {
@@ -73,9 +80,9 @@ class MainViewModelTest {
 
     @Test
     fun selectCountCart_success_null() {
-        whenever(mainRepository.selectCountCart()).thenReturn(flowOf(null))
+        whenever(mainRepository.selectCountCart()).thenReturn(flowOf(0))
         mainViewModel.selectCountCart().observeForever {
-            Assert.assertEquals(null, it)
+            Assert.assertEquals(0, it)
         }
     }
 
@@ -89,9 +96,9 @@ class MainViewModelTest {
 
     @Test
     fun selectCountNotification_success_null() {
-        whenever(mainRepository.selectCountNotification()).thenReturn(flowOf(null))
+        whenever(mainRepository.selectCountNotification()).thenReturn(flowOf(0))
         mainViewModel.selectCountNotification().observeForever {
-            Assert.assertEquals(null, it)
+            Assert.assertEquals(0, it)
         }
     }
 }

@@ -98,4 +98,6 @@
     <string name="notiication_status_hint">Transaction Successful</string>
     <string name="nofitifaction_info">Info</string>
     <string name="wishlist_count_hint">3 Items</string>
+    <string name="main_permission_request_accepted">Permission request accepted</string>
+    <string name="main_permission_request_denied">Permission request denied</string>
 </resources>

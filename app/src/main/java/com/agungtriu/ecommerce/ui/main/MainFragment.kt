@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -17,6 +16,8 @@ import androidx.window.core.layout.WindowWidthSizeClass.Companion.MEDIUM
 import androidx.window.layout.WindowMetricsCalculator
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.databinding.FragmentMainBinding
+import com.agungtriu.ecommerce.helper.Screen
+import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.agungtriu.ecommerce.ui.status.StatusFragment.Companion.STATE_STATUS_KEY
 import com.google.android.material.badge.BadgeDrawable
@@ -30,7 +31,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
     private val viewModel: MainViewModel by viewModels()
     private lateinit var navController: NavController
-    private lateinit var badgeWishlist: BadgeDrawable
+    private var badgeWishlist: BadgeDrawable? = null
     private lateinit var analytics: FirebaseAnalytics
     private lateinit var screenWidth: WindowWidthSizeClass
 
@@ -45,18 +46,17 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         val navHostFragment =
             childFragmentManager.findFragmentById(R.id.fcv_main_fragment) as NavHostFragment
         navController = navHostFragment.findNavController()
-        screenWidth = computeWindowSizeClasses()
+        computeWindowSizeClasses()
 
-        // Select the appropriate layout
         when (screenWidth) {
             COMPACT -> {
                 binding.bnvMainFragment?.setupWithNavController(navController)
-                badgeWishlist = binding.bnvMainFragment!!.getOrCreateBadge(R.id.wishlistFragment)
+                badgeWishlist = binding.bnvMainFragment?.getOrCreateBadge(R.id.wishlistFragment)
             }
 
             MEDIUM -> {
                 binding.nrvMainFragment?.setupWithNavController(navController)
-                badgeWishlist = binding.nrvMainFragment!!.getOrCreateBadge(R.id.wishlistFragment)
+                badgeWishlist = binding.nrvMainFragment?.getOrCreateBadge(R.id.wishlistFragment)
             }
 
             EXPANDED -> {
@@ -70,6 +70,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     @SuppressLint("UnsafeOptInUsageError")
     private fun observeData() {
+        if (!viewModel.getLoginStatus()) {
+            (activity as MainActivity).navigate(R.id.action_global_to_prelogin_navigation)
+        }
+
         viewModel.getLoginData().observe(viewLifecycleOwner) {
             if (it.isLogin) {
                 if (it.userName != "" && it.userName != null) {
@@ -81,47 +85,32 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
         }
 
         viewModel.getWishlists().observe(viewLifecycleOwner) {
-            if (it != null && (screenWidth == COMPACT || screenWidth == MEDIUM)) {
-                badgeWishlist.isVisible = it.isNotEmpty()
-                badgeWishlist.number = it.size
-            }
+            badgeWishlist?.isVisible = !it.isNullOrEmpty()
+            badgeWishlist?.number = it?.size ?: 0
         }
+
+        val badgeCart = BadgeDrawable.create(requireContext())
+        attachBadgeDrawable(badgeCart, binding.toolbarMain, R.id.btn_main_shopping_cart)
         viewModel.selectCountCart().observe(viewLifecycleOwner) {
-            val badgeCart = BadgeDrawable.create(requireContext())
-
             badgeCart.isVisible = it != 0
-            badgeCart.number = it ?: 0
-            if (it != null) {
-                attachBadgeDrawable(badgeCart, binding.toolbarMain, R.id.btn_main_shopping_cart)
-            } else {
-                badgeCart.clearNumber()
-            }
+            badgeCart.number = it
         }
 
+        val badgeNotification = BadgeDrawable.create(requireContext())
+        attachBadgeDrawable(badgeNotification, binding.toolbarMain, R.id.btn_main_notification)
         viewModel.selectCountNotification().observe(viewLifecycleOwner) {
-            val badgeCart = BadgeDrawable.create(requireContext())
-            badgeCart.isVisible = it != 0
-            badgeCart.number = it ?: 0
-            if (it != null) {
-                attachBadgeDrawable(badgeCart, binding.toolbarMain, R.id.btn_main_notification)
-            } else {
-                badgeCart.clearNumber()
-            }
+            badgeNotification.isVisible = it != 0
+            badgeNotification.number = it
         }
 
-        if (arguments?.getString(STATE_STATUS_KEY) == "transaction") {
+        if (arguments?.getString(STATE_STATUS_KEY) == Screen.TRANSACTION.name) {
             when (screenWidth) {
-                COMPACT -> {
-                    binding.bnvMainFragment?.selectedItemId = R.id.transactionFragment
-                }
-
-                MEDIUM -> {
-                    binding.nrvMainFragment?.selectedItemId = R.id.transactionFragment
-                }
-
-                EXPANDED -> {
-                    binding.nvMainFragment?.menu?.getItem(3)?.isChecked = true
-                }
+                COMPACT -> binding.bnvMainFragment?.selectedItemId = R.id.transactionFragment
+                MEDIUM -> binding.nrvMainFragment?.selectedItemId = R.id.transactionFragment
+                EXPANDED -> binding.nvMainFragment?.menu?.performIdentifierAction(
+                    R.id.transactionFragment,
+                    0
+                )
             }
         }
     }
@@ -152,44 +141,16 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 else -> false
             }
         }
-        if (screenWidth == EXPANDED) {
-            binding.nvMainFragment?.setNavigationItemSelectedListener { menuItem ->
-                when (menuItem.itemId) {
-                    R.id.homeFragment -> {
-                        binding.fcvMainFragment.findNavController()
-                            .navigate(R.id.action_global_to_home_fragment)
-                    }
-
-                    R.id.storeFragment -> {
-                        binding.fcvMainFragment.findNavController()
-                            .navigate(R.id.action_global_to_store_fragment)
-                    }
-
-                    R.id.wishlistFragment -> {
-                        binding.fcvMainFragment.findNavController()
-                            .navigate(R.id.action_global_to_wishlist_fragment)
-                    }
-
-                    R.id.transactionFragment -> {
-                        binding.fcvMainFragment.findNavController()
-                            .navigate(R.id.action_global_to_transaction_fragment)
-                    }
-                }
-                menuItem.isChecked = true
-                binding.dlMainFragment?.close()
-                true
-            }
-        }
     }
 
-    private fun computeWindowSizeClasses(): WindowWidthSizeClass {
-        val metrics = WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(requireActivity())
+    private fun computeWindowSizeClasses() {
+        val metrics =
+            WindowMetricsCalculator.getOrCreate().computeCurrentWindowMetrics(requireActivity())
         val width = metrics.bounds.width()
         val height = metrics.bounds.height()
         val density = resources.displayMetrics.density
         val windowSizeClass = WindowSizeClass.compute(width / density, height / density)
         // COMPACT, MEDIUM, or EXPANDED
-        return windowSizeClass.windowWidthSizeClass
-
+        screenWidth = windowSizeClass.windowWidthSizeClass
     }
 }

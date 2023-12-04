@@ -18,6 +18,6 @@ interface MainRepository {
     fun getThemeLang(): Flow<ThemeLangModel>
     fun getAuthorizedStatus(): Flow<AuthorizeModel>
     suspend fun postProfile(requestProfile: RequestProfile): Flow<ViewState<DataProfile>>
-    fun selectCountCart(): Flow<Int?>
-    fun selectCountNotification(): Flow<Int?>
+    fun selectCountCart(): Flow<Int>
+    fun selectCountNotification(): Flow<Int>
 }

@@ -9,13 +9,14 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.core.os.LocaleListCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.databinding.ActivityMainBinding
-import com.agungtriu.ecommerce.helper.Utils.setLanguage
+import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -42,21 +43,17 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        if (!viewModel.getLoginStatus()) {
-            navController.navigate(R.id.action_global_to_prelogin_navigation)
-        }
-
         viewModel.getAuthorizedStatus().distinctUntilChanged().observe(this) {
             if (!it.isAuthorized) {
                 navController.navigate(R.id.action_global_to_prelogin_navigation)
             }
         }
-
         viewModel.getThemeLang().distinctUntilChanged().observe(this) {
             AppCompatDelegate.setDefaultNightMode(
                 if (it.isDark) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             )
-            setLanguage(it.language)
+            val languageIn: LocaleListCompat = LocaleListCompat.forLanguageTags(it.language)
+            AppCompatDelegate.setApplicationLocales(languageIn)
         }
     }
 
@@ -79,8 +76,17 @@ class MainActivity : AppCompatActivity() {
         registerForActivityResult(
             ActivityResultContracts.RequestPermission()
         ) { isGranted: Boolean ->
-            if (!isGranted) {
-                finish()
+            if (isGranted) {
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.main_permission_request_accepted), Snackbar.LENGTH_SHORT
+                ).show()
+            } else {
+                Snackbar.make(
+                    binding.root,
+                    getString(R.string.main_permission_request_denied), Snackbar.LENGTH_SHORT
+                ).show()
+
             }
         }
 

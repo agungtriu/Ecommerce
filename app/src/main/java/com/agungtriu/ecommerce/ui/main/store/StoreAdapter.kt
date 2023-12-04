@@ -13,13 +13,10 @@ import com.agungtriu.ecommerce.databinding.ItemStoreGridBinding
 import com.agungtriu.ecommerce.databinding.ItemStoreLinearBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.Screen
-import com.agungtriu.ecommerce.helper.Utils.rounded
 import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment.Companion.FROM_KEY
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment.Companion.PRODUCT_ID_KEY
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterInside
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.FirebaseAnalytics.Param
 import com.google.firebase.analytics.logEvent
@@ -43,7 +40,6 @@ class StoreAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Product) {
             Glide.with(itemView.context).load(item.image)
-                .transform(CenterInside(), RoundedCorners(rounded))
                 .placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemStoreLinear)
 
@@ -84,7 +80,9 @@ class StoreAdapter(
     private inner class ViewGridHolder(private val binding: ItemStoreGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Product) {
-            Glide.with(itemView.context).load(item.image).placeholder(R.mipmap.ic_thumbnail)
+            Glide.with(itemView.context)
+                .load(item.image)
+                .placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemStoreGrid)
 
             binding.tvItemStoreGridTitle.text = item.productName

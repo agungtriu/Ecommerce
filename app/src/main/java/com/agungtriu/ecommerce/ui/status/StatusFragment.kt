@@ -11,6 +11,7 @@ import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.remote.model.request.RequestRating
 import com.agungtriu.ecommerce.databinding.FragmentStatusBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
+import com.agungtriu.ecommerce.helper.Screen
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
@@ -64,7 +65,7 @@ class StatusFragment : BaseFragment<FragmentStatusBinding>(FragmentStatusBinding
                 STATE_STATUS_KEY to viewModel.stateStatus
             )
             if (binding.rbStatus.rating.toInt() == 0 && binding.tietStatusReview.text.toString() == "") {
-                if (viewModel.stateStatus == "transaction") {
+                if (viewModel.stateStatus == Screen.TRANSACTION.name) {
                     findNavController().navigateUp()
                 } else {
                     (requireActivity() as MainActivity).navigate(R.id.action_global_to_main_navigation)

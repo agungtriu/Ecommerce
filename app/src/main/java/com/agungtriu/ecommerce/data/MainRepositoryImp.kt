@@ -82,7 +82,7 @@ class MainRepositoryImp @Inject constructor(
             }
         }
 
-    override fun selectCountCart(): Flow<Int?> = appDatabase.cartDao().selectCountCart()
-    override fun selectCountNotification(): Flow<Int?> =
+    override fun selectCountCart(): Flow<Int> = appDatabase.cartDao().selectCountCart()
+    override fun selectCountNotification(): Flow<Int> =
         appDatabase.notificationDao().selectCountNotifications()
 }

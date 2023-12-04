@@ -126,4 +126,6 @@
     <string name="notification_datetime_hint" translatable="false">12 Jun 2023, 11:45</string>
     <string name="nofitifaction_info">Info</string>
     <string name="wishlist_count_hint">3 Barang</string>
+    <string name="main_permission_request_accepted">Permintaan izin diterima</string>
+    <string name="main_permission_request_denied">Permintaan izin ditolak</string>
 </resources>

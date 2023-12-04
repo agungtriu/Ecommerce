@@ -13,7 +13,6 @@ import com.agungtriu.ecommerce.core.remote.model.response.Product
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
 import com.agungtriu.ecommerce.data.MainRepository
 import com.agungtriu.ecommerce.data.StoreRepository
-import com.agungtriu.ecommerce.ui.main.store.filter.FilterModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject

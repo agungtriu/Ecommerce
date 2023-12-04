@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/tv_item_store_grid_shimmer_title"
-            style="@style/TextAppearance.Material3.BodySmall"
+            style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
@@ -34,6 +34,7 @@
 
         <TextView
             android:id="@+id/tv_item_store_grid_shimmer_price"
+            style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="8dp"
@@ -53,6 +54,7 @@
 
         <TextView
             android:id="@+id/tv_item_store_grid_shimmer_store"
+            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="2dp"
@@ -76,6 +78,7 @@
 
         <TextView
             android:id="@+id/tv_item_store_grid_shimmer_rating"
+            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="80dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"

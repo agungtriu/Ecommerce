@@ -15,7 +15,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_cart"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -24,7 +24,8 @@
         app:layout_constraintEnd_toStartOf="@id/tv_item_cart_name"
         app:layout_constraintHorizontal_weight="2"
         app:layout_constraintStart_toEndOf="@id/cb_item_cart"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Small" />
 
     <TextView
         android:id="@+id/tv_item_cart_name"

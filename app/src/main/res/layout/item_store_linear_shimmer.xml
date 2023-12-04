@@ -14,7 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_item_store_linear_shimmer"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -26,11 +26,12 @@
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Small" />
 
         <TextView
             android:id="@+id/tv_item_store_linear_shimmer_title"
-            style="@style/TextAppearance.Material3.BodySmall"
+            style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -43,6 +44,7 @@
 
         <TextView
             android:id="@+id/tv_item_store_linear_shimmer_price"
+            style="@style/TextAppearance.Material3.BodyMedium"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -62,6 +64,7 @@
 
         <TextView
             android:id="@+id/tv_item_store_linear_shimmer_store"
+            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -83,6 +86,7 @@
 
         <TextView
             android:id="@+id/tv_item_store_linear_shimmer_rating"
+            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"

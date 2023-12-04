@@ -12,14 +12,12 @@ import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.remote.model.response.DataTransaction
 import com.agungtriu.ecommerce.databinding.ItemTransactionBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
-import com.agungtriu.ecommerce.helper.Utils.rounded
+import com.agungtriu.ecommerce.helper.Screen
 import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.status.StatusFragment
 import com.agungtriu.ecommerce.ui.status.StatusFragment.Companion.STATE_STATUS_KEY
 import com.agungtriu.ecommerce.ui.status.StatusModel
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterInside
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 
 class TransactionAdapter(private val activity: FragmentActivity) :
     ListAdapter<DataTransaction, TransactionAdapter.ViewHolder>(callback) {
@@ -37,7 +35,6 @@ class TransactionAdapter(private val activity: FragmentActivity) :
         fun bind(item: DataTransaction) {
             Glide.with(itemView.context)
                 .load(item.image)
-                .transform(CenterInside(), RoundedCorners(rounded))
                 .placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemTransaction)
 
@@ -65,7 +62,7 @@ class TransactionAdapter(private val activity: FragmentActivity) :
                         rating = item.rating,
                         review = item.review
                     ),
-                    STATE_STATUS_KEY to "transaction"
+                    STATE_STATUS_KEY to Screen.TRANSACTION.name
                 )
                 (activity as MainActivity).navigate(R.id.action_global_to_status_fragment, bundle)
             }

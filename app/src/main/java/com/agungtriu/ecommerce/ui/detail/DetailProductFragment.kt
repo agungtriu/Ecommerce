@@ -92,17 +92,6 @@ class DetailProductFragment :
         viewModel.getWishlistByProductId().distinctUntilChanged().observe(viewLifecycleOwner) {
             if (it != null) {
                 wishlistState = true
-                if (viewModel.stateDetail == Screen.WISHLIST.name || viewModel.stateDetail == Screen.CART.name) {
-                    viewModel.selectedVariantName = it.variantName ?: ""
-                    viewModel.selectedVariantPrice = it.variantPrice ?: 0
-                } else if (viewModel.stateDetail == Screen.STORE.name) {
-                    viewModel.selectedVariantName =
-                        productDetail.productVariant?.get(0)?.variantName ?: ""
-                    viewModel.selectedVariantPrice = (productDetail.productPrice?.plus(
-                        (productDetail.productVariant?.get(0)?.variantPrice ?: 0)
-                    )) ?: 0
-                }
-                binding.ivDetailWishlist.setBackgroundResource(R.drawable.ic_favorite)
                 if (wishlistPress) {
                     Snackbar.make(
                         requireView(),
@@ -113,7 +102,18 @@ class DetailProductFragment :
                         }",
                         Snackbar.LENGTH_LONG
                     ).show()
+                } else if (viewModel.stateDetail == Screen.WISHLIST.name || viewModel.stateDetail == Screen.CART.name) {
+                    viewModel.selectedVariantName = it.variantName ?: ""
+                    viewModel.selectedVariantPrice = it.variantPrice ?: 0
+                } else if (viewModel.stateDetail == Screen.STORE.name) {
+                    viewModel.selectedVariantName =
+                        productDetail.productVariant?.get(0)?.variantName ?: ""
+                    viewModel.selectedVariantPrice = (productDetail.productPrice?.plus(
+                        (productDetail.productVariant?.get(0)?.variantPrice ?: 0)
+                    )) ?: 0
                 }
+
+                binding.ivDetailWishlist.setBackgroundResource(R.drawable.ic_favorite)
             } else {
                 wishlistState = false
                 binding.ivDetailWishlist.setBackgroundResource(R.drawable.ic_favorite_border)
@@ -133,7 +133,6 @@ class DetailProductFragment :
                     viewModel.selectedVariantPrice = (productDetail.productPrice?.plus(
                         (productDetail.productVariant?.get(0)?.variantPrice ?: 0)
                     )) ?: 0
-
                 }
             }
             wishlistPress = false

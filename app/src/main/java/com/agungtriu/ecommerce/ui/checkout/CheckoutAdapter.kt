@@ -11,11 +11,8 @@ import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.databinding.ItemCheckoutBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
-import com.agungtriu.ecommerce.helper.Utils.rounded
 import com.agungtriu.ecommerce.helper.Utils.warningStock
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterInside
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.snackbar.Snackbar
 
 class CheckoutAdapter(private val viewModel: CheckoutViewModel) :
@@ -35,7 +32,6 @@ class CheckoutAdapter(private val viewModel: CheckoutViewModel) :
         fun bind(item: CartEntity, position: Int) {
             Glide.with(itemView.context)
                 .load(item.image)
-                .transform(CenterInside(), RoundedCorners(rounded))
                 .into(binding.ivCheckout)
 
             binding.tvItemCheckoutName.text = item.productName

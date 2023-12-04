@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
-        android:id="@+id/homeFragment"
-        android:icon="@drawable/ic_home"
-        android:title="@string/all_home" />
-    <item
-        android:id="@+id/storeFragment"
-        android:icon="@drawable/ic_store"
-        android:title="@string/all_store" />
-    <item
-        android:id="@+id/wishlistFragment"
-        android:icon="@drawable/ic_favorite"
-        android:title="@string/all_wishlist" />
-    <item
-        android:id="@+id/transactionFragment"
-        android:icon="@drawable/ic_list_alt"
-        android:title="@string/all_transaction" />
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/homeFragment"
+            android:icon="@drawable/ic_home"
+            android:title="@string/all_home" />
+        <item
+            android:id="@+id/storeFragment"
+            android:icon="@drawable/ic_store"
+            android:title="@string/all_store" />
+        <item
+            android:id="@+id/wishlistFragment"
+            android:icon="@drawable/ic_favorite"
+            android:title="@string/all_wishlist" />
+        <item
+            android:id="@+id/transactionFragment"
+            android:icon="@drawable/ic_list_alt"
+            android:title="@string/all_transaction" />
+    </group>
 </menu>

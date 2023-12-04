@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_item_store_linear"
             android:layout_width="0dp"
             android:layout_height="match_parent"
@@ -24,7 +24,8 @@
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Small" />
 
         <TextView
             android:id="@+id/tv_item_store_linear_title"
@@ -32,7 +33,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:ellipsize="end"
             android:includeFontPadding="false"
+            android:maxLines="2"
             android:text="@string/item_title_hint"
             android:textAppearance="@style/Theme.Ecommerce.TextAppearance.BodySmall"
             android:textColor="?attr/colorOnSurfaceVariant"

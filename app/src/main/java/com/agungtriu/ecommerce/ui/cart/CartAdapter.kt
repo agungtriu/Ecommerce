@@ -14,13 +14,10 @@ import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.databinding.ItemCartBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.Screen
-import com.agungtriu.ecommerce.helper.Utils.rounded
 import com.agungtriu.ecommerce.helper.Utils.warningStock
 import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterInside
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.FirebaseAnalytics.Param
@@ -46,7 +43,6 @@ class CartAdapter(
         fun bind(item: CartEntity) {
             Glide.with(itemView.context)
                 .load(item.image)
-                .transform(CenterInside(), RoundedCorners(rounded))
                 .into(binding.ivCart)
             binding.tvItemCartName.text = item.productName
             binding.tvItemCartPrice.text = item.variantPrice?.toRupiah()

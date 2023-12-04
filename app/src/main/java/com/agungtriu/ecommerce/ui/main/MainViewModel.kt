@@ -9,6 +9,8 @@ import com.agungtriu.ecommerce.data.MainRepository
 import com.agungtriu.ecommerce.data.PreLoginRepository
 import com.agungtriu.ecommerce.data.WishlistRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,6 +20,11 @@ class MainViewModel @Inject constructor(
     private val wishlistRepository: WishlistRepository
 ) : ViewModel() {
 
+    fun getLoginStatus(): Boolean {
+        return runBlocking {
+            preLoginRepository.getLoginData().first().isLogin
+        }
+    }
     fun getLoginData(): LiveData<LoginModel> {
         return preLoginRepository.getLoginData().asLiveData()
     }
@@ -25,8 +32,8 @@ class MainViewModel @Inject constructor(
     fun getWishlists(): LiveData<List<WishlistEntity>?> =
         wishlistRepository.getWishlists().asLiveData()
 
-    fun selectCountCart(): LiveData<Int?> = mainRepository.selectCountCart().asLiveData()
+    fun selectCountCart(): LiveData<Int> = mainRepository.selectCountCart().asLiveData()
 
-    fun selectCountNotification(): LiveData<Int?> =
+    fun selectCountNotification(): LiveData<Int> =
         mainRepository.selectCountNotification().asLiveData()
 }

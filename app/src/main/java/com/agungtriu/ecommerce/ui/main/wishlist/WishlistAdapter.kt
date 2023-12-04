@@ -16,14 +16,11 @@ import com.agungtriu.ecommerce.databinding.ItemWishlistGridBinding
 import com.agungtriu.ecommerce.databinding.ItemWishlistLinearBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.Screen
-import com.agungtriu.ecommerce.helper.Utils
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.MainActivity
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment.Companion.FROM_KEY
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment.Companion.PRODUCT_ID_KEY
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.CenterInside
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.FirebaseAnalytics.Param
@@ -81,7 +78,6 @@ class WishlistAdapter(
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: WishlistEntity) {
             Glide.with(itemView.context).load(item.image)
-                .transform(CenterInside(), RoundedCorners(Utils.rounded))
                 .placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemWishlistGrid)
 
@@ -98,7 +94,9 @@ class WishlistAdapter(
     inner class ViewLinearHolder(private val binding: ItemWishlistLinearBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: WishlistEntity) {
-            Glide.with(itemView.context).load(item.image).placeholder(R.mipmap.ic_thumbnail)
+            Glide.with(itemView.context)
+                .load(item.image)
+                .placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemWishlistLinear)
 
             binding.tvItemWishlistLinearPrice.text = item.variantPrice?.toRupiah()

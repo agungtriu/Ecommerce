@@ -2,7 +2,6 @@ package com.agungtriu.ecommerce.ui
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.agungtriu.ecommerce.data.MainRepository
-import com.agungtriu.ecommerce.data.PreLoginRepository
 import com.agungtriu.ecommerce.utils.DataDummy
 import com.agungtriu.ecommerce.utils.MainDispatcherRule
 import kotlinx.coroutines.flow.flowOf
@@ -27,20 +26,11 @@ class MainViewModelTest {
 
     private lateinit var mainViewModel: MainViewModel
     private lateinit var mainRepository: MainRepository
-    private lateinit var preLoginRepository: PreLoginRepository
 
     @Before
     fun setUp() {
         mainRepository = mock()
-        preLoginRepository = mock()
-        mainViewModel = MainViewModel(mainRepository, preLoginRepository)
-    }
-
-    @Test
-    fun getLoginStatus() = runTest {
-        whenever(preLoginRepository.getLoginData()).thenReturn(flowOf(DataDummy.dummyLoginModel))
-        val actual = mainViewModel.getLoginStatus()
-        Assert.assertEquals(DataDummy.dummyLoginModel.isLogin, actual)
+        mainViewModel = MainViewModel(mainRepository)
     }
 
     @Test

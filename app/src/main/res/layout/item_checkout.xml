@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/iv_checkout"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -14,7 +14,8 @@
         app:layout_constraintBottom_toBottomOf="@id/tv_item_checkout_price"
         app:layout_constraintEnd_toStartOf="@id/tv_item_checkout_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_item_checkout_name" />
+        app:layout_constraintTop_toTopOf="@id/tv_item_checkout_name"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Small" />
 
     <TextView
         android:id="@+id/tv_item_checkout_name"
