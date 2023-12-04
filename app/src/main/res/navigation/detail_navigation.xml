@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail_navigation"
+    app:startDestination="@id/detailProductFragment">
+    <fragment
+        android:id="@+id/reviewFragment"
+        android:name="com.agungtriu.ecommerce.ui.review.ReviewFragment"
+        android:label="fragment_review"
+        tools:layout="@layout/fragment_review">
+        <argument
+            android:name="productId"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/detailProductFragment"
+        android:name="com.agungtriu.ecommerce.ui.detail.DetailProductFragment"
+        android:label="fragment_detail_product"
+        tools:layout="@layout/fragment_detail_product">
+        <argument
+            android:name="productId"
+            app:argType="string" />
+
+        <argument
+            android:name="from"
+            android:defaultValue="STORE"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_detailProductFragment_to_reviewFragment"
+            app:destination="@id/reviewFragment" />
+        <deepLink app:uri="http://ecommerce.agungtriu.com/{productId}" />
+    </fragment>
+</navigation>
