@@ -13,7 +13,7 @@ import com.agungtriu.ecommerce.core.remote.model.response.DataTransaction
 import com.agungtriu.ecommerce.databinding.ItemTransactionBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.Screen
-import com.agungtriu.ecommerce.ui.MainActivity
+import com.agungtriu.ecommerce.ui.AppActivity
 import com.agungtriu.ecommerce.ui.status.StatusFragment
 import com.agungtriu.ecommerce.ui.status.StatusFragment.Companion.STATE_STATUS_KEY
 import com.agungtriu.ecommerce.ui.status.StatusModel
@@ -64,7 +64,7 @@ class TransactionAdapter(private val activity: FragmentActivity) :
                     ),
                     STATE_STATUS_KEY to Screen.TRANSACTION.name
                 )
-                (activity as MainActivity).navigate(R.id.action_global_to_status_fragment, bundle)
+                (activity as AppActivity).navigate(R.id.action_global_to_status_fragment, bundle)
             }
         }
     }

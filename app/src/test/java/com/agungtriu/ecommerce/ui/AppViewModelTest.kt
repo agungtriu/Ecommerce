@@ -16,7 +16,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.whenever
 
 @RunWith(MockitoJUnitRunner::class)
-class MainViewModelTest {
+class AppViewModelTest {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
@@ -24,19 +24,19 @@ class MainViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private lateinit var mainViewModel: MainViewModel
+    private lateinit var appViewModel: AppViewModel
     private lateinit var mainRepository: MainRepository
 
     @Before
     fun setUp() {
         mainRepository = mock()
-        mainViewModel = MainViewModel(mainRepository)
+        appViewModel = AppViewModel(mainRepository)
     }
 
     @Test
     fun getAuthorizedStatus() = runTest {
         whenever(mainRepository.getAuthorizedStatus()).thenReturn(flowOf(DataDummy.dummyAuthorizeModel))
-        mainViewModel.getAuthorizedStatus().observeForever {
+        appViewModel.getAuthorizedStatus().observeForever {
             Assert.assertEquals(DataDummy.dummyAuthorizeModel, it)
         }
     }
@@ -44,7 +44,7 @@ class MainViewModelTest {
     @Test
     fun getThemeLang() = runTest {
         whenever(mainRepository.getThemeLang()).thenReturn(flowOf(DataDummy.dummyThemeLangModel))
-        mainViewModel.getThemeLang().observeForever {
+        appViewModel.getThemeLang().observeForever {
             Assert.assertEquals(DataDummy.dummyThemeLangModel, it)
         }
     }

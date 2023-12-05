@@ -34,6 +34,10 @@ class PreLoginRepositoryImp @Inject constructor(
         return dataStoreManager.getLoginData()
     }
 
+    override fun getLoginStatus(): Flow<Boolean> {
+        return dataStoreManager.getLoginStatus()
+    }
+
     override suspend fun setLoginData(loginModel: LoginModel) {
         dataStoreManager.setLoginData(
             loginModel = loginModel

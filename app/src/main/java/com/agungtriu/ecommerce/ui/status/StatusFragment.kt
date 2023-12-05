@@ -13,7 +13,7 @@ import com.agungtriu.ecommerce.databinding.FragmentStatusBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.Screen
 import com.agungtriu.ecommerce.helper.ViewState
-import com.agungtriu.ecommerce.ui.MainActivity
+import com.agungtriu.ecommerce.ui.AppActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -68,7 +68,7 @@ class StatusFragment : BaseFragment<FragmentStatusBinding>(FragmentStatusBinding
                 if (viewModel.stateStatus == Screen.TRANSACTION.name) {
                     findNavController().navigateUp()
                 } else {
-                    (requireActivity() as MainActivity).navigate(R.id.action_global_to_main_navigation)
+                    (requireActivity() as AppActivity).navigate(R.id.action_global_to_main_navigation)
                 }
             } else {
                 viewModel.postRating(
@@ -99,11 +99,13 @@ class StatusFragment : BaseFragment<FragmentStatusBinding>(FragmentStatusBinding
                         is ViewState.Success -> {
                             binding.btnStatusDone.visibility = View.VISIBLE
                             binding.pbStatus.isVisible = false
-                            (requireActivity() as MainActivity).navigate(
+                            (requireActivity() as AppActivity).navigate(
                                 R.id.action_global_to_main_navigation,
                                 bundle
                             )
                         }
+
+                        else -> {}
                     }
                 }
             }

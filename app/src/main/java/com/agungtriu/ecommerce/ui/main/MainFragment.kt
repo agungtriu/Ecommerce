@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.setupWithNavController
@@ -17,7 +16,7 @@ import androidx.window.layout.WindowMetricsCalculator
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.databinding.FragmentMainBinding
 import com.agungtriu.ecommerce.helper.Screen
-import com.agungtriu.ecommerce.ui.MainActivity
+import com.agungtriu.ecommerce.ui.AppActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.agungtriu.ecommerce.ui.status.StatusFragment.Companion.STATE_STATUS_KEY
 import com.google.android.material.badge.BadgeDrawable
@@ -30,22 +29,28 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::inflate) {
     private val viewModel: MainViewModel by viewModels()
-    private lateinit var navController: NavController
     private var badgeWishlist: BadgeDrawable? = null
     private lateinit var analytics: FirebaseAnalytics
     private lateinit var screenWidth: WindowWidthSizeClass
 
+    private val navHostFragment by lazy {
+        childFragmentManager.findFragmentById(R.id.fcv_main_fragment) as NavHostFragment
+    }
+
+    private val navController by lazy {
+        navHostFragment.navController
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (!viewModel.getLoginStatus()) {
+            (requireActivity() as AppActivity).navigate(R.id.action_global_to_prelogin_navigation)
+        }
         analytics = Firebase.analytics
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val navHostFragment =
-            childFragmentManager.findFragmentById(R.id.fcv_main_fragment) as NavHostFragment
-        navController = navHostFragment.findNavController()
         computeWindowSizeClasses()
 
         when (screenWidth) {
@@ -70,12 +75,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
     @SuppressLint("UnsafeOptInUsageError")
     private fun observeData() {
-        if (!viewModel.getLoginStatus()) {
-            (activity as MainActivity).navigate(R.id.action_global_to_prelogin_navigation)
-        }
-
         viewModel.getLoginData().observe(viewLifecycleOwner) {
-            if (it.isLogin) {
+            if (it.isLogin == true) {
                 if (it.userName != "" && it.userName != null) {
                     binding.toolbarMain.title = it.userName
                 } else {
@@ -83,12 +84,10 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                 }
             }
         }
-
         viewModel.getWishlists().observe(viewLifecycleOwner) {
             badgeWishlist?.isVisible = !it.isNullOrEmpty()
             badgeWishlist?.number = it?.size ?: 0
         }
-
         val badgeCart = BadgeDrawable.create(requireContext())
         attachBadgeDrawable(badgeCart, binding.toolbarMain, R.id.btn_main_shopping_cart)
         viewModel.selectCountCart().observe(viewLifecycleOwner) {

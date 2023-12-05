@@ -40,14 +40,14 @@ class MainViewModelTest {
     }
 
     @Test
-    fun getLoginStatus() = runTest {
-        whenever(preLoginRepository.getLoginData()).thenReturn(flowOf(DataDummy.dummyLoginModel))
+    fun getLoginStatus_success() = runTest {
+        whenever(preLoginRepository.getLoginStatus()).thenReturn(flowOf(true))
         val actual = mainViewModel.getLoginStatus()
-        Assert.assertEquals(DataDummy.dummyLoginModel.isLogin, actual)
+        Assert.assertEquals(true, actual)
     }
 
     @Test
-    fun getLoginData() = runTest {
+    fun getLoginData_success() = runTest {
         whenever(preLoginRepository.getLoginData()).thenReturn(flowOf(DataDummy.dummyLoginModel))
         mainViewModel.getLoginData().observeForever {
             Assert.assertEquals(DataDummy.dummyLoginModel, it)

@@ -11,7 +11,7 @@ import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.databinding.FragmentCartBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
-import com.agungtriu.ecommerce.ui.MainActivity
+import com.agungtriu.ecommerce.ui.AppActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.agungtriu.ecommerce.ui.checkout.CheckoutFragment.Companion.CHECKOUT_KEY
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -125,7 +125,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
             analyticsBeginCheckout(bundles, totalPay.toDouble())
 
             val bundle = bundleOf(CHECKOUT_KEY to selectedProducts)
-            (requireActivity() as MainActivity).navigate(R.id.action_global_to_checkout_fragment, bundle)
+            (requireActivity() as AppActivity).navigate(R.id.action_global_to_checkout_fragment, bundle)
         }
     }
 

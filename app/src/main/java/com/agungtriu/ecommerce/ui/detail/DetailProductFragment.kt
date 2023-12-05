@@ -18,7 +18,7 @@ import com.agungtriu.ecommerce.helper.Config.BASE_DEEPLINK
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.Screen
 import com.agungtriu.ecommerce.helper.ViewState
-import com.agungtriu.ecommerce.ui.MainActivity
+import com.agungtriu.ecommerce.ui.AppActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.agungtriu.ecommerce.ui.checkout.CheckoutFragment
 import com.agungtriu.ecommerce.ui.review.ReviewFragment.Companion.REVIEW_KEY
@@ -108,9 +108,11 @@ class DetailProductFragment :
                 } else if (viewModel.stateDetail == Screen.STORE.name) {
                     viewModel.selectedVariantName =
                         productDetail.productVariant?.get(0)?.variantName ?: ""
-                    viewModel.selectedVariantPrice = (productDetail.productPrice?.plus(
-                        (productDetail.productVariant?.get(0)?.variantPrice ?: 0)
-                    )) ?: 0
+                    viewModel.selectedVariantPrice = (
+                        productDetail.productPrice?.plus(
+                            (productDetail.productVariant?.get(0)?.variantPrice ?: 0)
+                        )
+                        ) ?: 0
                 }
 
                 binding.ivDetailWishlist.setBackgroundResource(R.drawable.ic_favorite)
@@ -130,9 +132,11 @@ class DetailProductFragment :
                 } else {
                     viewModel.selectedVariantName =
                         productDetail.productVariant?.get(0)?.variantName ?: ""
-                    viewModel.selectedVariantPrice = (productDetail.productPrice?.plus(
-                        (productDetail.productVariant?.get(0)?.variantPrice ?: 0)
-                    )) ?: 0
+                    viewModel.selectedVariantPrice = (
+                        productDetail.productPrice?.plus(
+                            (productDetail.productVariant?.get(0)?.variantPrice ?: 0)
+                        )
+                        ) ?: 0
                 }
             }
             wishlistPress = false
@@ -193,8 +197,8 @@ class DetailProductFragment :
                 putExtra(
                     Intent.EXTRA_TEXT,
                     "${getString(R.string.all_name)} : ${productDetail.productName}\n" +
-                            "${getString(R.string.all_price)} : ${productDetail.productPrice?.toRupiah()}\n" +
-                            "${getString(R.string.all_link)} : $BASE_DEEPLINK${productDetail.productId}"
+                        "${getString(R.string.all_price)} : ${productDetail.productPrice?.toRupiah()}\n" +
+                        "${getString(R.string.all_link)} : $BASE_DEEPLINK${productDetail.productId}"
                 )
                 type = "text/plain"
             }
@@ -247,7 +251,7 @@ class DetailProductFragment :
             analytics.logEvent("btn_detail_buy", null)
             analyticsEvent(FirebaseAnalytics.Event.BEGIN_CHECKOUT)
 
-            (requireActivity() as MainActivity).navigate(
+            (requireActivity() as AppActivity).navigate(
                 action = R.id.action_global_to_checkout_fragment,
                 bundle = bundleOf(
                     CheckoutFragment.CHECKOUT_KEY to listOf(

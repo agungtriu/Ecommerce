@@ -1,31 +1,23 @@
 package com.agungtriu.ecommerce.core.datastore
 
-import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
 import com.agungtriu.ecommerce.core.datastore.model.AuthorizeModel
 import com.agungtriu.ecommerce.core.datastore.model.LoginModel
 import com.agungtriu.ecommerce.core.datastore.model.RegisterProfileModel
 import com.agungtriu.ecommerce.core.datastore.model.ThemeLangModel
 import com.agungtriu.ecommerce.core.datastore.model.TokenModel
-import com.agungtriu.ecommerce.core.utils.Config.DATASTORE_NAME
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.agungtriu.ecommerce.core.utils.Language
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 import javax.inject.Singleton
 
-val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = DATASTORE_NAME)
-
 @Singleton
-class DataStoreManager @Inject constructor(@ApplicationContext appContext: Context) {
-
-    private val dataStore = appContext.dataStore
-
+class DataStoreManager @Inject constructor(private val dataStore: DataStore<Preferences>) {
     fun getOnboardingStatus(): Flow<Boolean> {
         return dataStore.data.map { preferences ->
             preferences[ONBOARDING_KEY] ?: false
@@ -35,6 +27,12 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
     suspend fun setOnboardingStatus() {
         dataStore.edit { preferences ->
             preferences[ONBOARDING_KEY] = true
+        }
+    }
+
+    fun getLoginStatus(): Flow<Boolean> {
+        return dataStore.data.map { preferences ->
+            preferences[LOGIN_KEY] ?: false
         }
     }
 
@@ -70,12 +68,12 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
 
     suspend fun setLoginData(loginModel: LoginModel) {
         dataStore.edit { preferences ->
-            preferences[LOGIN_KEY] = loginModel.isLogin
+            preferences[LOGIN_KEY] = loginModel.isLogin ?: false
             preferences[NAME_KEY] = loginModel.userName ?: ""
             preferences[IMAGE_KEY] = loginModel.userImage ?: ""
             preferences[ACCESS_TOKEN_KEY] = loginModel.accessToken ?: ""
             preferences[REFRESH_TOKEN_KEY] = loginModel.refreshToken ?: ""
-            preferences[AUTHORIZED_KEY] = loginModel.isAuthorized
+            preferences[AUTHORIZED_KEY] = loginModel.isAuthorized ?: false
         }
     }
 
@@ -102,7 +100,7 @@ class DataStoreManager @Inject constructor(@ApplicationContext appContext: Conte
         return dataStore.data.map { preferences ->
             ThemeLangModel(
                 isDark = preferences[THEME_KEY] ?: false,
-                language = preferences[LANGUAGE_KEY] ?: "EN",
+                language = preferences[LANGUAGE_KEY] ?: Language.EN.name,
             )
         }
     }

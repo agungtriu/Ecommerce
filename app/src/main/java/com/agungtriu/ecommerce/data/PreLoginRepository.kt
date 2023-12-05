@@ -12,6 +12,7 @@ interface PreLoginRepository {
     fun getOnboardingStatus(): Flow<Boolean>
     suspend fun setOnboarding()
     fun getLoginData(): Flow<LoginModel>
+    fun getLoginStatus(): Flow<Boolean>
     suspend fun setLoginData(loginModel: LoginModel)
 
     suspend fun postRegister(requestRegister: RequestRegister): Flow<ViewState<DataRegister>>

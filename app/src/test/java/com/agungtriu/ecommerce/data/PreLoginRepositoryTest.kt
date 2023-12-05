@@ -47,6 +47,13 @@ class PreLoginRepositoryTest {
     }
 
     @Test
+    fun getLoginStatus() = runTest {
+        whenever(dataStoreManager.getLoginStatus()).thenReturn(flowOf(false))
+        val actual = preLoginRepository.getLoginStatus().first()
+        Assert.assertEquals(false, actual)
+    }
+
+    @Test
     fun getLoginData() = runTest {
         whenever(dataStoreManager.getLoginData()).thenReturn(flowOf(DataDummy.dummyLoginModel))
         val actual = preLoginRepository.getLoginData().first()

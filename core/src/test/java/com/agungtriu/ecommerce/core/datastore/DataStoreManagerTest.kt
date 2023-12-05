@@ -1,9 +1,14 @@
 package com.agungtriu.ecommerce.core.datastore
 
 import android.content.Context
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.test.core.app.ApplicationProvider
 import com.agungtriu.ecommerce.core.DataDummy
 import com.agungtriu.ecommerce.core.datastore.model.RegisterProfileModel
+import com.agungtriu.ecommerce.core.utils.Config.DATASTORE_NAME
 import com.agungtriu.ecommerce.core.utils.Language
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
@@ -20,11 +25,17 @@ class DataStoreManagerTest {
 
     private lateinit var context: Context
     private lateinit var dataStoreManager: DataStoreManager
+    private lateinit var dataStore: DataStore<Preferences>
 
     @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext()
-        dataStoreManager = DataStoreManager(context)
+        dataStore = PreferenceDataStoreFactory.create(produceFile = {
+            context.preferencesDataStoreFile(
+                DATASTORE_NAME
+            )
+        })
+        dataStoreManager = DataStoreManager(dataStore)
     }
 
     @Test
@@ -35,10 +46,14 @@ class DataStoreManagerTest {
     }
 
     @Test
-    fun setLoginData_getLoginData_getToken_getAuthorized() = runTest {
+    fun setLoginData_getLoginStatus_getLoginData_getToken_getAuthorized() = runTest {
         dataStoreManager.setLoginData(loginModel = DataDummy.dummyLoginModel)
-        val actual = dataStoreManager.getLoginData().first()
-        Assert.assertEquals(DataDummy.dummyLoginModel, actual)
+
+        val actualLoginStatus = dataStoreManager.getLoginStatus().first()
+        Assert.assertEquals(DataDummy.dummyLoginModel.isLogin, actualLoginStatus)
+
+        val actualLoginData = dataStoreManager.getLoginData().first()
+        Assert.assertEquals(DataDummy.dummyLoginModel, actualLoginData)
 
         val actualToken = dataStoreManager.getToken().first()
         Assert.assertEquals(DataDummy.dummyLoginModel.accessToken, actualToken.accessToken)

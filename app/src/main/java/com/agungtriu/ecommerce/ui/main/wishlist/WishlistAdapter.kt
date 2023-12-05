@@ -17,7 +17,7 @@ import com.agungtriu.ecommerce.databinding.ItemWishlistLinearBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.Screen
 import com.agungtriu.ecommerce.helper.ViewState
-import com.agungtriu.ecommerce.ui.MainActivity
+import com.agungtriu.ecommerce.ui.AppActivity
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment.Companion.FROM_KEY
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment.Companion.PRODUCT_ID_KEY
 import com.bumptech.glide.Glide
@@ -171,7 +171,7 @@ class WishlistAdapter(
                 PRODUCT_ID_KEY to item.id,
                 FROM_KEY to Screen.WISHLIST.name
             )
-            (activity as MainActivity).navigate(R.id.action_global_to_detail_fragment, bundle)
+            (activity as AppActivity).navigate(R.id.action_global_to_detail_fragment, bundle)
         }
     }
 
@@ -237,7 +237,7 @@ class WishlistAdapter(
                 PRODUCT_ID_KEY to item.id,
                 FROM_KEY to Screen.WISHLIST.name
             )
-            (activity as MainActivity).navigate(R.id.action_global_to_detail_fragment, bundle)
+            (activity as AppActivity).navigate(R.id.action_global_to_detail_fragment, bundle)
         }
     }
 

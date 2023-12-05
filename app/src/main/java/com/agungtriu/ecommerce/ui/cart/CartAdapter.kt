@@ -15,7 +15,7 @@ import com.agungtriu.ecommerce.databinding.ItemCartBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.Screen
 import com.agungtriu.ecommerce.helper.Utils.warningStock
-import com.agungtriu.ecommerce.ui.MainActivity
+import com.agungtriu.ecommerce.ui.AppActivity
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
@@ -99,7 +99,7 @@ class CartAdapter(
                 DetailProductFragment.PRODUCT_ID_KEY to item.id,
                 DetailProductFragment.FROM_KEY to Screen.CART.name
             )
-            (activity as MainActivity).navigate(R.id.action_global_to_detail_fragment, bundle)
+            (activity as AppActivity).navigate(R.id.action_global_to_detail_fragment, bundle)
         }
     }
 

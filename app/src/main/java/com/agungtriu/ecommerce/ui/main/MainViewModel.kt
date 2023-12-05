@@ -22,9 +22,10 @@ class MainViewModel @Inject constructor(
 
     fun getLoginStatus(): Boolean {
         return runBlocking {
-            preLoginRepository.getLoginData().first().isLogin
+            preLoginRepository.getLoginStatus().first()
         }
     }
+
     fun getLoginData(): LiveData<LoginModel> {
         return preLoginRepository.getLoginData().asLiveData()
     }

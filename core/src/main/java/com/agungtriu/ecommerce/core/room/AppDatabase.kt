@@ -8,7 +8,7 @@ import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 
 @Database(
     entities = [WishlistEntity::class, CartEntity::class, NotificationEntity::class],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {

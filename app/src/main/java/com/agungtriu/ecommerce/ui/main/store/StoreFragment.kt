@@ -224,9 +224,11 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
         binding.chipgroupBottomshettfilter.removeAllViews()
         if (filterModel.sort != null) {
             addChip(
-                if (language == Language.EN.name) Sort.valueOf(filterModel.sort!!).en else Sort.valueOf(
-                    filterModel.sort!!
-                ).id
+                if (language == Language.EN.name) {
+                    Sort.valueOf(filterModel.sort!!).en
+                } else {
+                    Sort.valueOf(filterModel.sort!!).id
+                }
             )
         }
         if (filterModel.category != null) {

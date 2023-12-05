@@ -129,9 +129,9 @@ class MainRepositoryTest {
     @Test
     fun selectCountCart_success_null() = runTest {
         whenever(appDatabase.cartDao()).thenReturn(cartDao)
-        whenever(appDatabase.cartDao().selectCountCart()).thenReturn(flowOf(null))
+        whenever(appDatabase.cartDao().selectCountCart()).thenReturn(flowOf(0))
         val actual = mainRepository.selectCountCart().first()
-        Assert.assertEquals(null, actual)
+        Assert.assertEquals(0, actual)
     }
 
     @Test
@@ -145,8 +145,8 @@ class MainRepositoryTest {
     @Test
     fun selectCountNotification_success_null() = runTest {
         whenever(appDatabase.notificationDao()).thenReturn(notificationDao)
-        whenever(appDatabase.notificationDao().selectCountNotifications()).thenReturn(flowOf(null))
+        whenever(appDatabase.notificationDao().selectCountNotifications()).thenReturn(flowOf(0))
         val actual = mainRepository.selectCountNotification().first()
-        Assert.assertEquals(null, actual)
+        Assert.assertEquals(0, actual)
     }
 }

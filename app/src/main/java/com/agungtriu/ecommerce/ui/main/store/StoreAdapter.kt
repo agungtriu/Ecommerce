@@ -13,7 +13,7 @@ import com.agungtriu.ecommerce.databinding.ItemStoreGridBinding
 import com.agungtriu.ecommerce.databinding.ItemStoreLinearBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.Screen
-import com.agungtriu.ecommerce.ui.MainActivity
+import com.agungtriu.ecommerce.ui.AppActivity
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment.Companion.FROM_KEY
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment.Companion.PRODUCT_ID_KEY
 import com.bumptech.glide.Glide
@@ -68,7 +68,7 @@ class StoreAdapter(
                         PRODUCT_ID_KEY to item.productId,
                         FROM_KEY to Screen.STORE.name
                     )
-                    (activity as MainActivity).navigate(
+                    (activity as AppActivity).navigate(
                         R.id.action_global_to_detail_fragment,
                         bundle
                     )
@@ -110,7 +110,7 @@ class StoreAdapter(
                         PRODUCT_ID_KEY to item.productId,
                         FROM_KEY to Screen.STORE.name
                     )
-                    (activity as MainActivity).navigate(
+                    (activity as AppActivity).navigate(
                         R.id.action_global_to_detail_fragment,
                         bundle
                     )

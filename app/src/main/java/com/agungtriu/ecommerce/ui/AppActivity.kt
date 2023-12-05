@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.distinctUntilChanged
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.databinding.ActivityMainBinding
@@ -20,26 +19,26 @@ import com.google.android.material.snackbar.Snackbar
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class AppActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: MainViewModel by viewModels()
-    private lateinit var navController: NavController
+    private val viewModel: AppViewModel by viewModels()
+
+    private val navHostFragment by lazy {
+        supportFragmentManager.findFragmentById(R.id.fcv_main) as NavHostFragment
+    }
+
+    private val navController by lazy {
+        navHostFragment.navController
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        setupNavController()
         observeData()
         checkNotificationPermission()
-    }
-
-    private fun setupNavController() {
-        val navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.fcv_main) as NavHostFragment
-        navController = navHostFragment.navController
     }
 
     private fun observeData() {
@@ -79,14 +78,9 @@ class MainActivity : AppCompatActivity() {
             if (isGranted) {
                 Snackbar.make(
                     binding.root,
-                    getString(R.string.main_permission_request_accepted), Snackbar.LENGTH_SHORT
+                    getString(R.string.main_permission_request_accepted),
+                    Snackbar.LENGTH_SHORT
                 ).show()
-            } else {
-                Snackbar.make(
-                    binding.root,
-                    getString(R.string.main_permission_request_denied), Snackbar.LENGTH_SHORT
-                ).show()
-
             }
         }
 

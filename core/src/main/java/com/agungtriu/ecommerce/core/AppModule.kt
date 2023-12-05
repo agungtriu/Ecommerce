@@ -1,12 +1,15 @@
 package com.agungtriu.ecommerce.core
 
 import android.content.Context
+import androidx.datastore.preferences.core.PreferenceDataStoreFactory
+import androidx.datastore.preferences.preferencesDataStoreFile
 import androidx.room.Room
 import com.agungtriu.ecommerce.core.datastore.DataStoreManager
 import com.agungtriu.ecommerce.core.remote.ApiService
 import com.agungtriu.ecommerce.core.room.AppDatabase
 import com.agungtriu.ecommerce.core.utils.Config.API_BASE_URL
 import com.agungtriu.ecommerce.core.utils.Config.DATABASE_NAME
+import com.agungtriu.ecommerce.core.utils.Config.DATASTORE_NAME
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
@@ -25,10 +28,13 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    @Singleton
     @Provides
     fun provideAuthInterceptor(dataStoreManager: DataStoreManager): AuthInterceptor =
         AuthInterceptor(dataStoreManager)
 
+
+    @Singleton
     @Provides
     fun provideAuthAuthentication(
         dataStoreManager: DataStoreManager,
@@ -38,6 +44,8 @@ object AppModule {
     ): Authenticator =
         AuthAuthenticator(dataStoreManager, appDatabase, chuckerInterceptor, authInterceptor)
 
+
+    @Singleton
     @Provides
     fun provideChuckerCollector(@ApplicationContext appContext: Context): ChuckerCollector {
         return ChuckerCollector(
@@ -47,17 +55,22 @@ object AppModule {
         )
     }
 
+
+    @Singleton
     @Provides
     fun provideChuckerInterceptor(
         @ApplicationContext appContext: Context,
         chuckerCollector: ChuckerCollector
     ): ChuckerInterceptor {
-        return ChuckerInterceptor.Builder(appContext)
+        return ChuckerInterceptor
+            .Builder(appContext)
             .collector(chuckerCollector)
             .createShortcut(true)
             .build()
     }
 
+
+    @Singleton
     @Provides
     fun provideClient(
         chuckerInterceptor: ChuckerInterceptor,
@@ -71,19 +84,34 @@ object AppModule {
             .build()
     }
 
+
+    @Singleton
     @Provides
     fun provideApiService(client: OkHttpClient): ApiService =
-        Retrofit.Builder().addConverterFactory(GsonConverterFactory.create())
+        Retrofit.Builder()
+            .addConverterFactory(GsonConverterFactory.create())
             .baseUrl(API_BASE_URL)
             .client(client)
             .build()
             .create(ApiService::class.java)
 
-    @Provides
     @Singleton
+    @Provides
     fun provideDatabase(@ApplicationContext context: Context): AppDatabase {
         return Room.databaseBuilder(context, AppDatabase::class.java, DATABASE_NAME)
-            .fallbackToDestructiveMigration()
-            .build()
+            .fallbackToDestructiveMigration().build()
     }
+
+    @Singleton
+    @Provides
+    fun provideDatastore(@ApplicationContext context: Context): DataStoreManager =
+        DataStoreManager(
+            PreferenceDataStoreFactory.create(
+                produceFile = {
+                    context.preferencesDataStoreFile(
+                        DATASTORE_NAME
+                    )
+                }
+            )
+        )
 }
