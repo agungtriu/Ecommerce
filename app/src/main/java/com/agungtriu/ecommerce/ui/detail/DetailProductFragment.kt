@@ -117,6 +117,37 @@ class DetailProductFragment :
             }
             wishlistPress = false
         }
+        viewModel.resultAddCart.observe(viewLifecycleOwner) {
+            when (it) {
+                is ViewState.Loading -> binding.pbDetail.visibility = View.VISIBLE
+                is ViewState.Success -> {
+                    binding.pbDetail.visibility = View.GONE
+                    when (it.data) {
+                        "cart" -> Snackbar.make(
+                            requireView(),
+                            getString(R.string.all_success_add_cart),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+
+                        "quantity" -> Snackbar.make(
+                            requireView(),
+                            getString(R.string.all_success_update_quantity),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                    analyticsEvent(FirebaseAnalytics.Event.ADD_TO_CART)
+                }
+
+                is ViewState.Error -> {
+                    binding.pbDetail.visibility = View.GONE
+                    Snackbar.make(
+                        requireView(),
+                        getString(R.string.all_stock_not_available),
+                        Snackbar.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
     }
 
     private fun listener() {
@@ -173,8 +204,8 @@ class DetailProductFragment :
                 putExtra(
                     Intent.EXTRA_TEXT,
                     "${getString(R.string.all_name)} : ${productDetail.productName}\n" +
-                        "${getString(R.string.all_price)} : ${productDetail.productPrice?.toRupiah()}\n" +
-                        "${getString(R.string.all_link)} : $BASE_DEEPLINK${productDetail.productId}"
+                            "${getString(R.string.all_price)} : ${productDetail.productPrice?.toRupiah()}\n" +
+                            "${getString(R.string.all_link)} : $BASE_DEEPLINK${productDetail.productId}"
                 )
                 type = "text/plain"
             }
@@ -185,37 +216,7 @@ class DetailProductFragment :
 
         binding.btnDetailCart.setOnClickListener {
             analytics.logEvent("btn_detail_cart", null)
-            viewModel.addCart(productDetail.toCart()).observe(viewLifecycleOwner) {
-                when (it) {
-                    is ViewState.Loading -> binding.pbDetail.visibility = View.VISIBLE
-                    is ViewState.Success -> {
-                        binding.pbDetail.visibility = View.GONE
-                        when (it.data) {
-                            "cart" -> Snackbar.make(
-                                requireView(),
-                                getString(R.string.all_success_add_cart),
-                                Snackbar.LENGTH_LONG
-                            ).show()
-
-                            "quantity" -> Snackbar.make(
-                                requireView(),
-                                getString(R.string.all_success_update_quantity),
-                                Snackbar.LENGTH_LONG
-                            ).show()
-                        }
-                        analyticsEvent(FirebaseAnalytics.Event.ADD_TO_CART)
-                    }
-
-                    is ViewState.Error -> {
-                        binding.pbDetail.visibility = View.GONE
-                        Snackbar.make(
-                            requireView(),
-                            getString(R.string.all_stock_not_available),
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    }
-                }
-            }
+            viewModel.addCart(productDetail.toCart())
         }
 
         binding.layoutDetailError.btnErrorResetRefresh.setOnClickListener {
@@ -257,10 +258,10 @@ class DetailProductFragment :
                 chip.isChecked = true
                 viewModel.selectedVariantName = variant.variantName ?: ""
                 viewModel.selectedVariantPrice = (
-                    item.productPrice?.plus(
-                        (variant.variantPrice ?: 0)
-                    )
-                    ) ?: 0
+                        item.productPrice?.plus(
+                            (variant.variantPrice ?: 0)
+                        )
+                        ) ?: 0
                 binding.tvDetailPrice.text = viewModel.selectedVariantPrice.toRupiah()
             } else if (viewModel.selectedVariantName == variant.variantName) {
                 chip.isChecked = true

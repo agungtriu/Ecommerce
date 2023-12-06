@@ -163,7 +163,7 @@ class WishlistAdapter(
 
         binding.cvItemWishlistGrid.setOnClickListener {
             val bundle = bundleOf(DetailProductFragment.PRODUCT_ID_KEY to item.id)
-            (activity as MainActivity).toDetail(bundle)
+            (activity as MainActivity).toDetailCompose(bundle)
         }
     }
 
@@ -226,7 +226,7 @@ class WishlistAdapter(
 
         binding.cvItemWishlistLinear.setOnClickListener {
             val bundle = bundleOf(DetailProductFragment.PRODUCT_ID_KEY to item.id)
-            (activity as MainActivity).toDetail(bundle)
+            (activity as MainActivity).toDetailCompose(bundle)
         }
     }
 

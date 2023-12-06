@@ -92,6 +92,10 @@ class MainActivity : AppCompatActivity() {
         navController.navigate(R.id.action_global_to_detail_fragment, bundle)
     }
 
+    fun toDetailCompose(bundle: Bundle) {
+        navController.navigate(R.id.action_global_to_detail_fragment_compose, bundle)
+    }
+
     fun toCheckOut(bundle: Bundle) {
         navController.navigate(R.id.action_global_to_checkout_fragment, bundle)
     }

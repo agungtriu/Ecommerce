@@ -131,6 +131,10 @@
     <action
         android:id="@+id/action_global_to_detail_fragment"
         app:destination="@id/detail_navigation" />
+    <action
+        android:id="@+id/action_global_to_detail_fragment_compose"
+        app:destination="@id/detail_compose_navigation" />
+
     <fragment
         android:id="@+id/checkoutFragment"
         android:name="com.agungtriu.ecommerce.ui.checkout.CheckoutFragment"
@@ -187,6 +191,22 @@
                 android:id="@+id/action_detailProductFragment_to_reviewFragment"
                 app:destination="@id/reviewFragment" />
             <deepLink app:uri="http://ecommerce.agungtriu.com/{productId}" />
+        </fragment>
+    </navigation>
+    <navigation
+        android:id="@+id/detail_compose_navigation"
+        app:startDestination="@id/detailFragment">
+        <fragment
+            android:id="@+id/reviewComposeFragment"
+            android:name="com.agungtriu.ecommerce.ui.review.compose.ReviewComposeFragment"
+            android:label="fragment_review_compose" />
+        <fragment
+            android:id="@+id/detailFragment"
+            android:name="com.agungtriu.ecommerce.ui.detail.compose.DetailFragment"
+            android:label="DetailFragment">
+            <action
+                android:id="@+id/action_detailFragment_to_reviewComposeFragment"
+                app:destination="@id/reviewComposeFragment" />
         </fragment>
     </navigation>
 </navigation>
