@@ -125,7 +125,10 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
             analyticsBeginCheckout(bundles, totalPay.toDouble())
 
             val bundle = bundleOf(CHECKOUT_KEY to selectedProducts)
-            (requireActivity() as AppActivity).navigate(R.id.action_global_to_checkout_fragment, bundle)
+            (requireActivity() as AppActivity).navigate(
+                R.id.action_global_to_checkout_fragment,
+                bundle
+            )
         }
     }
 

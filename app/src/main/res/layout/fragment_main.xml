@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorSurface"
     tools:context=".ui.main.MainFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appbar_main"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/colorSurface"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -48,7 +50,7 @@
         android:id="@+id/bnv_main_fragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:itemBackground="?attr/colorSurface"
+        android:background="@color/colorSurface"
         app:itemTextAppearanceActive="@style/Theme.Ecommerce.TextAppearance.LabelMedium"
         app:itemTextAppearanceInactive="@style/Theme.Ecommerce.TextAppearance.LabelMedium"
         app:labelVisibilityMode="labeled"

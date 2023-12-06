@@ -184,6 +184,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
         chip = Chip(requireActivity())
         chip.setTextAppearanceResource(R.style.Theme_Ecommerce_ChipGroup_Chip)
         chip.text = text
+        chip.setChipBackgroundColorResource(R.color.colorSurface)
         binding.chipgroupBottomshettfilter.addView(chip)
     }
 
