@@ -287,10 +287,10 @@ class DetailProductFragment :
                 chip.isChecked = true
                 viewModel.selectedVariantName = variant.variantName ?: ""
                 viewModel.selectedVariantPrice = (
-                        item.productPrice?.plus(
-                            (variant.variantPrice ?: 0)
-                        )
-                        ) ?: 0
+                    item.productPrice?.plus(
+                        (variant.variantPrice ?: 0)
+                    )
+                    ) ?: 0
                 binding.tvDetailPrice.text = viewModel.selectedVariantPrice.toRupiah()
             } else if (viewModel.selectedVariantName == variant.variantName) {
                 chip.isChecked = true

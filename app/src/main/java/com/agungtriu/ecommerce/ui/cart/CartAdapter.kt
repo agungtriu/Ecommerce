@@ -99,7 +99,10 @@ class CartAdapter(
                 DetailProductFragment.PRODUCT_ID_KEY to item.id,
                 DetailProductFragment.FROM_KEY to Screen.CART.name
             )
-            (activity as AppActivity).navigate(R.id.action_global_to_detail_fragment, bundle)
+            (activity as AppActivity).navigate(
+                R.id.action_global_to_detail_fragment_compose,
+                bundle
+            )
         }
     }
 

@@ -72,7 +72,10 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
 
         if (filterModel.sort != null) {
             binding.chipgroupBottomshettfilterSort.forEach { chip ->
-                if ((chip as Chip).text == Sort.valueOf(filterModel.sort!!).en || (chip as Chip).text == Sort.valueOf(filterModel.sort!!).id) {
+                if ((chip as Chip).text == Sort.valueOf(filterModel.sort!!).en || (chip as Chip).text == Sort.valueOf(
+                        filterModel.sort!!
+                    ).id
+                ) {
                     sortStatus = true
                     chip.isChecked = true
                 }

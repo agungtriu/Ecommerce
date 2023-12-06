@@ -5,6 +5,7 @@
     android:id="@+id/constraint_home_fragment"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorSurface"
     android:fillViewport="true"
     tools:context=".ui.main.home.HomeFragment">
 
@@ -27,9 +28,9 @@
             android:id="@+id/view_home"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintVertical_weight="3"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/lottie_home_hallo" />
+            app:layout_constraintTop_toBottomOf="@id/lottie_home_hallo"
+            app:layout_constraintVertical_weight="3" />
 
         <Button
             android:id="@+id/btn_home_logout"

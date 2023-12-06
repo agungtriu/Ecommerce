@@ -26,7 +26,9 @@ fun ReviewItem(item: DataReview) {
             AsyncImage(
                 model = item.userImage,
                 contentDescription = null,
-                modifier = Modifier.weight(1F).clip(CircleShape)
+                modifier = Modifier
+                    .weight(1F)
+                    .clip(CircleShape)
             )
             Column(
                 Modifier
@@ -47,7 +49,8 @@ fun ReviewItem(item: DataReview) {
             }
         }
         Text(
-            text = item.userReview ?: "", style = MaterialTheme.typography.bodySmall,
+            text = item.userReview ?: "",
+            style = MaterialTheme.typography.bodySmall,
             fontFamily = FontFamily(Font(R.font.poppins_400)),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(horizontal = 16.dp)

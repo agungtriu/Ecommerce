@@ -33,7 +33,6 @@ object AppModule {
     fun provideAuthInterceptor(dataStoreManager: DataStoreManager): AuthInterceptor =
         AuthInterceptor(dataStoreManager)
 
-
     @Singleton
     @Provides
     fun provideAuthAuthentication(
@@ -44,7 +43,6 @@ object AppModule {
     ): Authenticator =
         AuthAuthenticator(dataStoreManager, appDatabase, chuckerInterceptor, authInterceptor)
 
-
     @Singleton
     @Provides
     fun provideChuckerCollector(@ApplicationContext appContext: Context): ChuckerCollector {
@@ -54,7 +52,6 @@ object AppModule {
             retentionPeriod = RetentionManager.Period.ONE_HOUR
         )
     }
-
 
     @Singleton
     @Provides
@@ -69,7 +66,6 @@ object AppModule {
             .build()
     }
 
-
     @Singleton
     @Provides
     fun provideClient(
@@ -83,7 +79,6 @@ object AppModule {
             .authenticator(authAuthenticator)
             .build()
     }
-
 
     @Singleton
     @Provides

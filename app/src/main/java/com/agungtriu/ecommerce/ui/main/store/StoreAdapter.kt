@@ -69,7 +69,7 @@ class StoreAdapter(
                         FROM_KEY to Screen.STORE.name
                     )
                     (activity as AppActivity).navigate(
-                        R.id.action_global_to_detail_fragment,
+                        R.id.action_global_to_detail_fragment_compose,
                         bundle
                     )
                 }
@@ -111,7 +111,7 @@ class StoreAdapter(
                         FROM_KEY to Screen.STORE.name
                     )
                     (activity as AppActivity).navigate(
-                        R.id.action_global_to_detail_fragment,
+                        R.id.action_global_to_detail_fragment_compose,
                         bundle
                     )
                 }

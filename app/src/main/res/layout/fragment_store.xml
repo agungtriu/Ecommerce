@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorSurface"
     tools:context=".ui.main.store.StoreFragment">
 
     <com.google.android.material.textfield.TextInputLayout
@@ -51,6 +52,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/store_filter"
                 android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
+                app:chipBackgroundColor="@color/colorSurface"
                 app:chipIcon="@drawable/ic_tune"
                 app:chipIconTint="?attr/colorOnSurface"
                 app:layout_constraintStart_toStartOf="parent"

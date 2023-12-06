@@ -75,7 +75,8 @@
                     android:layout_height="wrap_content"
                     android:text="@string/bottomsheetfilter_review"
                     android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip"
-                    android:textColor="?attr/colorOnSurfaceVariant" />
+                    android:textColor="?attr/colorOnSurfaceVariant"
+                    app:chipBackgroundColor="@color/colorChip" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_bottomshettfilter_sort_sold"
@@ -83,7 +84,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bottomsheetfilter_sold"
-                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip" />
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip"
+                    app:chipBackgroundColor="@color/colorChip" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_bottomshettfilter_sort_maxprice"
@@ -91,7 +93,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bottomsheetfilter_maxprice"
-                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip" />
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip"
+                    app:chipBackgroundColor="@color/colorChip" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_bottomshettfilter_sort_minprice"
@@ -99,7 +102,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bottomsheetfilter_minprice"
-                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip" />
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip"
+                    app:chipBackgroundColor="@color/colorChip" />
 
             </com.google.android.material.chip.ChipGroup>
 
@@ -130,7 +134,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bottomsheetfilter_apple"
-                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip" />
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip"
+                    app:chipBackgroundColor="@color/colorChip" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_bottomshettfilter_category_asus"
@@ -138,7 +143,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bottomsheetfilter_asus"
-                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip" />
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip"
+                    app:chipBackgroundColor="@color/colorChip" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_bottomshettfilter_category_dell"
@@ -146,7 +152,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bottomsheetfilter_dell"
-                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip" />
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip"
+                    app:chipBackgroundColor="@color/colorChip" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/chip_bottomshettfilter_category_lenovo"
@@ -154,7 +161,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/bottomsheetfilter_lenovo"
-                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip" />
+                    android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip"
+                    app:chipBackgroundColor="@color/colorChip" />
 
             </com.google.android.material.chip.ChipGroup>
 

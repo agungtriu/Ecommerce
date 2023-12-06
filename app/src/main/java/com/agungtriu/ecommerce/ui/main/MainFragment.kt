@@ -18,7 +18,6 @@ import com.agungtriu.ecommerce.databinding.FragmentMainBinding
 import com.agungtriu.ecommerce.helper.Screen
 import com.agungtriu.ecommerce.ui.AppActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
-import com.agungtriu.ecommerce.ui.status.StatusFragment.Companion.STATE_STATUS_KEY
 import com.google.android.material.badge.BadgeDrawable
 import com.google.android.material.badge.BadgeUtils.attachBadgeDrawable
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -102,7 +101,8 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
             badgeNotification.number = it
         }
 
-        if (arguments?.getString(STATE_STATUS_KEY) == Screen.TRANSACTION.name) {
+        if (viewModel.stateTransaction == Screen.TRANSACTION.name) {
+            viewModel.setStateTransaction(null)
             when (screenWidth) {
                 COMPACT -> binding.bnvMainFragment?.selectedItemId = R.id.transactionFragment
                 MEDIUM -> binding.nrvMainFragment?.selectedItemId = R.id.transactionFragment
@@ -131,9 +131,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
 
                 R.id.btn_main_menu -> {
                     analytics.logEvent("btn_main_menu", null)
-                    if (screenWidth == EXPANDED) {
-                        binding.dlMainFragment?.open()
-                    }
                     true
                 }
 

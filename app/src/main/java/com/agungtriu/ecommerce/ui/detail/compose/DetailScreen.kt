@@ -39,6 +39,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
@@ -60,7 +61,6 @@ import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.agungtriu.ecommerce.R
-import com.agungtriu.ecommerce.compose.ui.LoadingScreen
 import com.agungtriu.ecommerce.core.remote.model.response.DataDetailProduct
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
@@ -74,7 +74,8 @@ import com.agungtriu.ecommerce.ui.review.ReviewFragment
 import kotlinx.coroutines.launch
 
 @OptIn(
-    ExperimentalFoundationApi::class, ExperimentalLayoutApi::class,
+    ExperimentalFoundationApi::class,
+    ExperimentalLayoutApi::class,
     ExperimentalMaterial3Api::class
 )
 @Composable
@@ -86,10 +87,100 @@ fun DetailScreen(
     findNavController: NavController,
     snackBarHostState: SnackbarHostState
 ) {
-    var selectedVariant by rememberSaveable { mutableIntStateOf(0) }
     val scope = rememberCoroutineScope()
-    val isWishlist =
-        viewModel.getWishlistByProductId().distinctUntilChanged().observeAsState().value != null
+    var selectedVariant by rememberSaveable { mutableIntStateOf(0) }
+    var isWishlist by rememberSaveable { mutableStateOf(false) }
+    var isWishlistPress by rememberSaveable { mutableStateOf(false) }
+    var isCartPress by rememberSaveable { mutableStateOf(false) }
+
+    viewModel.getWishlistByProductId().distinctUntilChanged().observeAsState().value.let {
+        isWishlist = it != null
+        if (isWishlistPress) {
+            isWishlistPress = false
+            scope.launch {
+                snackBarHostState.showSnackbar(
+                    if (it != null) {
+                        "${
+                            getString(
+                                context,
+                                R.string.detail_success_remove
+                            )
+                        } ${data.productName} ${
+                            getString(
+                                context,
+                                R.string.detail_from_wishlist
+                            )
+                        }"
+                    } else {
+                        "${
+                            getString(
+                                context,
+                                R.string.detail_success_add
+                            )
+                        } ${data.productName} ${
+                            getString(
+                                context,
+                                R.string.detail_to_wishlist
+                            )
+                        }"
+                    }
+                )
+            }
+        }
+    }
+
+    viewModel.resultAddCart.observeAsState().value.let {
+        when (it) {
+            is ViewState.Error -> {
+                scope.launch {
+                    if (isCartPress) {
+                        isCartPress = false
+                        snackBarHostState.showSnackbar(
+                            getString(
+                                context,
+                                R.string.all_stock_not_available
+                            )
+                        )
+                    }
+                }
+            }
+
+            is ViewState.Loading -> {
+            }
+
+            is ViewState.Success -> {
+                when (it.data) {
+                    "cart" -> scope.launch {
+                        if (isCartPress) {
+                            isCartPress = false
+                            snackBarHostState.showSnackbar(
+                                getString(
+                                    context,
+                                    R.string.all_success_add_cart
+                                )
+                            )
+                        }
+                    }
+
+                    "quantity" -> scope.launch {
+                        if (isCartPress) {
+                            isCartPress = false
+                            snackBarHostState.showSnackbar(
+                                getString(
+                                    context,
+                                    R.string.all_success_update_quantity
+                                )
+                            )
+                        }
+                    }
+
+                    else -> {}
+                }
+            }
+
+            else -> {}
+        }
+    }
 
     val pagerState = rememberPagerState(pageCount = {
         data.image?.size ?: 0
@@ -138,9 +229,11 @@ fun DetailScreen(
             }
             Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp)) {
                 Text(
-                    text = (data.productPrice?.plus(
-                        data.productVariant?.get(selectedVariant)?.variantPrice ?: 0
-                    ) ?: 0).toRupiah(),
+                    text = (
+                        data.productPrice?.plus(
+                            data.productVariant?.get(selectedVariant)?.variantPrice ?: 0
+                        ) ?: 0
+                        ).toRupiah(),
                     fontSize = 20.sp,
                     fontFamily = FontFamily(Font(R.font.poppins_600)),
                     style = TextStyle(
@@ -160,25 +253,26 @@ fun DetailScreen(
                             putExtra(
                                 Intent.EXTRA_TEXT,
                                 "${getString(context, R.string.all_name)} : ${data.productName}\n" +
-                                        "${
-                                            getString(
-                                                context,
-                                                R.string.all_price
-                                            )
-                                        } : ${data.productPrice?.toRupiah()}\n" +
-                                        "${
-                                            getString(
-                                                context,
-                                                R.string.all_link
-                                            )
-                                        } : ${Config.BASE_DEEPLINK}${data.productId}"
+                                    "${
+                                        getString(
+                                            context,
+                                            R.string.all_price
+                                        )
+                                    } : ${data.productPrice?.toRupiah()}\n" +
+                                    "${
+                                        getString(
+                                            context,
+                                            R.string.all_link
+                                        )
+                                    } : ${Config.BASE_DEEPLINK}${data.productId}"
                             )
                             type = "text/plain"
                         }
 
                         val shareIntent = Intent.createChooser(sendIntent, "Ecommerce")
                         startActivity(context, shareIntent, null)
-                    }, modifier = Modifier
+                    },
+                    modifier = Modifier
                         .defaultMinSize(
                             minWidth = 1.dp,
                             minHeight = 1.dp
@@ -193,39 +287,11 @@ fun DetailScreen(
                 Spacer(modifier = Modifier.size(16.dp))
                 IconButton(
                     onClick = {
+                        isWishlistPress = true
                         if (isWishlist) {
                             viewModel.deleteWishlistById(data.productId!!)
                         } else {
                             viewModel.insertWishlist(data.toWishlist(selectedVariant))
-                        }
-                        scope.launch {
-                            snackBarHostState.showSnackbar(
-                                if (isWishlist) {
-                                    "${
-                                        getString(
-                                            context,
-                                            R.string.detail_success_remove
-                                        )
-                                    } ${data.productName} ${
-                                        getString(
-                                            context,
-                                            R.string.detail_from_wishlist
-                                        )
-                                    }"
-                                } else {
-                                    "${
-                                        getString(
-                                            context,
-                                            R.string.detail_success_add
-                                        )
-                                    } ${data.productName} ${
-                                        getString(
-                                            context,
-                                            R.string.detail_to_wishlist
-                                        )
-                                    }"
-                                }
-                            )
                         }
                     },
                     modifier = Modifier
@@ -236,7 +302,9 @@ fun DetailScreen(
                         .size(24.dp)
                 ) {
                     Icon(
-                        painter = painterResource(id = if (isWishlist) R.drawable.ic_favorite else R.drawable.ic_favorite_border),
+                        painter = painterResource(
+                            id = if (isWishlist) R.drawable.ic_favorite else R.drawable.ic_favorite_border
+                        ),
                         contentDescription = ""
                     )
                 }
@@ -410,11 +478,13 @@ fun DetailScreen(
                 TextButton(
                     onClick = {
                         findNavController.navigate(
-                            R.id.action_detailFragment_to_reviewComposeFragment, bundleOf(
+                            R.id.action_detailFragment_to_reviewComposeFragment,
+                            bundleOf(
                                 ReviewFragment.REVIEW_KEY to data.productId
                             )
                         )
-                    }, contentPadding = PaddingValues(0.dp),
+                    },
+                    contentPadding = PaddingValues(0.dp),
                     modifier = Modifier
                         .padding(end = 16.dp)
                         .size(height = 22.dp, width = 100.dp)
@@ -472,7 +542,7 @@ fun DetailScreen(
                 )
                 Column(modifier = Modifier.padding(start = 32.dp)) {
                     Text(
-                        text = "${data.totalSatisfaction.toString()}${stringResource(id = R.string.detail_satisfaction_desc)}",
+                        text = "${data.totalSatisfaction}${stringResource(id = R.string.detail_satisfaction_desc)}",
                         fontSize = 12.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_600)),
                         style = TextStyle(
@@ -525,7 +595,6 @@ fun DetailScreen(
                 },
                 modifier = Modifier
                     .weight(1F)
-                    .padding(end = 8.dp)
             ) {
                 Text(
                     text = stringResource(id = R.string.detail_buy_now),
@@ -535,113 +604,24 @@ fun DetailScreen(
                     )
                 )
             }
-            viewModel.resultAddCart.observeAsState().value.let {
-                when (it) {
-                    is ViewState.Error -> {
-                        Box(
-                            modifier = Modifier
-                                .weight(1F)
-                                .padding(start = 8.dp)
-                        ) {
-                            ButtonCart(
-                                viewModel = viewModel,
-                                data = data,
-                                selectedVariant = selectedVariant
-                            )
-                        }
-
-                        scope.launch {
-                            snackBarHostState.showSnackbar(
-                                getString(
-                                    context,
-                                    R.string.all_stock_not_available
-                                )
-                            )
-                        }
-                    }
-
-                    is ViewState.Loading -> {
-                        Box(
-                            modifier = Modifier
-                                .weight(1F)
-                                .padding(start = 8.dp),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            LoadingScreen()
-                        }
-                    }
-
-                    is ViewState.Success -> {
-                        Box(
-                            modifier = Modifier
-                                .weight(1F)
-                                .padding(start = 8.dp)
-                        ) {
-                            ButtonCart(
-                                viewModel = viewModel,
-                                data = data,
-                                selectedVariant = selectedVariant
-                            )
-                        }
-
-                        when (it.data) {
-                            "cart" -> scope.launch {
-                                snackBarHostState.showSnackbar(
-                                    getString(
-                                        context,
-                                        R.string.all_success_add_cart
-                                    )
-                                )
-                            }
-
-                            "quantity" -> scope.launch {
-                                snackBarHostState.showSnackbar(
-                                    getString(
-                                        context,
-                                        R.string.all_success_update_quantity
-                                    )
-                                )
-                            }
-
-                            else -> {}
-                        }
-                    }
-
-                    else -> {
-                        Box(
-                            modifier = Modifier
-                                .weight(1F)
-                                .padding(start = 8.dp)
-                        ) {
-                            ButtonCart(
-                                viewModel = viewModel,
-                                data = data,
-                                selectedVariant = selectedVariant
-                            )
-                        }
-                    }
-                }
+            Spacer(modifier = Modifier.size(16.dp))
+            Button(
+                onClick = {
+                    isCartPress = true
+                    viewModel.addCart(data.toCart(selectedVariant))
+                },
+                modifier = Modifier
+                    .weight(1F),
+            ) {
+                Text(
+                    text = stringResource(id = R.string.detail_add_cart),
+                    fontFamily = FontFamily(Font(R.font.poppins_500)),
+                    style = MaterialTheme.typography.labelLarge.plus(
+                        TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false))
+                    )
+                )
             }
         }
-    }
-}
-
-@Composable
-fun ButtonCart(viewModel: DetailProductViewModel, data: DataDetailProduct, selectedVariant: Int) {
-    Button(
-        onClick = {
-            viewModel.addCart(data.toCart(selectedVariant))
-        },
-        modifier = Modifier
-            .fillMaxWidth(),
-    ) {
-        Text(
-            text = stringResource(id = R.string.detail_add_cart),
-            fontFamily = FontFamily(Font(R.font.poppins_500)),
-            style = MaterialTheme.typography.labelLarge.plus(
-                TextStyle(platformStyle = PlatformTextStyle(includeFontPadding = false))
-            )
-        )
     }
 }
 

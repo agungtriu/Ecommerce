@@ -55,6 +55,9 @@ class StoreVideModelTest {
             actual = it
         }
         advanceUntilIdle()
-        Assert.assertEquals(DataDummy.dummyProductsResponse.data?.items!!, actual.collectDataForTest())
+        Assert.assertEquals(
+            DataDummy.dummyProductsResponse.data?.items!!,
+            actual.collectDataForTest()
+        )
     }
 }
