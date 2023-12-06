@@ -237,7 +237,7 @@ class WishlistAdapter(
                 PRODUCT_ID_KEY to item.id,
                 FROM_KEY to Screen.WISHLIST.name
             )
-            (activity as AppActivity).navigate(R.id.action_global_to_detail_fragment, bundle)
+            (activity as AppActivity).navigate(R.id.action_global_to_detail_fragment_compose, bundle)
         }
     }
 

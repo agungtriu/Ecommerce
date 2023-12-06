@@ -28,7 +28,7 @@ class ReviewViewModel @Inject constructor(
         getReviewsByProductId()
     }
 
-    private fun getReviewsByProductId() {
+    fun getReviewsByProductId() {
         viewModelScope.launch {
             storeRepository.getReviewsByProductId(productId).collect {
                 _resultReview.value = it

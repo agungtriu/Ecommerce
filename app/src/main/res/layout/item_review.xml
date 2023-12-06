@@ -14,7 +14,8 @@
         app:layout_constraintBottom_toBottomOf="@id/tv_item_review_rating"
         app:layout_constraintEnd_toStartOf="@id/tv_item_review_name"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tv_item_review_name" />
+        app:layout_constraintTop_toTopOf="@id/tv_item_review_name"
+        app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full" />
 
     <TextView
         android:id="@+id/tv_item_review_name"

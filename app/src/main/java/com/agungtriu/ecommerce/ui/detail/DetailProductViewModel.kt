@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.remote.model.response.DataDetailProduct
+import com.agungtriu.ecommerce.core.remote.model.response.ProductVariantItem
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.data.CartRepository
@@ -32,6 +33,16 @@ class DetailProductViewModel @Inject constructor(
     var selectedVariantName = ""
     var selectedVariantPrice = 0
     var sliderPosition: Int? = 0
+
+    private val _selectedVariant = MutableLiveData<ProductVariantItem>()
+    val selectedVariant: LiveData<ProductVariantItem> get() = _selectedVariant
+
+    fun setVariant(selectedVariantItem: ProductVariantItem) {
+        _selectedVariant.value = ProductVariantItem(
+            variantName = selectedVariantItem.variantName,
+            variantPrice = selectedVariantItem.variantPrice
+        )
+    }
 
     private val _resultDetail = MutableLiveData<ViewState<DataDetailProduct>>()
     val resultDetail: LiveData<ViewState<DataDetailProduct>> get() = _resultDetail
@@ -63,6 +74,13 @@ class DetailProductViewModel @Inject constructor(
         }
     }
 
-    fun addCart(cartEntity: CartEntity): LiveData<ViewState<String>> =
-        cartRepository.insertCart(cartEntity).asLiveData()
+    private val _resultAddCart = MutableLiveData<ViewState<String>>()
+    val resultAddCart: LiveData<ViewState<String>> get() = _resultAddCart
+    fun addCart(cartEntity: CartEntity) {
+        viewModelScope.launch {
+            cartRepository.insertCart(cartEntity).collect {
+                _resultAddCart.value = it
+            }
+        }
+    }
 }
