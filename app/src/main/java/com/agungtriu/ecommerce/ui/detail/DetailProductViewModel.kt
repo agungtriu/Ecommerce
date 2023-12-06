@@ -34,26 +34,6 @@ class DetailProductViewModel @Inject constructor(
     var selectedVariantPrice = 0
     var sliderPosition: Int? = 0
 
-    private val _selectedVariant = MutableLiveData<ProductVariantItem>()
-    val selectedVariant: LiveData<ProductVariantItem> get() = _selectedVariant
-
-    fun setVariant(selectedVariantItem: ProductVariantItem) {
-        _selectedVariant.value = ProductVariantItem(
-            variantName = selectedVariantItem.variantName,
-            variantPrice = selectedVariantItem.variantPrice
-        )
-    }
-
-    private val _selectedVariant = MutableLiveData<ProductVariantItem>()
-    val selectedVariant: LiveData<ProductVariantItem> get() = _selectedVariant
-
-    fun setVariant(selectedVariantItem: ProductVariantItem) {
-        _selectedVariant.value = ProductVariantItem(
-            variantName = selectedVariantItem.variantName,
-            variantPrice = selectedVariantItem.variantPrice
-        )
-    }
-
     private val _resultDetail = MutableLiveData<ViewState<DataDetailProduct>>()
     val resultDetail: LiveData<ViewState<DataDetailProduct>> get() = _resultDetail
 
