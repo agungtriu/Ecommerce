@@ -20,21 +20,36 @@ class ProductsPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Product> {
         return try {
             val position = params.key ?: 1
-            val response =
-                apiService.getProducts(
-                    page = position,
-                    limit = params.loadSize,
-                    search = requestProducts.search,
-                    brand = requestProducts.brand,
-                    highest = requestProducts.highest,
-                    lowest = requestProducts.lowest,
-                    sort = requestProducts.sort
-                )
+            val requestFilter = mutableMapOf<String, String>()
+            requestFilter["page"] = position.toString()
+            requestFilter["limit"] = params.loadSize.toString()
+            if (!requestProducts.search.isNullOrEmpty()) {
+                requestFilter["search"] = requestProducts.search!!
+            }
+            if (!requestProducts.brand.isNullOrEmpty()) {
+                requestFilter["brand"] = requestProducts.brand!!
+            }
+            if (requestProducts.highest != null) {
+                requestFilter["highest"] = requestProducts.highest.toString()
+            }
+            if (requestProducts.lowest != null) {
+                requestFilter["lowest"] = requestProducts.lowest.toString()
+            }
+            if (!requestProducts.sort.isNullOrEmpty()) {
+                requestFilter["sort"] = requestProducts.sort!!
+            }
 
+            val response = apiService.getProducts(requestFilter = requestFilter)
+            val nextKey =
+                if (position == response.data?.totalPages || response.data?.items.isNullOrEmpty()) {
+                    null
+                } else {
+                    position + 1
+                }
             LoadResult.Page(
                 data = response.data?.items ?: emptyList(),
                 prevKey = if (position == 1) null else position - 1,
-                nextKey = if (position == response.data?.totalPages || response.data?.items.isNullOrEmpty()) null else position + 1
+                nextKey = nextKey
             )
         } catch (e: Exception) {
             LoadResult.Error(e)

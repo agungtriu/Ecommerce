@@ -1,5 +1,6 @@
 package com.agungtriu.ecommerce.core
 
+import android.util.Log
 import com.agungtriu.ecommerce.core.datastore.DataStoreManager
 import com.agungtriu.ecommerce.core.datastore.model.TokenModel
 import com.agungtriu.ecommerce.core.remote.ApiService
@@ -45,9 +46,10 @@ class AuthAuthenticator @Inject constructor(
                             )
                             .build()
                     } else {
-                        throw Exception("Refresh token return null")
+                        throw NullPointerException("Refresh token return null")
                     }
-                } catch (e: Exception) {
+                } catch (t: Throwable) {
+                    Log.d("AuthAuthenticator", t.message.toString())
                     dataStoreManager.deleteLoginStatus()
                     appDatabase.clearAllTables()
                     return@runBlocking null

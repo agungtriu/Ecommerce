@@ -69,39 +69,39 @@
                 app:singleSelection="true">
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_bottomshettfilter_sort_review"
+                    android:id="@+id/chip_bottomshettfilter_sort_rating"
                     style="@style/Widget.App.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/bottomsheetfilter_review"
+                    android:text="@string/bottomsheetfilter_rating"
                     android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     app:chipBackgroundColor="@color/colorChip" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_bottomshettfilter_sort_sold"
+                    android:id="@+id/chip_bottomshettfilter_sort_sale"
                     style="@style/Widget.App.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/bottomsheetfilter_sold"
+                    android:text="@string/bottomsheetfilter_sale"
                     android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip"
                     app:chipBackgroundColor="@color/colorChip" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_bottomshettfilter_sort_maxprice"
+                    android:id="@+id/chip_bottomshettfilter_sort_highest"
                     style="@style/Widget.App.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/bottomsheetfilter_maxprice"
+                    android:text="@string/bottomsheetfilter_highest"
                     android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip"
                     app:chipBackgroundColor="@color/colorChip" />
 
                 <com.google.android.material.chip.Chip
-                    android:id="@+id/chip_bottomshettfilter_sort_minprice"
+                    android:id="@+id/chip_bottomshettfilter_sort_lowest"
                     style="@style/Widget.App.Chip"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/bottomsheetfilter_minprice"
+                    android:text="@string/bottomsheetfilter_lowest"
                     android:textAppearance="@style/Theme.Ecommerce.ChipGroup.Chip"
                     app:chipBackgroundColor="@color/colorChip" />
 

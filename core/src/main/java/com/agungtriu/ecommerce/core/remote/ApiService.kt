@@ -25,6 +25,7 @@ import retrofit2.http.POST
 import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface ApiService {
     @POST("register")
@@ -51,13 +52,7 @@ interface ApiService {
 
     @POST("products")
     suspend fun getProducts(
-        @Query("search") search: String? = null,
-        @Query("brand") brand: String? = null,
-        @Query("lowest") lowest: Int? = null,
-        @Query("highest") highest: Int? = null,
-        @Query("sort") sort: String? = null,
-        @Query("limit") limit: Int? = null,
-        @Query("page") page: Int? = null,
+        @QueryMap requestFilter: Map<String, String>
     ): ResponseProducts
 
     @POST("search")

@@ -180,7 +180,8 @@ class DetailProductViewModelTest {
                 0,
                 false
             )
-        ).observeForever {
+        )
+        detailProductViewModel.resultAddCart.observeForever {
             actual.add(it)
         }
         advanceUntilIdle()
@@ -231,7 +232,8 @@ class DetailProductViewModelTest {
                 0,
                 false
             )
-        ).observeForever {
+        )
+        detailProductViewModel.resultAddCart.observeForever {
             actual.add(it)
         }
         advanceUntilIdle()
@@ -287,7 +289,8 @@ class DetailProductViewModelTest {
                 0,
                 false
             )
-        ).observeForever {
+        )
+        detailProductViewModel.resultAddCart.observeForever {
             actual.add(it)
         }
         advanceUntilIdle()

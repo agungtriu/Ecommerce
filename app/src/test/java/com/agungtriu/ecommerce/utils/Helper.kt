@@ -1,4 +1,4 @@
-package com.agungtriu.ecommerce.core.utils
+package com.agungtriu.ecommerce.utils
 
 import com.google.gson.Gson
 import java.io.InputStreamReader

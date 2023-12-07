@@ -1,6 +1,7 @@
 package com.agungtriu.ecommerce.ui.main
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.SavedStateHandle
 import com.agungtriu.ecommerce.data.MainRepository
 import com.agungtriu.ecommerce.data.PreLoginRepository
 import com.agungtriu.ecommerce.data.WishlistRepository
@@ -30,13 +31,15 @@ class MainViewModelTest {
     private lateinit var preLoginRepository: PreLoginRepository
     private lateinit var mainRepository: MainRepository
     private lateinit var wishlistRepository: WishlistRepository
+    private lateinit var savedStateHandle: SavedStateHandle
 
     @Before
     fun setUp() {
         preLoginRepository = mock()
         mainRepository = mock()
         wishlistRepository = mock()
-        mainViewModel = MainViewModel(preLoginRepository, mainRepository, wishlistRepository)
+        savedStateHandle = mock()
+        mainViewModel = MainViewModel(preLoginRepository, mainRepository, wishlistRepository, savedStateHandle)
     }
 
     @Test

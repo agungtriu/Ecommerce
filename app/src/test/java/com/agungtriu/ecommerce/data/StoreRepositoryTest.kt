@@ -33,7 +33,7 @@ class StoreRepositoryTest {
 
     @Test
     fun getProducts() = runTest {
-        whenever(apiService.getProducts()).thenReturn(DataDummy.dummyProductsResponse)
+        whenever(apiService.getProducts(requestFilter = mapOf())).thenReturn(DataDummy.dummyProductsResponse)
         val actual = storeRepository.getProducts(requestProducts = RequestProducts()).first()
         Assert.assertNotNull(actual)
     }

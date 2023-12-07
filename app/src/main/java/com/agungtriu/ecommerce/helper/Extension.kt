@@ -5,6 +5,8 @@ import android.text.style.ForegroundColorSpan
 import android.widget.TextView
 import com.agungtriu.ecommerce.core.remote.model.request.RequestProducts
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
+import com.agungtriu.ecommerce.core.room.entity.CartEntity
+import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.ui.main.store.filter.FilterModel
 import com.google.gson.Gson
 import retrofit2.HttpException
@@ -72,6 +74,19 @@ object Extension {
             category = this.brand,
             min = this.lowest,
             max = this.highest
+        )
+    }
+
+    fun WishlistEntity.toCart(): CartEntity {
+        return CartEntity(
+            id = this.id,
+            image = this.image,
+            productName = this.productName,
+            productPrice = this.productPrice,
+            store = this.store,
+            stock = this.stock,
+            variantPrice = this.variantPrice,
+            variantName = this.variantName
         )
     }
 }

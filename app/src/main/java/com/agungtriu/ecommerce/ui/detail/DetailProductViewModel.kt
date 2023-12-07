@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.remote.model.response.DataDetailProduct
-import com.agungtriu.ecommerce.core.remote.model.response.ProductVariantItem
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.data.CartRepository

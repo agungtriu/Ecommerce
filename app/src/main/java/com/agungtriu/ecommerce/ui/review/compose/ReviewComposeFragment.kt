@@ -24,7 +24,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.agungtriu.ecommerce.R
-import com.agungtriu.ecommerce.compose.theme.EcommerceAppComposeTheme
+import com.agungtriu.ecommerce.compose.theme.theme
 import com.agungtriu.ecommerce.compose.ui.ErrorScreen
 import com.agungtriu.ecommerce.compose.ui.LoadingScreen
 import com.agungtriu.ecommerce.compose.ui.TopBarScreen
@@ -43,7 +43,7 @@ class ReviewComposeFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                EcommerceAppComposeTheme {
+                theme {
                     Surface(
                         modifier = Modifier
                             .fillMaxSize()
@@ -76,9 +76,12 @@ class ReviewComposeFragment : Fragment() {
                                                 LoadingScreen()
                                             }
 
-                                            is ViewState.Success -> ReviewsContent(it.data)
+                                            is ViewState.Success -> ReviewsContent(reviews = it.data)
                                             is ViewState.Error ->
-                                                ErrorScreen(error = it.error) {
+                                                ErrorScreen(
+                                                    responseError = it.error,
+                                                    context = context
+                                                ) {
                                                     viewModel.getReviewsByProductId()
                                                 }
 

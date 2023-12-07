@@ -57,7 +57,6 @@ import androidx.core.content.ContextCompat.getString
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.agungtriu.ecommerce.R
@@ -66,6 +65,7 @@ import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.helper.Config
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
+import com.agungtriu.ecommerce.helper.Utils.displayPrice
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.AppActivity
 import com.agungtriu.ecommerce.ui.checkout.CheckoutFragment
@@ -79,7 +79,7 @@ import kotlinx.coroutines.launch
     ExperimentalMaterial3Api::class
 )
 @Composable
-fun DetailScreen(
+fun DetailContentScreen(
     activity: FragmentActivity,
     context: Context,
     data: DataDetailProduct,
@@ -93,42 +93,25 @@ fun DetailScreen(
     var isWishlistPress by rememberSaveable { mutableStateOf(false) }
     var isCartPress by rememberSaveable { mutableStateOf(false) }
 
-    viewModel.getWishlistByProductId().distinctUntilChanged().observeAsState().value.let {
+    viewModel.getWishlistByProductId().observeAsState().value.let {
         isWishlist = it != null
-        if (isWishlistPress) {
-            isWishlistPress = false
-            scope.launch {
+        scope.launch {
+            if (isWishlistPress) {
+                isWishlistPress = false
                 snackBarHostState.showSnackbar(
                     if (it != null) {
-                        "${
-                            getString(
-                                context,
-                                R.string.detail_success_remove
-                            )
-                        } ${data.productName} ${
-                            getString(
-                                context,
-                                R.string.detail_from_wishlist
-                            )
-                        }"
+                        getString(context, R.string.detail_success_add)
+                            .plus(" ${data.productName}")
+                            .plus(" ${getString(context, R.string.detail_to_wishlist)}")
                     } else {
-                        "${
-                            getString(
-                                context,
-                                R.string.detail_success_add
-                            )
-                        } ${data.productName} ${
-                            getString(
-                                context,
-                                R.string.detail_to_wishlist
-                            )
-                        }"
+                        getString(context, R.string.detail_success_remove)
+                            .plus(" ${data.productName}")
+                            .plus(" ${getString(context, R.string.detail_from_wishlist)}")
                     }
                 )
             }
         }
     }
-
     viewModel.resultAddCart.observeAsState().value.let {
         when (it) {
             is ViewState.Error -> {
@@ -136,17 +119,13 @@ fun DetailScreen(
                     if (isCartPress) {
                         isCartPress = false
                         snackBarHostState.showSnackbar(
-                            getString(
-                                context,
-                                R.string.all_stock_not_available
-                            )
+                            getString(context, R.string.all_stock_not_available)
                         )
                     }
                 }
             }
 
-            is ViewState.Loading -> {
-            }
+            is ViewState.Loading -> null
 
             is ViewState.Success -> {
                 when (it.data) {
@@ -154,10 +133,7 @@ fun DetailScreen(
                         if (isCartPress) {
                             isCartPress = false
                             snackBarHostState.showSnackbar(
-                                getString(
-                                    context,
-                                    R.string.all_success_add_cart
-                                )
+                                getString(context, R.string.all_success_add_cart)
                             )
                         }
                     }
@@ -166,19 +142,16 @@ fun DetailScreen(
                         if (isCartPress) {
                             isCartPress = false
                             snackBarHostState.showSnackbar(
-                                getString(
-                                    context,
-                                    R.string.all_success_update_quantity
-                                )
+                                getString(context, R.string.all_success_update_quantity)
                             )
                         }
                     }
 
-                    else -> {}
+                    else -> null
                 }
             }
 
-            else -> {}
+            else -> null
         }
     }
 
@@ -215,8 +188,11 @@ fun DetailScreen(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         repeat(data.image?.size ?: 0) { iteration ->
-                            val color =
-                                if (pagerState.currentPage == iteration) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
+                            val color = if (pagerState.currentPage == iteration) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.outlineVariant
+                            }
                             Box(
                                 modifier = Modifier
                                     .padding(end = 8.dp)
@@ -229,11 +205,10 @@ fun DetailScreen(
             }
             Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp)) {
                 Text(
-                    text = (
-                        data.productPrice?.plus(
-                            data.productVariant?.get(selectedVariant)?.variantPrice ?: 0
-                        ) ?: 0
-                        ).toRupiah(),
+                    text = displayPrice(
+                        basePrice = data.productPrice,
+                        variantPrice = data.productVariant?.get(selectedVariant)?.variantPrice
+                    ).toRupiah(),
                     fontSize = 20.sp,
                     fontFamily = FontFamily(Font(R.font.poppins_600)),
                     style = TextStyle(
@@ -248,29 +223,7 @@ fun DetailScreen(
                 )
                 IconButton(
                     onClick = {
-                        val sendIntent: Intent = Intent().apply {
-                            action = Intent.ACTION_SEND
-                            putExtra(
-                                Intent.EXTRA_TEXT,
-                                "${getString(context, R.string.all_name)} : ${data.productName}\n" +
-                                    "${
-                                        getString(
-                                            context,
-                                            R.string.all_price
-                                        )
-                                    } : ${data.productPrice?.toRupiah()}\n" +
-                                    "${
-                                        getString(
-                                            context,
-                                            R.string.all_link
-                                        )
-                                    } : ${Config.BASE_DEEPLINK}${data.productId}"
-                            )
-                            type = "text/plain"
-                        }
-
-                        val shareIntent = Intent.createChooser(sendIntent, "Ecommerce")
-                        startActivity(context, shareIntent, null)
+                        intentShare(context = context, data = data)
                     },
                     modifier = Modifier
                         .defaultMinSize(
@@ -542,7 +495,8 @@ fun DetailScreen(
                 )
                 Column(modifier = Modifier.padding(start = 32.dp)) {
                     Text(
-                        text = "${data.totalSatisfaction}${stringResource(id = R.string.detail_satisfaction_desc)}",
+                        text = data.totalSatisfaction.toString()
+                            .plus(stringResource(id = R.string.detail_satisfaction_desc)),
                         fontSize = 12.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_600)),
                         style = TextStyle(
@@ -553,16 +507,12 @@ fun DetailScreen(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Text(
-                        text = "${data.totalRating} ${stringResource(id = R.string.detail_rating_desc)} ${
-                            stringResource(
-                                id = R.string.detail_dot
-                            )
-                        } ${data.totalReview} ${stringResource(id = R.string.detail_review_desc)}",
+                        text = "${data.totalRating} ${stringResource(id = R.string.detail_rating_desc)}"
+                            .plus(" ${stringResource(id = R.string.detail_dot)} ")
+                            .plus("${data.totalReview} ${stringResource(id = R.string.detail_review_desc)}"),
                         style = MaterialTheme.typography.bodySmall.plus(
                             TextStyle(
-                                platformStyle = PlatformTextStyle(
-                                    includeFontPadding = false,
-                                )
+                                platformStyle = PlatformTextStyle(includeFontPadding = false)
                             )
                         ),
                         fontFamily = FontFamily(Font(R.font.poppins_400)),
@@ -623,6 +573,24 @@ fun DetailScreen(
             }
         }
     }
+}
+
+fun intentShare(context: Context, data: DataDetailProduct) {
+    val sendIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(
+            Intent.EXTRA_TEXT,
+            """
+                ${getString(context, R.string.all_name)} : ${data.productName}
+                ${getString(context, R.string.all_price)} : ${data.productPrice?.toRupiah()}
+                ${getString(context, R.string.all_link)} : ${Config.BASE_DEEPLINK}${data.productId}
+            """.trimIndent()
+        )
+        type = "text/plain"
+    }
+
+    val shareIntent = Intent.createChooser(sendIntent, "Ecommerce")
+    startActivity(context, shareIntent, null)
 }
 
 fun DataDetailProduct.toWishlist(selectedVariant: Int): WishlistEntity {

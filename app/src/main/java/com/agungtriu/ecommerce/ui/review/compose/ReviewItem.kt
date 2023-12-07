@@ -32,7 +32,7 @@ fun ReviewItem(item: DataReview) {
             )
             Column(
                 Modifier
-                    .weight(9F)
+                    .weight(weight = 9F)
                     .padding(start = 8.dp)
             ) {
                 Text(

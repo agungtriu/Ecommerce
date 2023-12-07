@@ -114,7 +114,7 @@ class ApiServiceTest {
 
         server.enqueue(response)
 
-        val actualData = apiService.getProducts()
+        val actualData = apiService.getProducts(requestFilter = mapOf())
         val expectedData = DataDummy.dummyProductsResponse
         assertEquals(expectedData, actualData)
     }

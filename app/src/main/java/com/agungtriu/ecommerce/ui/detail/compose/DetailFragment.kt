@@ -26,7 +26,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.agungtriu.ecommerce.R
-import com.agungtriu.ecommerce.compose.theme.EcommerceAppComposeTheme
+import com.agungtriu.ecommerce.compose.theme.theme
 import com.agungtriu.ecommerce.compose.ui.ErrorScreen
 import com.agungtriu.ecommerce.compose.ui.LoadingScreen
 import com.agungtriu.ecommerce.compose.ui.TopBarScreen
@@ -45,16 +45,16 @@ class DetailFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                EcommerceAppComposeTheme {
+                theme {
                     Surface(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(MaterialTheme.colorScheme.surface)
                     ) {
-                        val snackbarHostState = remember { SnackbarHostState() }
+                        val snackBarHostState = remember { SnackbarHostState() }
                         Scaffold(
                             snackbarHost = {
-                                SnackbarHost(hostState = snackbarHostState)
+                                SnackbarHost(hostState = snackBarHostState)
                             },
                             topBar = {
                                 TopBarScreen(
@@ -77,21 +77,20 @@ class DetailFragment : Fragment() {
                                         is ViewState.Loading -> Box(
                                             modifier = Modifier.fillMaxSize(),
                                             contentAlignment = Alignment.Center
-                                        ) {
-                                            LoadingScreen()
-                                        }
+                                        ) { LoadingScreen() }
 
-                                        is ViewState.Success -> DetailScreen(
-                                            requireActivity(),
-                                            context,
+                                        is ViewState.Success -> DetailContentScreen(
+                                            activity = requireActivity(),
+                                            context = context,
                                             data = it.data,
                                             viewModel = viewModel,
-                                            findNavController(),
-                                            snackbarHostState
+                                            findNavController = findNavController(),
+                                            snackBarHostState = snackBarHostState,
                                         )
 
                                         is ViewState.Error -> ErrorScreen(
-                                            error = it.error
+                                            responseError = it.error,
+                                            context = context
                                         ) { viewModel.getProductById() }
 
                                         else -> {}
