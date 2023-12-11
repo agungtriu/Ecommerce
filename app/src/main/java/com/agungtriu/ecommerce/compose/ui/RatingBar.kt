@@ -5,12 +5,11 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Star
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import com.agungtriu.ecommerce.R
 import kotlin.math.ceil
 import kotlin.math.floor
 
@@ -19,7 +18,8 @@ fun RatingBar(
     modifier: Modifier = Modifier,
     rating: Double = 0.0,
     stars: Int = 5,
-    starsColor: Color = Color.Yellow,
+    activeColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
+    disableColor: Color = MaterialTheme.colorScheme.outlineVariant,
     size: Int = 20
 ) {
     val filledStars = floor(rating).toInt()
@@ -29,15 +29,15 @@ fun RatingBar(
             Icon(
                 imageVector = Icons.Outlined.Star,
                 contentDescription = null,
-                tint = starsColor,
+                tint = activeColor,
                 modifier = Modifier.size(size.dp)
             )
         }
         repeat(unfilledStars) {
             Icon(
-                painter = painterResource(id = R.drawable.ic_star_outline),
+                imageVector = Icons.Outlined.Star,
                 contentDescription = null,
-                tint = starsColor,
+                tint = disableColor,
                 modifier = Modifier.size(size.dp)
             )
         }

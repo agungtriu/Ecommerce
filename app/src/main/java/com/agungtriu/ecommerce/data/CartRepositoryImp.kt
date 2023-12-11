@@ -12,7 +12,6 @@ import javax.inject.Inject
 class CartRepositoryImp @Inject constructor(private val appDatabase: AppDatabase) : CartRepository {
 
     override fun insertCart(cartEntity: CartEntity): Flow<ViewState<String>> = flow {
-        emit(ViewState.Loading)
         val check = appDatabase.cartDao().selectCartById(cartEntity.id).first()
         if (check != null) {
             if ((check.stock ?: 0) > (check.quantity ?: 0)) {

@@ -1,26 +1,24 @@
 package com.agungtriu.ecommerce.ui.detail
 
-import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.fragment.findNavController
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.remote.model.response.DataDetailProduct
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.databinding.FragmentDetailProductBinding
-import com.agungtriu.ecommerce.helper.Config.BASE_DEEPLINK
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.Screen
+import com.agungtriu.ecommerce.helper.Utils.displayPrice
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.AppActivity
 import com.agungtriu.ecommerce.ui.base.BaseFragment
 import com.agungtriu.ecommerce.ui.checkout.CheckoutFragment
+import com.agungtriu.ecommerce.ui.detail.compose.intentShare
 import com.agungtriu.ecommerce.ui.review.ReviewFragment.Companion.REVIEW_KEY
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
@@ -56,50 +54,51 @@ class DetailProductFragment :
         adapter = DetailProductAdapter()
         binding.vpDetailImage.adapter = adapter
         observeData()
+        observeWishlist()
+        observeCart()
         listener()
     }
 
-    @SuppressLint("SetTextI18n")
     private fun observeData() {
         viewModel.resultDetail.observe(viewLifecycleOwner) {
-            binding.pbDetail.isVisible = it is ViewState.Loading
-            binding.scrollviewDetailError.isVisible = it is ViewState.Error
-            binding.constraintDetailContent.isVisible = it is ViewState.Success
-            if (it is ViewState.Success) {
-                productDetail = it.data
-                sliderImage(it.data.image!!)
-                chipVariant(it.data)
-                binding.tvDetailName.text = it.data.productName
-                binding.tvDetailSold.text =
-                    "${getString(R.string.item_sold_title)} ${it.data.sale}"
-                binding.tvDetailRating.text =
-                    "${it.data.productRating} (${it.data.totalRating})"
-                binding.tvDetailDescriptionContent.text = it.data.description
-                binding.tvDetailReviewRating.text = it.data.productRating.toString()
-                binding.tvDetailReviewSatisfaction.text =
-                    "${it.data.totalSatisfaction}${getString(R.string.detail_satisfaction_desc)}"
-                binding.tvDetailReviewCount.text =
-                    "${it.data.totalRating} ${getString(R.string.detail_rating_desc)} ${
-                        getString(
-                            R.string.detail_dot
-                        )
-                    } ${it.data.totalReview} ${getString(R.string.detail_review_desc)}"
+            when (it) {
+                is ViewState.Loading -> {
+                    binding.pbDetail.isVisible = true
+                    binding.scrollviewDetailError.isVisible = false
+                    binding.constraintDetailContent.isVisible = false
+                }
 
-                analyticsViewItem(it.data)
+                is ViewState.Error -> {
+                    binding.pbDetail.isVisible = false
+                    binding.scrollviewDetailError.isVisible = true
+                    binding.constraintDetailContent.isVisible = false
+                }
+
+                is ViewState.Success -> {
+                    binding.pbDetail.isVisible = false
+                    binding.scrollviewDetailError.isVisible = false
+                    binding.constraintDetailContent.isVisible = true
+                    productDetail = it.data
+                    sliderImage(it.data.image!!)
+                    chipVariant(it.data)
+                    displayData(it.data)
+
+                    analyticsViewItem(it.data)
+                }
             }
         }
+    }
 
-        viewModel.getWishlistByProductId().distinctUntilChanged().observe(viewLifecycleOwner) {
+    private fun observeWishlist() {
+        viewModel.getWishlistByProductId().observe(viewLifecycleOwner) {
             if (it != null) {
                 wishlistState = true
                 if (wishlistPress) {
                     Snackbar.make(
                         requireView(),
-                        "${getString(R.string.detail_success_add)} ${productDetail.productName} ${
-                            getString(
-                                R.string.detail_to_wishlist
-                            )
-                        }",
+                        getString(R.string.detail_success_add)
+                            .plus(" ${productDetail.productName}")
+                            .plus(" ${getString(R.string.detail_to_wishlist)}"),
                         Snackbar.LENGTH_LONG
                     ).show()
                 } else if (viewModel.stateDetail == Screen.WISHLIST.name || viewModel.stateDetail == Screen.CART.name) {
@@ -108,13 +107,11 @@ class DetailProductFragment :
                 } else if (viewModel.stateDetail == Screen.STORE.name) {
                     viewModel.selectedVariantName =
                         productDetail.productVariant?.get(0)?.variantName ?: ""
-                    viewModel.selectedVariantPrice = (
-                        productDetail.productPrice?.plus(
-                            (productDetail.productVariant?.get(0)?.variantPrice ?: 0)
-                        )
-                        ) ?: 0
+                    viewModel.selectedVariantPrice = displayPrice(
+                        basePrice = productDetail.productPrice,
+                        variantPrice = productDetail.productVariant?.get(0)?.variantPrice
+                    )
                 }
-
                 binding.ivDetailWishlist.setBackgroundResource(R.drawable.ic_favorite)
             } else {
                 wishlistState = false
@@ -122,25 +119,25 @@ class DetailProductFragment :
                 if (wishlistPress) {
                     Snackbar.make(
                         requireView(),
-                        "${getString(R.string.detail_success_remove)} ${productDetail.productName} ${
-                            getString(
-                                R.string.detail_from_wishlist
-                            )
-                        }",
+                        getString(R.string.detail_success_remove)
+                            .plus(" ${productDetail.productName}")
+                            .plus(" ${getString(R.string.detail_from_wishlist)}"),
                         Snackbar.LENGTH_LONG
                     ).show()
                 } else {
                     viewModel.selectedVariantName =
                         productDetail.productVariant?.get(0)?.variantName ?: ""
-                    viewModel.selectedVariantPrice = (
-                        productDetail.productPrice?.plus(
-                            (productDetail.productVariant?.get(0)?.variantPrice ?: 0)
-                        )
-                        ) ?: 0
+                    viewModel.selectedVariantPrice = displayPrice(
+                        basePrice = productDetail.productPrice,
+                        variantPrice = productDetail.productVariant?.get(0)?.variantPrice
+                    )
                 }
             }
             wishlistPress = false
         }
+    }
+
+    private fun observeCart() {
         viewModel.resultAddCart.observe(viewLifecycleOwner) {
             when (it) {
                 is ViewState.Loading -> binding.pbDetail.visibility = View.VISIBLE
@@ -175,29 +172,14 @@ class DetailProductFragment :
     }
 
     private fun listener() {
-        binding.btnDetailReviewShowAll.setOnClickListener {
-            analytics.logEvent("btn_detail_review_show_all", null)
-            findNavController().navigate(
-                R.id.action_detailProductFragment_to_reviewFragment,
-                bundleOf(REVIEW_KEY to productDetail.productId)
-            )
-        }
-
         binding.toolbarDetail.setNavigationOnClickListener {
             analytics.logEvent("btn_detail_back", null)
             findNavController().navigateUp()
         }
 
-        binding.ivDetailWishlist.setOnClickListener {
-            wishlistPress = true
-            if (wishlistState) {
-                analytics.logEvent("btn_detail_wishlist_delete", null)
-                viewModel.deleteWishlistById(productDetail.productId!!)
-            } else {
-                analytics.logEvent("btn_detail_wishlist_insert", null)
-                viewModel.insertWishlist(productDetail.toWishlist(viewModel))
-                analyticsEvent(FirebaseAnalytics.Event.ADD_TO_WISHLIST)
-            }
+        binding.layoutDetailError.btnErrorResetRefresh.setOnClickListener {
+            analytics.logEvent("btn_detail_error_refresh", null)
+            viewModel.getProductById()
         }
 
         binding.chipgroupDetailVariant.setOnCheckedStateChangeListener { group, _ ->
@@ -206,7 +188,7 @@ class DetailProductFragment :
                 if (selectedChip.text.toString() == variant.variantName) {
                     viewModel.selectedVariantName = variant.variantName ?: ""
                     viewModel.selectedVariantPrice =
-                        (productDetail.productPrice?.plus((variant.variantPrice ?: 0))) ?: 0
+                        displayPrice(productDetail.productPrice, variant.variantPrice)
                     binding.tvDetailPrice.text = viewModel.selectedVariantPrice.toRupiah()
 
                     analytics.logEvent("btn_detail_variant", null)
@@ -223,29 +205,32 @@ class DetailProductFragment :
 
         binding.ivDetailShare.setOnClickListener {
             analytics.logEvent("btn_detail_share", null)
-            val sendIntent: Intent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(
-                    Intent.EXTRA_TEXT,
-                    "${getString(R.string.all_name)} : ${productDetail.productName}\n" +
-                        "${getString(R.string.all_price)} : ${productDetail.productPrice?.toRupiah()}\n" +
-                        "${getString(R.string.all_link)} : $BASE_DEEPLINK${productDetail.productId}"
-                )
-                type = "text/plain"
-            }
+            intentShare(requireContext(), productDetail)
+        }
 
-            val shareIntent = Intent.createChooser(sendIntent, "Ecommerce")
-            startActivity(shareIntent)
+        binding.ivDetailWishlist.setOnClickListener {
+            wishlistPress = true
+            if (wishlistState) {
+                analytics.logEvent("btn_detail_wishlist_delete", null)
+                viewModel.deleteWishlistById(productDetail.productId!!)
+            } else {
+                analytics.logEvent("btn_detail_wishlist_insert", null)
+                viewModel.insertWishlist(productDetail.toWishlist(viewModel))
+                analyticsEvent(FirebaseAnalytics.Event.ADD_TO_WISHLIST)
+            }
+        }
+
+        binding.btnDetailReviewShowAll.setOnClickListener {
+            analytics.logEvent("btn_detail_review_show_all", null)
+            findNavController().navigate(
+                R.id.action_detailProductFragment_to_reviewFragment,
+                bundleOf(REVIEW_KEY to productDetail.productId)
+            )
         }
 
         binding.btnDetailCart.setOnClickListener {
             analytics.logEvent("btn_detail_cart", null)
             viewModel.addCart(productDetail.toCart(viewModel))
-        }
-
-        binding.layoutDetailError.btnErrorResetRefresh.setOnClickListener {
-            analytics.logEvent("btn_detail_error_refresh", null)
-            viewModel.getProductById()
         }
 
         binding.btnDetailBuy.setOnClickListener {
@@ -286,11 +271,9 @@ class DetailProductFragment :
             if (viewModel.selectedVariantName == "") {
                 chip.isChecked = true
                 viewModel.selectedVariantName = variant.variantName ?: ""
-                viewModel.selectedVariantPrice = (
-                    item.productPrice?.plus(
-                        (variant.variantPrice ?: 0)
-                    )
-                    ) ?: 0
+                viewModel.selectedVariantPrice = displayPrice(
+                    item.productPrice, variant.variantPrice
+                )
                 binding.tvDetailPrice.text = viewModel.selectedVariantPrice.toRupiah()
             } else if (viewModel.selectedVariantName == variant.variantName) {
                 chip.isChecked = true
@@ -298,6 +281,22 @@ class DetailProductFragment :
             }
             binding.chipgroupDetailVariant.addView(chip)
         }
+    }
+
+    private fun displayData(item: DataDetailProduct) {
+        binding.tvDetailName.text = item.productName
+        binding.tvDetailSold.text =
+            getString(R.string.item_sold_title).plus(" ${item.sale}")
+        binding.tvDetailRating.text =
+            item.productRating.toString().plus("${item.totalRating}")
+        binding.tvDetailDescriptionContent.text = item.description
+        binding.tvDetailReviewRating.text = item.productRating.toString()
+        binding.tvDetailReviewSatisfaction.text =
+            item.totalSatisfaction.toString().plus(getString(R.string.detail_satisfaction_desc))
+        binding.tvDetailReviewCount.text =
+            item.totalRating.toString().plus(" ${getString(R.string.detail_rating_desc)}")
+                .plus(" ${getString(R.string.detail_dot)} ")
+                .plus("${item.totalReview} ${getString(R.string.detail_review_desc)}")
     }
 
     private fun analyticsViewItem(item: DataDetailProduct) {

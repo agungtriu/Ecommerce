@@ -12,4 +12,8 @@ object Utils {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
+    fun displayPrice(basePrice: Int?, variantPrice: Int?): Int {
+        return (basePrice ?: 0) + (variantPrice ?: 0)
+    }
 }

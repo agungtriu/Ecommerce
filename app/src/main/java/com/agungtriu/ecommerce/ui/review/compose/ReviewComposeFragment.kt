@@ -24,17 +24,26 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.agungtriu.ecommerce.R
-import com.agungtriu.ecommerce.compose.theme.EcommerceAppComposeTheme
+import com.agungtriu.ecommerce.compose.theme.theme
 import com.agungtriu.ecommerce.compose.ui.ErrorScreen
 import com.agungtriu.ecommerce.compose.ui.LoadingScreen
 import com.agungtriu.ecommerce.compose.ui.TopBarScreen
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.review.ReviewViewModel
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ReviewComposeFragment : Fragment() {
     private val viewModel: ReviewViewModel by viewModels()
+    private lateinit var analytics: FirebaseAnalytics
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +52,7 @@ class ReviewComposeFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                EcommerceAppComposeTheme {
+                theme {
                     Surface(
                         modifier = Modifier
                             .fillMaxSize()
@@ -52,8 +61,9 @@ class ReviewComposeFragment : Fragment() {
                         Scaffold(
                             topBar = {
                                 TopBarScreen(
-                                    findNavController(),
-                                    stringResource(id = R.string.all_review_buyer)
+                                    findNavController = findNavController(),
+                                    title = stringResource(id = R.string.all_review_buyer),
+                                    analytics = analytics,
                                 )
                             },
                             content = { paddingValues ->
@@ -76,9 +86,13 @@ class ReviewComposeFragment : Fragment() {
                                                 LoadingScreen()
                                             }
 
-                                            is ViewState.Success -> ReviewsContent(it.data)
+                                            is ViewState.Success -> ReviewsContent(reviews = it.data)
                                             is ViewState.Error ->
-                                                ErrorScreen(error = it.error) {
+                                                ErrorScreen(
+                                                    responseError = it.error,
+                                                    context = context,
+                                                    analytics = analytics
+                                                ) {
                                                     viewModel.getReviewsByProductId()
                                                 }
 

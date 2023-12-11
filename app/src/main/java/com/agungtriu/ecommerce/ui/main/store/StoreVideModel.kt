@@ -35,7 +35,17 @@ class StoreVideModel @Inject constructor(
 
     fun getProducts(requestProducts: RequestProducts = RequestProducts()) {
         viewModelScope.launch {
-            storeRepository.getProducts(requestProducts).cachedIn(viewModelScope).collect {
+            storeRepository.getProducts(
+                requestProducts = RequestProducts(
+                    search = requestProducts.search,
+                    brand = requestProducts.brand?.lowercase(),
+                    lowest = requestProducts.lowest,
+                    highest = requestProducts.highest,
+                    sort = requestProducts.sort?.lowercase(),
+                    limit = requestProducts.limit,
+                    page = requestProducts.page
+                )
+            ).cachedIn(viewModelScope).collect {
                 _resultProducts.value = it
             }
         }

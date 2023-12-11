@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.agungtriu.ecommerce.R
-import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.databinding.ItemWishlistGridBinding
 import com.agungtriu.ecommerce.databinding.ItemWishlistLinearBinding
+import com.agungtriu.ecommerce.helper.Extension.toCart
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.Screen
 import com.agungtriu.ecommerce.helper.ViewState
@@ -120,16 +120,7 @@ class WishlistAdapter(
         }
         binding.btnWishlistCartGrid.setOnClickListener {
             viewModel.addCart(
-                cartEntity = CartEntity(
-                    id = item.id,
-                    image = item.image,
-                    productName = item.productName,
-                    productPrice = item.productPrice,
-                    store = item.store,
-                    stock = item.stock,
-                    variantPrice = item.variantPrice,
-                    variantName = item.variantName
-                )
+                cartEntity = item.toCart()
             ).observe(lifecycleOwner) {
                 when (it) {
                     is ViewState.Success -> {
@@ -189,16 +180,7 @@ class WishlistAdapter(
         }
         binding.btnWishlistCartLinear.setOnClickListener {
             viewModel.addCart(
-                cartEntity = CartEntity(
-                    id = item.id,
-                    image = item.image,
-                    productName = item.productName,
-                    productPrice = item.productPrice,
-                    store = item.store,
-                    stock = item.stock,
-                    variantPrice = item.variantPrice,
-                    variantName = item.variantName
-                )
+                cartEntity = item.toCart()
             ).observe(lifecycleOwner) {
                 when (it) {
                     is ViewState.Success -> {

@@ -144,19 +144,7 @@ class DetailProductViewModelTest {
     fun addCart_success_insert() = runTest {
         whenever(
             cartRepository.insertCart(
-                cartEntity = CartEntity(
-                    "",
-                    "",
-                    "",
-                    0,
-                    "",
-                    "",
-                    0,
-                    0,
-                    "",
-                    0,
-                    false
-                )
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
             )
         ).thenReturn(
             flowOf(
@@ -167,20 +155,9 @@ class DetailProductViewModelTest {
 
         val actual = mutableListOf<ViewState<String>>()
         detailProductViewModel.addCart(
-            cartEntity = CartEntity(
-                "",
-                "",
-                "",
-                0,
-                "",
-                "",
-                0,
-                0,
-                "",
-                0,
-                false
-            )
-        ).observeForever {
+            cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
+        )
+        detailProductViewModel.resultAddCart.observeForever {
             actual.add(it)
         }
         advanceUntilIdle()
@@ -198,19 +175,7 @@ class DetailProductViewModelTest {
     fun addCart_success_update() = runTest {
         whenever(
             cartRepository.insertCart(
-                cartEntity = CartEntity(
-                    "",
-                    "",
-                    "",
-                    0,
-                    "",
-                    "",
-                    0,
-                    0,
-                    "",
-                    0,
-                    false
-                )
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
             )
         ).thenReturn(
             flowOf(ViewState.Loading, ViewState.Success("quantity"))
@@ -218,20 +183,9 @@ class DetailProductViewModelTest {
 
         val actual = mutableListOf<ViewState<String>>()
         detailProductViewModel.addCart(
-            cartEntity = CartEntity(
-                "",
-                "",
-                "",
-                0,
-                "",
-                "",
-                0,
-                0,
-                "",
-                0,
-                false
-            )
-        ).observeForever {
+            cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
+        )
+        detailProductViewModel.resultAddCart.observeForever {
             actual.add(it)
         }
         advanceUntilIdle()
@@ -249,19 +203,7 @@ class DetailProductViewModelTest {
     fun addCart_error() = runTest {
         whenever(
             cartRepository.insertCart(
-                cartEntity = CartEntity(
-                    "",
-                    "",
-                    "",
-                    0,
-                    "",
-                    "",
-                    0,
-                    0,
-                    "",
-                    0,
-                    false
-                )
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
             )
         ).thenReturn(
             flowOf(
@@ -274,26 +216,127 @@ class DetailProductViewModelTest {
 
         val actual = mutableListOf<ViewState<String>>()
         detailProductViewModel.addCart(
-            cartEntity = CartEntity(
-                "",
-                "",
-                "",
-                0,
-                "",
-                "",
-                0,
-                0,
-                "",
-                0,
-                false
-            )
-        ).observeForever {
+            cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
+        )
+        detailProductViewModel.resultAddCart.observeForever {
             actual.add(it)
         }
         advanceUntilIdle()
         Assert.assertEquals(
             listOf(
                 ViewState.Loading,
+                ViewState.Error(
+                    ResponseError(404, "stock tidak tersedia")
+                )
+            ),
+            actual
+        )
+    }
+
+    @Test
+    fun getWishlistCompose_success_found() = runTest {
+        whenever(wishlistRepository.getWishlistById(id)).thenReturn(flowOf(DataDummy.dummyWishlistEntity))
+        val actual = detailProductViewModel.getWishlistCompose()
+        Assert.assertEquals(DataDummy.dummyWishlistEntity, actual)
+    }
+
+    @Test
+    fun getWishlistCompose_success_notFound() = runTest {
+        whenever(wishlistRepository.getWishlistById(id)).thenReturn(flowOf(null))
+        val actual = detailProductViewModel.getWishlistCompose()
+        Assert.assertEquals(null, actual)
+    }
+
+    @Test
+    fun getCartCompose_success_found() = runTest {
+        whenever(cartRepository.getCartById(id)).thenReturn(flowOf(DataDummy.dummyCartEntity))
+        val actual = detailProductViewModel.getCartCompose()
+        Assert.assertEquals(DataDummy.dummyCartEntity, actual)
+    }
+
+    @Test
+    fun getCartCompose_success_notFound() = runTest {
+        whenever(cartRepository.getCartById(id)).thenReturn(flowOf(null))
+        val actual = detailProductViewModel.getCartCompose()
+        Assert.assertEquals(null, actual)
+    }
+
+    @Test
+    fun addCartCompose_success_insert() = runTest {
+        whenever(
+            cartRepository.insertCart(
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
+            )
+        ).thenReturn(
+            flowOf(
+                ViewState.Success("cart")
+            )
+        )
+
+        val actual = mutableListOf<ViewState<String>>()
+        detailProductViewModel.addCart(
+            cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
+        )
+
+        actual.add(
+            detailProductViewModel.addCartCompose(
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
+            )
+        )
+        Assert.assertEquals(
+            listOf(
+                ViewState.Success("cart")
+            ),
+            actual
+        )
+    }
+
+    @Test
+    fun addCartCompose_success_update() = runTest {
+        whenever(
+            cartRepository.insertCart(
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
+            )
+        ).thenReturn(
+            flowOf(ViewState.Success("quantity"))
+        )
+
+        val actual = mutableListOf<ViewState<String>>()
+        actual.add(
+            detailProductViewModel.addCartCompose(
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
+            )
+        )
+        Assert.assertEquals(
+            listOf(
+                ViewState.Success("quantity")
+            ),
+            actual
+        )
+    }
+
+    @Test
+    fun addCartCompose_error() = runTest {
+        whenever(
+            cartRepository.insertCart(
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
+            )
+        ).thenReturn(
+            flowOf(
+                ViewState.Error(
+                    ResponseError(404, "stock tidak tersedia")
+                )
+            )
+        )
+
+        val actual = mutableListOf<ViewState<String>>()
+        actual.add(
+            detailProductViewModel.addCartCompose(
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
+            )
+        )
+        Assert.assertEquals(
+            listOf(
                 ViewState.Error(
                     ResponseError(404, "stock tidak tersedia")
                 )

@@ -22,21 +22,33 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.agungtriu.ecommerce.R
-import com.agungtriu.ecommerce.compose.theme.EcommerceAppComposeTheme
+import com.agungtriu.ecommerce.compose.theme.theme
 import com.agungtriu.ecommerce.compose.ui.ErrorScreen
 import com.agungtriu.ecommerce.compose.ui.LoadingScreen
 import com.agungtriu.ecommerce.compose.ui.TopBarScreen
+import com.agungtriu.ecommerce.core.remote.model.response.DataDetailProduct
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.detail.DetailProductViewModel
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.analytics.logEvent
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailFragment : Fragment() {
     private val viewModel: DetailProductViewModel by viewModels()
+    private lateinit var analytics: FirebaseAnalytics
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,21 +57,22 @@ class DetailFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                EcommerceAppComposeTheme {
+                theme {
                     Surface(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(MaterialTheme.colorScheme.surface)
                     ) {
-                        val snackbarHostState = remember { SnackbarHostState() }
+                        val snackBarHostState = remember { SnackbarHostState() }
                         Scaffold(
                             snackbarHost = {
-                                SnackbarHost(hostState = snackbarHostState)
+                                SnackbarHost(hostState = snackBarHostState)
                             },
                             topBar = {
                                 TopBarScreen(
-                                    findNavController(),
-                                    stringResource(R.string.detail_product)
+                                    findNavController = findNavController(),
+                                    title = stringResource(R.string.detail_product),
+                                    analytics = analytics
                                 )
                             }
                         ) { paddingValues ->
@@ -77,21 +90,25 @@ class DetailFragment : Fragment() {
                                         is ViewState.Loading -> Box(
                                             modifier = Modifier.fillMaxSize(),
                                             contentAlignment = Alignment.Center
-                                        ) {
-                                            LoadingScreen()
+                                        ) { LoadingScreen() }
+
+                                        is ViewState.Success -> {
+                                            DetailContentScreen(
+                                                activity = requireActivity(),
+                                                context = context,
+                                                data = it.data,
+                                                viewModel = viewModel,
+                                                findNavController = findNavController(),
+                                                snackBarHostState = snackBarHostState,
+                                                analytics = analytics
+                                            )
+                                            analyticsViewItem(it.data)
                                         }
 
-                                        is ViewState.Success -> DetailScreen(
-                                            requireActivity(),
-                                            context,
-                                            data = it.data,
-                                            viewModel = viewModel,
-                                            findNavController(),
-                                            snackbarHostState
-                                        )
-
                                         is ViewState.Error -> ErrorScreen(
-                                            error = it.error
+                                            responseError = it.error,
+                                            context = context,
+                                            analytics = analytics
                                         ) { viewModel.getProductById() }
 
                                         else -> {}
@@ -102,6 +119,21 @@ class DetailFragment : Fragment() {
                     }
                 }
             }
+        }
+    }
+
+    private fun analyticsViewItem(item: DataDetailProduct) {
+        analytics.logEvent(FirebaseAnalytics.Event.VIEW_ITEM) {
+            param(
+                FirebaseAnalytics.Param.ITEMS,
+                bundleOf(
+                    FirebaseAnalytics.Param.ITEM_ID to item.productId,
+                    FirebaseAnalytics.Param.ITEM_NAME to item.productName,
+                    FirebaseAnalytics.Param.ITEM_BRAND to item.brand,
+                )
+            )
+            param(FirebaseAnalytics.Param.CURRENCY, "Rp")
+            param(FirebaseAnalytics.Param.VALUE, item.productPrice!!.toDouble())
         }
     }
 }

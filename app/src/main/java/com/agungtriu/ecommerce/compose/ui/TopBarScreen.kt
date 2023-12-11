@@ -16,10 +16,11 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.navigation.NavController
 import com.agungtriu.ecommerce.R
+import com.google.firebase.analytics.FirebaseAnalytics
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TopBarScreen(findNavController: NavController, title: String) {
+fun TopBarScreen(findNavController: NavController, title: String, analytics: FirebaseAnalytics) {
     TopAppBar(
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surface,
@@ -39,7 +40,10 @@ fun TopBarScreen(findNavController: NavController, title: String) {
             )
         },
         navigationIcon = {
-            IconButton(onClick = { findNavController.navigateUp() }) {
+            IconButton(onClick = {
+                analytics.logEvent("btn_back", null)
+                findNavController.navigateUp()
+            }) {
                 Icon(
                     imageVector = Icons.Filled.ArrowBack,
                     contentDescription = ""

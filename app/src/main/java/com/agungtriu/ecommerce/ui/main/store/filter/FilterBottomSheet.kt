@@ -2,6 +2,7 @@ package com.agungtriu.ecommerce.ui.main.store.filter
 
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -21,6 +22,7 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.chip.Chip
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
@@ -35,8 +37,8 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
     private var filterModel: FilterModel = FilterModel()
     private var sortStatus = false
     private var categoryStatus = false
-    private var minPriceStatus = false
-    private var maxPriceStatus = false
+    private var lowestStatus = false
+    private var highestStatus = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,7 +74,7 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
 
         if (filterModel.sort != null) {
             binding.chipgroupBottomshettfilterSort.forEach { chip ->
-                if ((chip as Chip).text == Sort.valueOf(filterModel.sort!!).en || (chip as Chip).text == Sort.valueOf(
+                if ((chip as Chip).text == Sort.valueOf(filterModel.sort!!).en || chip.text == Sort.valueOf(
                         filterModel.sort!!
                     ).id
                 ) {
@@ -93,15 +95,15 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
 
         if (filterModel.min != null) {
             binding.tietBottomsheetfilterMin.setText(filterModel.min.toString())
-            minPriceStatus = true
+            lowestStatus = true
         }
 
         if (filterModel.max != null) {
             binding.tietBottomsheetfilterMax.setText(filterModel.max.toString())
-            maxPriceStatus = true
+            highestStatus = true
         }
 
-        statusReset(sortStatus, categoryStatus, minPriceStatus, maxPriceStatus)
+        statusReset(sortStatus, categoryStatus, lowestStatus, highestStatus)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -125,7 +127,7 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
                     }
                 }
             }
-            statusReset(sortStatus, categoryStatus, minPriceStatus, maxPriceStatus)
+            statusReset(sortStatus, categoryStatus, lowestStatus, highestStatus)
         }
         binding.chipgroupBottomshettfilterCategory.setOnCheckedStateChangeListener { group, _ ->
             if (group.checkedChipId == -1) {
@@ -136,37 +138,19 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
                 val selectedChip = group.findViewById<Chip>(group.checkedChipId)
                 filterModel.category = selectedChip.text.toString()
             }
-            statusReset(sortStatus, categoryStatus, minPriceStatus, maxPriceStatus)
+            statusReset(sortStatus, categoryStatus, lowestStatus, highestStatus)
         }
 
         binding.tietBottomsheetfilterMin.addTextChangedListener {
-            minPriceStatus = it?.isNotEmpty() ?: false
-            try {
-                if (it?.isNotEmpty() == true) {
-                    filterModel.min = it.toString().toInt()
-                }
-            } catch (e: NumberFormatException) {
-                binding.tietBottomsheetfilterMin.setText(filterModel.min.toString())
-                binding.tietBottomsheetfilterMin.setSelection(filterModel.min.toString().length)
-                binding.tietBottomsheetfilterMin.error =
-                    getString(R.string.all_max).plus(Int.MAX_VALUE.toRupiah())
-            }
-            statusReset(sortStatus, categoryStatus, minPriceStatus, maxPriceStatus)
+            lowestStatus = it?.isNotEmpty() ?: false
+            textEditHandling(it, binding.tietBottomsheetfilterMin, filterModel, false)
+            statusReset(sortStatus, categoryStatus, lowestStatus, highestStatus)
         }
 
         binding.tietBottomsheetfilterMax.addTextChangedListener {
-            maxPriceStatus = it?.isNotEmpty() ?: false
-            try {
-                if (it?.isNotEmpty() == true) {
-                    filterModel.max = it.toString().toInt()
-                }
-            } catch (e: NumberFormatException) {
-                binding.tietBottomsheetfilterMax.setText(filterModel.max.toString())
-                binding.tietBottomsheetfilterMax.setSelection(filterModel.max.toString().length)
-                binding.tietBottomsheetfilterMax.error =
-                    getString(R.string.all_max).plus(Int.MAX_VALUE.toRupiah())
-            }
-            statusReset(sortStatus, categoryStatus, minPriceStatus, maxPriceStatus)
+            highestStatus = it?.isNotEmpty() ?: false
+            textEditHandling(it, binding.tietBottomsheetfilterMax, filterModel, true)
+            statusReset(sortStatus, categoryStatus, lowestStatus, highestStatus)
         }
 
         binding.btnBottomsheetfilterReset.setOnClickListener {
@@ -180,14 +164,9 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
 
             sortStatus = false
             categoryStatus = false
-            minPriceStatus = false
-            maxPriceStatus = false
-            statusReset(
-                sortStatus = false,
-                categoryStatus = false,
-                minPriceStatus = false,
-                maxPriceStatus = false
-            )
+            lowestStatus = false
+            highestStatus = false
+            statusReset()
         }
 
         binding.btnBottomsheetfilterSubmit.setOnClickListener {
@@ -207,13 +186,40 @@ class FilterBottomSheet : BottomSheetDialogFragment() {
     }
 
     private fun statusReset(
-        sortStatus: Boolean,
-        categoryStatus: Boolean,
-        minPriceStatus: Boolean,
-        maxPriceStatus: Boolean
+        sortStatus: Boolean = false,
+        categoryStatus: Boolean = false,
+        minPriceStatus: Boolean = false,
+        maxPriceStatus: Boolean = false
     ) {
         binding.btnBottomsheetfilterReset.isVisible =
             sortStatus || categoryStatus || minPriceStatus || maxPriceStatus
+    }
+
+    private fun textEditHandling(
+        editable: Editable?,
+        textInputEditText: TextInputEditText,
+        filterModel: FilterModel,
+        isMax: Boolean
+    ) {
+        try {
+            if (editable?.isNotEmpty() == true) {
+                if (isMax) {
+                    filterModel.max = editable.toString().toInt()
+                } else {
+                    filterModel.min = editable.toString().toInt()
+                }
+            }
+        } catch (e: NumberFormatException) {
+            if (isMax) {
+                textInputEditText.setText(filterModel.max.toString())
+                textInputEditText.setSelection(filterModel.max.toString().length)
+                textInputEditText.error = getString(R.string.all_max).plus(Int.MAX_VALUE.toRupiah())
+            } else {
+                textInputEditText.setText(filterModel.min.toString())
+                textInputEditText.setSelection(filterModel.min.toString().length)
+                textInputEditText.error = getString(R.string.all_max).plus(Int.MAX_VALUE.toRupiah())
+            }
+        }
     }
 
     override fun onDestroyView() {

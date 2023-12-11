@@ -1,0 +1,13 @@
+{
+  "message": {
+    "topic": "promo",
+    "data": {
+      "title": "Telkomsel Award 2023",
+      "body": "Nikmati kemeriahan ulang tahun Telkomsel pada hari Jumat, 21 Juli 2023 pukul 19.00 – 21.00 WIB langsung dari Beach City International Stadium dengan berbagai kemudahan untuk mendapatkan aksesnya.",
+      "image": "https://www.telkomsel.com/sites/default/files/banner/hero-10/2023-07/telkomsel-awards-2023--HERO3.png",
+      "type": "Promo",
+      "date": "21 Jul 2023",
+      "time": "12:34"
+    }
+  }
+}

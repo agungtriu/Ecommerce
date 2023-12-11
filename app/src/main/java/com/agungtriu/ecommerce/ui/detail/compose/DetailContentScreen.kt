@@ -36,8 +36,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -57,7 +57,6 @@ import androidx.core.content.ContextCompat.getString
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
-import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.agungtriu.ecommerce.R
@@ -66,11 +65,15 @@ import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.helper.Config
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
+import com.agungtriu.ecommerce.helper.Screen
+import com.agungtriu.ecommerce.helper.Utils.displayPrice
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.AppActivity
 import com.agungtriu.ecommerce.ui.checkout.CheckoutFragment
 import com.agungtriu.ecommerce.ui.detail.DetailProductViewModel
 import com.agungtriu.ecommerce.ui.review.ReviewFragment
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.logEvent
 import kotlinx.coroutines.launch
 
 @OptIn(
@@ -79,106 +82,38 @@ import kotlinx.coroutines.launch
     ExperimentalMaterial3Api::class
 )
 @Composable
-fun DetailScreen(
+fun DetailContentScreen(
     activity: FragmentActivity,
     context: Context,
     data: DataDetailProduct,
     viewModel: DetailProductViewModel,
     findNavController: NavController,
-    snackBarHostState: SnackbarHostState
+    snackBarHostState: SnackbarHostState,
+    analytics: FirebaseAnalytics
 ) {
     val scope = rememberCoroutineScope()
     var selectedVariant by rememberSaveable { mutableIntStateOf(0) }
     var isWishlist by rememberSaveable { mutableStateOf(false) }
-    var isWishlistPress by rememberSaveable { mutableStateOf(false) }
-    var isCartPress by rememberSaveable { mutableStateOf(false) }
 
-    viewModel.getWishlistByProductId().distinctUntilChanged().observeAsState().value.let {
-        isWishlist = it != null
-        if (isWishlistPress) {
-            isWishlistPress = false
-            scope.launch {
-                snackBarHostState.showSnackbar(
-                    if (it != null) {
-                        "${
-                            getString(
-                                context,
-                                R.string.detail_success_remove
-                            )
-                        } ${data.productName} ${
-                            getString(
-                                context,
-                                R.string.detail_from_wishlist
-                            )
-                        }"
-                    } else {
-                        "${
-                            getString(
-                                context,
-                                R.string.detail_success_add
-                            )
-                        } ${data.productName} ${
-                            getString(
-                                context,
-                                R.string.detail_to_wishlist
-                            )
-                        }"
+    LaunchedEffect(true) {
+        val wishlist = viewModel.getWishlistCompose()
+        val cart = viewModel.getCartCompose()
+        isWishlist = wishlist != null
+
+        data.productVariant?.forEachIndexed { index, item ->
+            when (viewModel.stateDetail) {
+                Screen.WISHLIST.name -> {
+                    if (wishlist?.variantName == item.variantName) {
+                        selectedVariant = index
                     }
-                )
-            }
-        }
-    }
+                }
 
-    viewModel.resultAddCart.observeAsState().value.let {
-        when (it) {
-            is ViewState.Error -> {
-                scope.launch {
-                    if (isCartPress) {
-                        isCartPress = false
-                        snackBarHostState.showSnackbar(
-                            getString(
-                                context,
-                                R.string.all_stock_not_available
-                            )
-                        )
+                Screen.CART.name -> {
+                    if (cart?.variantName == item.variantName) {
+                        selectedVariant = index
                     }
                 }
             }
-
-            is ViewState.Loading -> {
-            }
-
-            is ViewState.Success -> {
-                when (it.data) {
-                    "cart" -> scope.launch {
-                        if (isCartPress) {
-                            isCartPress = false
-                            snackBarHostState.showSnackbar(
-                                getString(
-                                    context,
-                                    R.string.all_success_add_cart
-                                )
-                            )
-                        }
-                    }
-
-                    "quantity" -> scope.launch {
-                        if (isCartPress) {
-                            isCartPress = false
-                            snackBarHostState.showSnackbar(
-                                getString(
-                                    context,
-                                    R.string.all_success_update_quantity
-                                )
-                            )
-                        }
-                    }
-
-                    else -> {}
-                }
-            }
-
-            else -> {}
         }
     }
 
@@ -215,8 +150,11 @@ fun DetailScreen(
                         horizontalArrangement = Arrangement.Center
                     ) {
                         repeat(data.image?.size ?: 0) { iteration ->
-                            val color =
-                                if (pagerState.currentPage == iteration) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outlineVariant
+                            val color = if (pagerState.currentPage == iteration) {
+                                MaterialTheme.colorScheme.primary
+                            } else {
+                                MaterialTheme.colorScheme.outlineVariant
+                            }
                             Box(
                                 modifier = Modifier
                                     .padding(end = 8.dp)
@@ -229,11 +167,10 @@ fun DetailScreen(
             }
             Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp)) {
                 Text(
-                    text = (
-                        data.productPrice?.plus(
-                            data.productVariant?.get(selectedVariant)?.variantPrice ?: 0
-                        ) ?: 0
-                        ).toRupiah(),
+                    text = displayPrice(
+                        basePrice = data.productPrice,
+                        variantPrice = data.productVariant?.get(selectedVariant)?.variantPrice
+                    ).toRupiah(),
                     fontSize = 20.sp,
                     fontFamily = FontFamily(Font(R.font.poppins_600)),
                     style = TextStyle(
@@ -248,29 +185,8 @@ fun DetailScreen(
                 )
                 IconButton(
                     onClick = {
-                        val sendIntent: Intent = Intent().apply {
-                            action = Intent.ACTION_SEND
-                            putExtra(
-                                Intent.EXTRA_TEXT,
-                                "${getString(context, R.string.all_name)} : ${data.productName}\n" +
-                                    "${
-                                        getString(
-                                            context,
-                                            R.string.all_price
-                                        )
-                                    } : ${data.productPrice?.toRupiah()}\n" +
-                                    "${
-                                        getString(
-                                            context,
-                                            R.string.all_link
-                                        )
-                                    } : ${Config.BASE_DEEPLINK}${data.productId}"
-                            )
-                            type = "text/plain"
-                        }
-
-                        val shareIntent = Intent.createChooser(sendIntent, "Ecommerce")
-                        startActivity(context, shareIntent, null)
+                        analytics.logEvent("btn_detail_share", null)
+                        intentShare(context = context, data = data)
                     },
                     modifier = Modifier
                         .defaultMinSize(
@@ -287,11 +203,49 @@ fun DetailScreen(
                 Spacer(modifier = Modifier.size(16.dp))
                 IconButton(
                     onClick = {
-                        isWishlistPress = true
                         if (isWishlist) {
+                            analytics.logEvent("btn_detail_wishlist_delete", null)
                             viewModel.deleteWishlistById(data.productId!!)
                         } else {
+                            analytics.logEvent("btn_detail_wishlist_insert", null)
+                            analyticsEvent(
+                                analytics = analytics,
+                                firebaseEvent = FirebaseAnalytics.Event.ADD_TO_WISHLIST,
+                                item = data,
+                                selectedVariant = selectedVariant
+                            )
                             viewModel.insertWishlist(data.toWishlist(selectedVariant))
+                        }
+
+                        viewModel.getWishlistCompose().let {
+                            isWishlist = it != null
+                            scope.launch {
+                                snackBarHostState.showSnackbar(
+                                    if (it != null) {
+                                        getString(context, R.string.detail_success_add)
+                                            .plus(" ${data.productName}")
+                                            .plus(
+                                                " ${
+                                                    getString(
+                                                        context,
+                                                        R.string.detail_to_wishlist
+                                                    )
+                                                }"
+                                            )
+                                    } else {
+                                        getString(context, R.string.detail_success_remove)
+                                            .plus(" ${data.productName}")
+                                            .plus(
+                                                " ${
+                                                    getString(
+                                                        context,
+                                                        R.string.detail_from_wishlist
+                                                    )
+                                                }"
+                                            )
+                                    }
+                                )
+                            }
                         }
                     },
                     modifier = Modifier
@@ -399,7 +353,22 @@ fun DetailScreen(
             ) {
                 data.productVariant!!.forEachIndexed { index, productVariant ->
                     InputChip(
-                        onClick = { selectedVariant = index },
+                        onClick = {
+                            selectedVariant = index
+
+                            analytics.logEvent("btn_detail_variant", null)
+                            analytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+                                param(
+                                    FirebaseAnalytics.Param.ITEMS,
+                                    bundleOf(
+                                        FirebaseAnalytics.Param.ITEM_NAME to data.productVariant?.get(
+                                            index
+                                        )?.variantName
+                                    )
+                                )
+                                param(FirebaseAnalytics.Param.ITEM_LIST_NAME, "Variant")
+                            }
+                        },
                         label = {
                             Text(
                                 text = productVariant.variantName ?: "",
@@ -477,6 +446,7 @@ fun DetailScreen(
                 )
                 TextButton(
                     onClick = {
+                        analytics.logEvent("btn_detail_review_show_all", null)
                         findNavController.navigate(
                             R.id.action_detailFragment_to_reviewComposeFragment,
                             bundleOf(
@@ -542,7 +512,8 @@ fun DetailScreen(
                 )
                 Column(modifier = Modifier.padding(start = 32.dp)) {
                     Text(
-                        text = "${data.totalSatisfaction}${stringResource(id = R.string.detail_satisfaction_desc)}",
+                        text = data.totalSatisfaction.toString()
+                            .plus(stringResource(id = R.string.detail_satisfaction_desc)),
                         fontSize = 12.sp,
                         fontFamily = FontFamily(Font(R.font.poppins_600)),
                         style = TextStyle(
@@ -553,16 +524,12 @@ fun DetailScreen(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                     Text(
-                        text = "${data.totalRating} ${stringResource(id = R.string.detail_rating_desc)} ${
-                            stringResource(
-                                id = R.string.detail_dot
-                            )
-                        } ${data.totalReview} ${stringResource(id = R.string.detail_review_desc)}",
+                        text = "${data.totalRating} ${stringResource(id = R.string.detail_rating_desc)}"
+                            .plus(" ${stringResource(id = R.string.detail_dot)} ")
+                            .plus("${data.totalReview} ${stringResource(id = R.string.detail_review_desc)}"),
                         style = MaterialTheme.typography.bodySmall.plus(
                             TextStyle(
-                                platformStyle = PlatformTextStyle(
-                                    includeFontPadding = false,
-                                )
+                                platformStyle = PlatformTextStyle(includeFontPadding = false)
                             )
                         ),
                         fontFamily = FontFamily(Font(R.font.poppins_400)),
@@ -582,6 +549,13 @@ fun DetailScreen(
         ) {
             OutlinedButton(
                 onClick = {
+                    analytics.logEvent("btn_detail_buy", null)
+                    analyticsEvent(
+                        analytics = analytics,
+                        firebaseEvent = FirebaseAnalytics.Event.BEGIN_CHECKOUT,
+                        item = data,
+                        selectedVariant = selectedVariant
+                    )
                     (activity as AppActivity).navigate(
                         R.id.action_global_to_checkout_fragment,
                         bundle = bundleOf(
@@ -607,8 +581,46 @@ fun DetailScreen(
             Spacer(modifier = Modifier.size(16.dp))
             Button(
                 onClick = {
-                    isCartPress = true
-                    viewModel.addCart(data.toCart(selectedVariant))
+                    analytics.logEvent("btn_detail_cart", null)
+                    viewModel.addCartCompose(data.toCart(selectedVariant)).let {
+                        when (it) {
+                            is ViewState.Error -> {
+                                scope.launch {
+                                    snackBarHostState.showSnackbar(
+                                        getString(context, R.string.all_stock_not_available)
+                                    )
+                                }
+                            }
+
+                            is ViewState.Success -> {
+                                when (it.data) {
+                                    "cart" -> scope.launch {
+                                        snackBarHostState.showSnackbar(
+                                            getString(context, R.string.all_success_add_cart)
+                                        )
+                                    }
+
+                                    "quantity" -> scope.launch {
+                                        snackBarHostState.showSnackbar(
+                                            getString(
+                                                context,
+                                                R.string.all_success_update_quantity
+                                            )
+                                        )
+                                    }
+                                }
+                                analyticsEvent(
+                                    analytics = analytics,
+                                    firebaseEvent = FirebaseAnalytics.Event.ADD_TO_CART,
+                                    item = data,
+                                    selectedVariant = selectedVariant
+                                )
+                            }
+
+                            is ViewState.Loading -> {
+                            }
+                        }
+                    }
                 },
                 modifier = Modifier
                     .weight(1F),
@@ -623,6 +635,24 @@ fun DetailScreen(
             }
         }
     }
+}
+
+fun intentShare(context: Context, data: DataDetailProduct) {
+    val sendIntent: Intent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(
+            Intent.EXTRA_TEXT,
+            """
+                ${getString(context, R.string.all_name)} : ${data.productName}
+                ${getString(context, R.string.all_price)} : ${data.productPrice?.toRupiah()}
+                ${getString(context, R.string.all_link)} : ${Config.BASE_DEEPLINK}${data.productId}
+            """.trimIndent()
+        )
+        type = "text/plain"
+    }
+
+    val shareIntent = Intent.createChooser(sendIntent, "Ecommerce")
+    startActivity(context, shareIntent, null)
 }
 
 fun DataDetailProduct.toWishlist(selectedVariant: Int): WishlistEntity {
@@ -657,4 +687,28 @@ fun DataDetailProduct.toCart(selectedVariant: Int): CartEntity {
         ),
         variantName = this.productVariant?.get(selectedVariant)?.variantName
     )
+}
+
+private fun analyticsEvent(
+    analytics: FirebaseAnalytics,
+    firebaseEvent: String,
+    item: DataDetailProduct,
+    selectedVariant: Int
+) {
+    analytics.logEvent(firebaseEvent) {
+        param(
+            FirebaseAnalytics.Param.ITEMS,
+            bundleOf(
+                FirebaseAnalytics.Param.ITEM_ID to item.productId,
+                FirebaseAnalytics.Param.ITEM_NAME to item.productName,
+                FirebaseAnalytics.Param.ITEM_BRAND to item.brand,
+                FirebaseAnalytics.Param.ITEM_VARIANT to item.productVariant?.get(selectedVariant)?.variantName
+            )
+        )
+        param(FirebaseAnalytics.Param.CURRENCY, "Rp")
+        param(
+            FirebaseAnalytics.Param.VALUE,
+            (item.productVariant?.get(selectedVariant)?.variantPrice ?: 0).toDouble()
+        )
+    }
 }

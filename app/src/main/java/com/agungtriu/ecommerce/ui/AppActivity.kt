@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.os.LocaleListCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.lifecycle.distinctUntilChanged
 import androidx.navigation.fragment.NavHostFragment
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.databinding.ActivityMainBinding
@@ -42,12 +41,12 @@ class AppActivity : AppCompatActivity() {
     }
 
     private fun observeData() {
-        viewModel.getAuthorizedStatus().distinctUntilChanged().observe(this) {
+        viewModel.getAuthorizedStatus().observe(this) {
             if (!it.isAuthorized) {
                 navController.navigate(R.id.action_global_to_prelogin_navigation)
             }
         }
-        viewModel.getThemeLang().distinctUntilChanged().observe(this) {
+        viewModel.getThemeLang().observe(this) {
             AppCompatDelegate.setDefaultNightMode(
                 if (it.isDark) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
             )

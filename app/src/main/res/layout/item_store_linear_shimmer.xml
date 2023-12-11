@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="4dp"
-    app:cardBackgroundColor="@color/colorSurface"
+    app:cardBackgroundColor="@color/colorSurfaceCard"
     app:cardCornerRadius="8dp"
     app:cardUseCompatPadding="true">
 
@@ -16,14 +16,13 @@
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/iv_item_store_linear_shimmer"
-            android:layout_width="0dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_margin="8dp"
             android:adjustViewBounds="true"
             android:src="@color/colorShimmer"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/tv_item_store_linear_shimmer_title"
-            app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.0"
@@ -31,7 +30,7 @@
 
         <TextView
             android:id="@+id/tv_item_store_linear_shimmer_title"
-            style="@style/TextAppearance.Material3.BodyMedium"
+            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -44,7 +43,7 @@
 
         <TextView
             android:id="@+id/tv_item_store_linear_shimmer_price"
-            style="@style/TextAppearance.Material3.BodyMedium"
+            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -64,9 +63,8 @@
 
         <TextView
             android:id="@+id/tv_item_store_linear_shimmer_store"
-            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_height="12dp"
             android:layout_marginTop="16dp"
             android:layout_marginEnd="8dp"
             android:background="@color/colorShimmer"
@@ -86,9 +84,8 @@
 
         <TextView
             android:id="@+id/tv_item_store_linear_shimmer_rating"
-            style="@style/TextAppearance.Material3.BodySmall"
             android:layout_width="100dp"
-            android:layout_height="wrap_content"
+            android:layout_height="12dp"
             android:layout_marginTop="4dp"
             android:layout_marginBottom="8dp"
             android:background="@color/colorShimmer"

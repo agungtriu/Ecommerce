@@ -1,5 +1,6 @@
 package com.agungtriu.ecommerce.compose.ui
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,28 +23,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
+import com.google.firebase.analytics.FirebaseAnalytics
 import java.net.HttpURLConnection
 
 @Composable
-fun ErrorScreen(error: ResponseError, hitRefresh: () -> Unit) {
-    var title = ""
-    var message = ""
-    when (error.code) {
-        HttpURLConnection.HTTP_NOT_FOUND -> {
-            title = stringResource(id = R.string.store_empty)
-            message = stringResource(id = R.string.store_empty_desc)
-        }
-
-        HttpURLConnection.HTTP_GATEWAY_TIMEOUT -> {
-            title = stringResource(id = R.string.store_connection_title)
-            message = stringResource(id = R.string.store_connection_desc)
-        }
-
-        else -> {
-            title = (error.code ?: "").toString()
-            message = error.message ?: ""
-        }
-    }
+fun ErrorScreen(
+    responseError: ResponseError,
+    context: Context,
+    analytics: FirebaseAnalytics,
+    hitRefresh: () -> Unit
+) {
+    val error = errorHandling(responseError, context)
 
     Column(
         modifier = Modifier.fillMaxWidth(),
@@ -59,7 +49,7 @@ fun ErrorScreen(error: ResponseError, hitRefresh: () -> Unit) {
             alignment = Alignment.Center
         )
         Text(
-            text = title,
+            text = error.title,
             fontSize = 32.sp,
             fontFamily = FontFamily(Font(R.font.poppins_500)),
             style = TextStyle(
@@ -73,7 +63,7 @@ fun ErrorScreen(error: ResponseError, hitRefresh: () -> Unit) {
                 .padding(start = 16.dp, end = 16.dp, bottom = 4.dp)
         )
         Text(
-            text = message,
+            text = error.message,
             fontFamily = FontFamily(Font(R.font.poppins_400)),
             style = MaterialTheme.typography.bodyLarge.plus(
                 TextStyle(
@@ -88,7 +78,10 @@ fun ErrorScreen(error: ResponseError, hitRefresh: () -> Unit) {
                 .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
         )
         Button(
-            onClick = { hitRefresh() },
+            onClick = {
+                analytics.logEvent("btn_error_refresh", null)
+                hitRefresh()
+            },
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         ) {
@@ -103,5 +96,27 @@ fun ErrorScreen(error: ResponseError, hitRefresh: () -> Unit) {
             )
         }
         Spacer(modifier = Modifier.weight(1F))
+    }
+}
+
+fun errorHandling(error: ResponseError, context: Context): ErrorMessage {
+    return when (error.code) {
+        HttpURLConnection.HTTP_NOT_FOUND ->
+            ErrorMessage(
+                title = context.getString(R.string.store_empty),
+                message = context.getString(R.string.store_empty_desc)
+            )
+
+        HttpURLConnection.HTTP_GATEWAY_TIMEOUT ->
+            ErrorMessage(
+                title = context.getString(R.string.store_connection_title),
+                message = context.getString(R.string.store_connection_desc)
+            )
+
+        else ->
+            ErrorMessage(
+                title = (error.code ?: "").toString(),
+                message = error.message ?: ""
+            )
     }
 }

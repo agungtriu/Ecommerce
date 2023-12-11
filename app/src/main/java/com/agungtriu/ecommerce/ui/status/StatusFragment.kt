@@ -76,8 +76,16 @@ class StatusFragment : BaseFragment<FragmentStatusBinding>(FragmentStatusBinding
                         invoiceId = viewModel.dataFulfillment.invoiceId
                             ?: System.currentTimeMillis()
                                 .toString(),
-                        rating = if (binding.rbStatus.rating.toInt() > 0) binding.rbStatus.rating.toInt() else null,
-                        review = if (binding.tietStatusReview.text.toString() != "") binding.tietStatusReview.text.toString() else null
+                        rating = if (binding.rbStatus.rating.toInt() > 0) {
+                            binding.rbStatus.rating.toInt()
+                        } else {
+                            null
+                        },
+                        review = if (binding.tietStatusReview.text.toString() != "") {
+                            binding.tietStatusReview.text.toString()
+                        } else {
+                            null
+                        }
                     )
                 ).observe(viewLifecycleOwner) {
                     when (it) {

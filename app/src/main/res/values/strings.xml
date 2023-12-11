@@ -53,10 +53,10 @@
     <string name="bottomsheetfilter_min">Terendah</string>
     <string name="bottomsheetfilter_max">Tertinggi</string>
     <string name="bottomsheetfilter_showproduct">Tampilkan Produk</string>
-    <string name="bottomsheetfilter_review">Ulasan</string>
-    <string name="bottomsheetfilter_sold">Penjualan</string>
-    <string name="bottomsheetfilter_maxprice">Harga Tertinggi</string>
-    <string name="bottomsheetfilter_minprice">Harga Terendah</string>
+    <string name="bottomsheetfilter_rating">Ulasan</string>
+    <string name="bottomsheetfilter_sale">Penjualan</string>
+    <string name="bottomsheetfilter_highest">Harga Tertinggi</string>
+    <string name="bottomsheetfilter_lowest">Harga Terendah</string>
     <string name="bottomsheetfilter_apple" translatable="false">Apple</string>
     <string name="bottomsheetfilter_asus" translatable="false">Asus</string>
     <string name="bottomsheetfilter_dell" translatable="false">Dell</string>

@@ -39,10 +39,10 @@
     <string name="bottomsheetfilter_min">Lowest</string>
     <string name="bottomsheetfilter_max">Highest</string>
     <string name="bottomsheetfilter_showproduct">Show Product</string>
-    <string name="bottomsheetfilter_review">Review</string>
-    <string name="bottomsheetfilter_sold">Sold</string>
-    <string name="bottomsheetfilter_maxprice">Highest</string>
-    <string name="bottomsheetfilter_minprice">Lowest</string>
+    <string name="bottomsheetfilter_rating">Rating</string>
+    <string name="bottomsheetfilter_sale">Sale</string>
+    <string name="bottomsheetfilter_highest">Highest</string>
+    <string name="bottomsheetfilter_lowest">Lowest</string>
     <string name="all_max">"Maximum "</string>
     <string name="detail_pick_variant">Choose variant</string>
     <string name="detail_description_product">Description product</string>
