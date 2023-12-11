@@ -14,7 +14,9 @@ import com.agungtriu.ecommerce.data.StoreRepository
 import com.agungtriu.ecommerce.data.WishlistRepository
 import com.agungtriu.ecommerce.helper.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
 @HiltViewModel
@@ -71,5 +73,15 @@ class DetailProductViewModel @Inject constructor(
                 _resultAddCart.value = it
             }
         }
+    }
+
+    fun getWishlistCompose(): WishlistEntity? {
+        return runBlocking {
+            wishlistRepository.getWishlistById(productId).first()
+        }
+    }
+
+    fun addCartCompose(cartEntity: CartEntity): ViewState<String> = runBlocking {
+        cartRepository.insertCart(cartEntity).first()
     }
 }

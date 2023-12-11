@@ -304,4 +304,186 @@ class DetailProductViewModelTest {
             actual
         )
     }
+
+    @Test
+    fun getWishlistCompose_success_found() = runTest {
+        whenever(wishlistRepository.getWishlistById(id)).thenReturn(flowOf(DataDummy.dummyWishlistEntity))
+        val actual = detailProductViewModel.getWishlistCompose()
+        Assert.assertEquals(DataDummy.dummyWishlistEntity, actual)
+    }
+
+    @Test
+    fun getWishlistCompose_success_notFound() = runTest {
+        whenever(wishlistRepository.getWishlistById(id)).thenReturn(flowOf(null))
+        val actual = detailProductViewModel.getWishlistCompose()
+        Assert.assertEquals(null, actual)
+    }
+
+    @Test
+    fun addCartCompose_success_insert() = runTest {
+        whenever(
+            cartRepository.insertCart(
+                cartEntity = CartEntity(
+                    "",
+                    "",
+                    "",
+                    0,
+                    "",
+                    "",
+                    0,
+                    0,
+                    "",
+                    0,
+                    false
+                )
+            )
+        ).thenReturn(
+            flowOf(
+                ViewState.Success("cart")
+            )
+        )
+
+        val actual = mutableListOf<ViewState<String>>()
+        detailProductViewModel.addCart(
+            cartEntity = CartEntity(
+                "",
+                "",
+                "",
+                0,
+                "",
+                "",
+                0,
+                0,
+                "",
+                0,
+                false
+            )
+        )
+
+        actual.add(
+            detailProductViewModel.addCartCompose(
+                cartEntity = CartEntity(
+                    "",
+                    "",
+                    "",
+                    0,
+                    "",
+                    "",
+                    0,
+                    0,
+                    "",
+                    0,
+                    false
+                )
+            )
+        )
+        Assert.assertEquals(
+            listOf(
+                ViewState.Success("cart")
+            ),
+            actual
+        )
+    }
+
+    @Test
+    fun addCartCompose_success_update() = runTest {
+        whenever(
+            cartRepository.insertCart(
+                cartEntity = CartEntity(
+                    "",
+                    "",
+                    "",
+                    0,
+                    "",
+                    "",
+                    0,
+                    0,
+                    "",
+                    0,
+                    false
+                )
+            )
+        ).thenReturn(
+            flowOf(ViewState.Success("quantity"))
+        )
+
+        val actual = mutableListOf<ViewState<String>>()
+        actual.add(
+            detailProductViewModel.addCartCompose(
+                cartEntity = CartEntity(
+                    "",
+                    "",
+                    "",
+                    0,
+                    "",
+                    "",
+                    0,
+                    0,
+                    "",
+                    0,
+                    false
+                )
+            )
+        )
+        Assert.assertEquals(
+            listOf(
+                ViewState.Success("quantity")
+            ),
+            actual
+        )
+    }
+
+    @Test
+    fun addCartCompose_error() = runTest {
+        whenever(
+            cartRepository.insertCart(
+                cartEntity = CartEntity(
+                    "",
+                    "",
+                    "",
+                    0,
+                    "",
+                    "",
+                    0,
+                    0,
+                    "",
+                    0,
+                    false
+                )
+            )
+        ).thenReturn(
+            flowOf(
+                ViewState.Error(
+                    ResponseError(404, "stock tidak tersedia")
+                )
+            )
+        )
+
+        val actual = mutableListOf<ViewState<String>>()
+        actual.add(
+            detailProductViewModel.addCartCompose(
+                cartEntity = CartEntity(
+                    "",
+                    "",
+                    "",
+                    0,
+                    "",
+                    "",
+                    0,
+                    0,
+                    "",
+                    0,
+                    false
+                )
+            )
+        )
+        Assert.assertEquals(
+            listOf(
+                ViewState.Error(
+                    ResponseError(404, "stock tidak tersedia")
+                )
+            ),
+            actual
+        )
+    }
 }

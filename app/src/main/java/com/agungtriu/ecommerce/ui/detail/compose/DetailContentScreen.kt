@@ -36,8 +36,8 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
@@ -93,73 +93,9 @@ fun DetailContentScreen(
     val scope = rememberCoroutineScope()
     var selectedVariant by rememberSaveable { mutableIntStateOf(0) }
     var isWishlist by rememberSaveable { mutableStateOf(false) }
-    var isWishlistPress by rememberSaveable { mutableStateOf(false) }
-    var isCartPress by rememberSaveable { mutableStateOf(false) }
 
-    viewModel.getWishlistByProductId().observeAsState().value.let {
-        isWishlist = it != null
-        scope.launch {
-            if (isWishlistPress) {
-                isWishlistPress = false
-                snackBarHostState.showSnackbar(
-                    if (it != null) {
-                        getString(context, R.string.detail_success_add)
-                            .plus(" ${data.productName}")
-                            .plus(" ${getString(context, R.string.detail_to_wishlist)}")
-                    } else {
-                        getString(context, R.string.detail_success_remove)
-                            .plus(" ${data.productName}")
-                            .plus(" ${getString(context, R.string.detail_from_wishlist)}")
-                    }
-                )
-            }
-        }
-    }
-    viewModel.resultAddCart.observeAsState().value.let {
-        when (it) {
-            is ViewState.Error -> {
-                scope.launch {
-                    if (isCartPress) {
-                        isCartPress = false
-                        snackBarHostState.showSnackbar(
-                            getString(context, R.string.all_stock_not_available)
-                        )
-                    }
-                }
-            }
-
-            is ViewState.Loading -> null
-
-            is ViewState.Success -> {
-                when (it.data) {
-                    "cart" -> scope.launch {
-                        if (isCartPress) {
-                            isCartPress = false
-                            snackBarHostState.showSnackbar(
-                                getString(context, R.string.all_success_add_cart)
-                            )
-                        }
-                    }
-
-                    "quantity" -> scope.launch {
-                        if (isCartPress) {
-                            isCartPress = false
-                            snackBarHostState.showSnackbar(
-                                getString(context, R.string.all_success_update_quantity)
-                            )
-                        }
-                    }
-                }
-                analyticsEvent(
-                    analytics = analytics,
-                    firebaseEvent = FirebaseAnalytics.Event.ADD_TO_CART,
-                    item = data,
-                    selectedVariant = selectedVariant
-                )
-            }
-
-            else -> null
-        }
+    LaunchedEffect(true) {
+        isWishlist = viewModel.getWishlistCompose() != null
     }
 
     val pagerState = rememberPagerState(pageCount = {
@@ -248,7 +184,6 @@ fun DetailContentScreen(
                 Spacer(modifier = Modifier.size(16.dp))
                 IconButton(
                     onClick = {
-                        isWishlistPress = true
                         if (isWishlist) {
                             analytics.logEvent("btn_detail_wishlist_delete", null)
                             viewModel.deleteWishlistById(data.productId!!)
@@ -261,6 +196,37 @@ fun DetailContentScreen(
                                 selectedVariant = selectedVariant
                             )
                             viewModel.insertWishlist(data.toWishlist(selectedVariant))
+                        }
+
+                        viewModel.getWishlistCompose().let {
+                            isWishlist = it != null
+                            scope.launch {
+                                snackBarHostState.showSnackbar(
+                                    if (it != null) {
+                                        getString(context, R.string.detail_success_add)
+                                            .plus(" ${data.productName}")
+                                            .plus(
+                                                " ${
+                                                    getString(
+                                                        context,
+                                                        R.string.detail_to_wishlist
+                                                    )
+                                                }"
+                                            )
+                                    } else {
+                                        getString(context, R.string.detail_success_remove)
+                                            .plus(" ${data.productName}")
+                                            .plus(
+                                                " ${
+                                                    getString(
+                                                        context,
+                                                        R.string.detail_from_wishlist
+                                                    )
+                                                }"
+                                            )
+                                    }
+                                )
+                            }
                         }
                     },
                     modifier = Modifier
@@ -597,8 +563,42 @@ fun DetailContentScreen(
             Button(
                 onClick = {
                     analytics.logEvent("btn_detail_cart", null)
-                    isCartPress = true
-                    viewModel.addCart(data.toCart(selectedVariant))
+                    viewModel.addCartCompose(data.toCart(selectedVariant)).let {
+                        when (it) {
+                            is ViewState.Error -> {
+                                scope.launch {
+                                    snackBarHostState.showSnackbar(
+                                        getString(context, R.string.all_stock_not_available)
+                                    )
+                                }
+                            }
+
+                            is ViewState.Success -> {
+                                when (it.data) {
+                                    "cart" -> scope.launch {
+                                        snackBarHostState.showSnackbar(
+                                            getString(context, R.string.all_success_add_cart)
+                                        )
+                                    }
+
+                                    "quantity" -> scope.launch {
+                                        snackBarHostState.showSnackbar(
+                                            getString(context, R.string.all_success_update_quantity)
+                                        )
+                                    }
+                                }
+                                analyticsEvent(
+                                    analytics = analytics,
+                                    firebaseEvent = FirebaseAnalytics.Event.ADD_TO_CART,
+                                    item = data,
+                                    selectedVariant = selectedVariant
+                                )
+                            }
+
+                            is ViewState.Loading -> {
+                            }
+                        }
+                    }
                 },
                 modifier = Modifier
                     .weight(1F),

@@ -49,7 +49,6 @@ fun ReviewItem(item: DataReview) {
                 )
                 RatingBar(
                     rating = (item.userRating ?: 0).toDouble(),
-                    starsColor = MaterialTheme.colorScheme.onSurfaceVariant,
                     size = 15
                 )
             }
