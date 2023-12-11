@@ -71,6 +71,8 @@ import com.agungtriu.ecommerce.ui.AppActivity
 import com.agungtriu.ecommerce.ui.checkout.CheckoutFragment
 import com.agungtriu.ecommerce.ui.detail.DetailProductViewModel
 import com.agungtriu.ecommerce.ui.review.ReviewFragment
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.logEvent
 import kotlinx.coroutines.launch
 
 @OptIn(
@@ -85,7 +87,8 @@ fun DetailContentScreen(
     data: DataDetailProduct,
     viewModel: DetailProductViewModel,
     findNavController: NavController,
-    snackBarHostState: SnackbarHostState
+    snackBarHostState: SnackbarHostState,
+    analytics: FirebaseAnalytics
 ) {
     val scope = rememberCoroutineScope()
     var selectedVariant by rememberSaveable { mutableIntStateOf(0) }
@@ -146,9 +149,13 @@ fun DetailContentScreen(
                             )
                         }
                     }
-
-                    else -> null
                 }
+                analyticsEvent(
+                    analytics = analytics,
+                    firebaseEvent = FirebaseAnalytics.Event.ADD_TO_CART,
+                    item = data,
+                    selectedVariant = selectedVariant
+                )
             }
 
             else -> null
@@ -223,6 +230,7 @@ fun DetailContentScreen(
                 )
                 IconButton(
                     onClick = {
+                        analytics.logEvent("btn_detail_share", null)
                         intentShare(context = context, data = data)
                     },
                     modifier = Modifier
@@ -242,8 +250,16 @@ fun DetailContentScreen(
                     onClick = {
                         isWishlistPress = true
                         if (isWishlist) {
+                            analytics.logEvent("btn_detail_wishlist_delete", null)
                             viewModel.deleteWishlistById(data.productId!!)
                         } else {
+                            analytics.logEvent("btn_detail_wishlist_insert", null)
+                            analyticsEvent(
+                                analytics = analytics,
+                                firebaseEvent = FirebaseAnalytics.Event.ADD_TO_WISHLIST,
+                                item = data,
+                                selectedVariant = selectedVariant
+                            )
                             viewModel.insertWishlist(data.toWishlist(selectedVariant))
                         }
                     },
@@ -352,7 +368,22 @@ fun DetailContentScreen(
             ) {
                 data.productVariant!!.forEachIndexed { index, productVariant ->
                     InputChip(
-                        onClick = { selectedVariant = index },
+                        onClick = {
+                            selectedVariant = index
+
+                            analytics.logEvent("btn_detail_variant", null)
+                            analytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+                                param(
+                                    FirebaseAnalytics.Param.ITEMS,
+                                    bundleOf(
+                                        FirebaseAnalytics.Param.ITEM_NAME to data.productVariant?.get(
+                                            index
+                                        )?.variantName
+                                    )
+                                )
+                                param(FirebaseAnalytics.Param.ITEM_LIST_NAME, "Variant")
+                            }
+                        },
                         label = {
                             Text(
                                 text = productVariant.variantName ?: "",
@@ -430,6 +461,7 @@ fun DetailContentScreen(
                 )
                 TextButton(
                     onClick = {
+                        analytics.logEvent("btn_detail_review_show_all", null)
                         findNavController.navigate(
                             R.id.action_detailFragment_to_reviewComposeFragment,
                             bundleOf(
@@ -532,6 +564,13 @@ fun DetailContentScreen(
         ) {
             OutlinedButton(
                 onClick = {
+                    analytics.logEvent("btn_detail_buy", null)
+                    analyticsEvent(
+                        analytics = analytics,
+                        firebaseEvent = FirebaseAnalytics.Event.BEGIN_CHECKOUT,
+                        item = data,
+                        selectedVariant = selectedVariant
+                    )
                     (activity as AppActivity).navigate(
                         R.id.action_global_to_checkout_fragment,
                         bundle = bundleOf(
@@ -557,6 +596,7 @@ fun DetailContentScreen(
             Spacer(modifier = Modifier.size(16.dp))
             Button(
                 onClick = {
+                    analytics.logEvent("btn_detail_cart", null)
                     isCartPress = true
                     viewModel.addCart(data.toCart(selectedVariant))
                 },
@@ -625,4 +665,28 @@ fun DataDetailProduct.toCart(selectedVariant: Int): CartEntity {
         ),
         variantName = this.productVariant?.get(selectedVariant)?.variantName
     )
+}
+
+private fun analyticsEvent(
+    analytics: FirebaseAnalytics,
+    firebaseEvent: String,
+    item: DataDetailProduct,
+    selectedVariant: Int
+) {
+    analytics.logEvent(firebaseEvent) {
+        param(
+            FirebaseAnalytics.Param.ITEMS,
+            bundleOf(
+                FirebaseAnalytics.Param.ITEM_ID to item.productId,
+                FirebaseAnalytics.Param.ITEM_NAME to item.productName,
+                FirebaseAnalytics.Param.ITEM_BRAND to item.brand,
+                FirebaseAnalytics.Param.ITEM_VARIANT to item.productVariant?.get(selectedVariant)?.variantName
+            )
+        )
+        param(FirebaseAnalytics.Param.CURRENCY, "Rp")
+        param(
+            FirebaseAnalytics.Param.VALUE,
+            (item.productVariant?.get(selectedVariant)?.variantPrice ?: 0).toDouble()
+        )
+    }
 }

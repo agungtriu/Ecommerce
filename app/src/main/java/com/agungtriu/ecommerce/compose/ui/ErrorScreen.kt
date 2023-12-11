@@ -23,10 +23,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
+import com.google.firebase.analytics.FirebaseAnalytics
 import java.net.HttpURLConnection
 
 @Composable
-fun ErrorScreen(responseError: ResponseError, context: Context, hitRefresh: () -> Unit) {
+fun ErrorScreen(
+    responseError: ResponseError,
+    context: Context,
+    analytics: FirebaseAnalytics,
+    hitRefresh: () -> Unit
+) {
     val error = errorHandling(responseError, context)
 
     Column(
@@ -72,7 +78,10 @@ fun ErrorScreen(responseError: ResponseError, context: Context, hitRefresh: () -
                 .padding(start = 16.dp, end = 16.dp, bottom = 8.dp),
         )
         Button(
-            onClick = { hitRefresh() },
+            onClick = {
+                analytics.logEvent("btn_error_refresh", null)
+                hitRefresh()
+            },
             modifier = Modifier
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
         ) {

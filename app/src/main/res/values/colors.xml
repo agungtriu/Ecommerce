@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorSurface">#FFFFFFFF</color>
+    <color name="colorSurfaceCard">#FFFFFFFF</color>
     <color name="colorShimmer">#DDDDDD</color>
     <color name="colorNotificationNotRead">#EADDFF</color>
     <color name="colorChip">@color/chip_selector</color>

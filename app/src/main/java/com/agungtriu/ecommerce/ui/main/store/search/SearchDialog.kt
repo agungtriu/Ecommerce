@@ -10,7 +10,6 @@ import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.distinctUntilChanged
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.databinding.DialogSearchBinding
@@ -68,7 +67,7 @@ class SearchDialog : DialogFragment() {
     }
 
     private fun observeData() {
-        viewModel.result.distinctUntilChanged().observe(viewLifecycleOwner) {
+        viewModel.result.observe(viewLifecycleOwner) {
             when (it) {
                 is ViewState.Loading -> binding.pbSearch.visibility = View.VISIBLE
                 is ViewState.Error -> {

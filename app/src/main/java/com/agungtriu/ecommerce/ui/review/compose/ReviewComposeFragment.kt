@@ -30,11 +30,20 @@ import com.agungtriu.ecommerce.compose.ui.LoadingScreen
 import com.agungtriu.ecommerce.compose.ui.TopBarScreen
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.review.ReviewViewModel
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class ReviewComposeFragment : Fragment() {
     private val viewModel: ReviewViewModel by viewModels()
+    private lateinit var analytics: FirebaseAnalytics
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        analytics = Firebase.analytics
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -52,8 +61,9 @@ class ReviewComposeFragment : Fragment() {
                         Scaffold(
                             topBar = {
                                 TopBarScreen(
-                                    findNavController(),
-                                    stringResource(id = R.string.all_review_buyer)
+                                    findNavController = findNavController(),
+                                    title = stringResource(id = R.string.all_review_buyer),
+                                    analytics = analytics,
                                 )
                             },
                             content = { paddingValues ->
@@ -80,7 +90,8 @@ class ReviewComposeFragment : Fragment() {
                                             is ViewState.Error ->
                                                 ErrorScreen(
                                                     responseError = it.error,
-                                                    context = context
+                                                    context = context,
+                                                    analytics = analytics
                                                 ) {
                                                     viewModel.getReviewsByProductId()
                                                 }

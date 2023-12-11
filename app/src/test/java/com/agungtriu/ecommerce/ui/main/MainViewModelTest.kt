@@ -39,7 +39,8 @@ class MainViewModelTest {
         mainRepository = mock()
         wishlistRepository = mock()
         savedStateHandle = mock()
-        mainViewModel = MainViewModel(preLoginRepository, mainRepository, wishlistRepository, savedStateHandle)
+        mainViewModel =
+            MainViewModel(preLoginRepository, mainRepository, wishlistRepository, savedStateHandle)
     }
 
     @Test
