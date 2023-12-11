@@ -81,6 +81,12 @@ class DetailProductViewModel @Inject constructor(
         }
     }
 
+    fun getCartCompose(): CartEntity? {
+        return runBlocking {
+            cartRepository.getCartById(productId).first()
+        }
+    }
+
     fun addCartCompose(cartEntity: CartEntity): ViewState<String> = runBlocking {
         cartRepository.insertCart(cartEntity).first()
     }

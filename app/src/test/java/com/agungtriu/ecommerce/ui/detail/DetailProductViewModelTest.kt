@@ -144,19 +144,7 @@ class DetailProductViewModelTest {
     fun addCart_success_insert() = runTest {
         whenever(
             cartRepository.insertCart(
-                cartEntity = CartEntity(
-                    "",
-                    "",
-                    "",
-                    0,
-                    "",
-                    "",
-                    0,
-                    0,
-                    "",
-                    0,
-                    false
-                )
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
             )
         ).thenReturn(
             flowOf(
@@ -167,19 +155,7 @@ class DetailProductViewModelTest {
 
         val actual = mutableListOf<ViewState<String>>()
         detailProductViewModel.addCart(
-            cartEntity = CartEntity(
-                "",
-                "",
-                "",
-                0,
-                "",
-                "",
-                0,
-                0,
-                "",
-                0,
-                false
-            )
+            cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
         )
         detailProductViewModel.resultAddCart.observeForever {
             actual.add(it)
@@ -199,19 +175,7 @@ class DetailProductViewModelTest {
     fun addCart_success_update() = runTest {
         whenever(
             cartRepository.insertCart(
-                cartEntity = CartEntity(
-                    "",
-                    "",
-                    "",
-                    0,
-                    "",
-                    "",
-                    0,
-                    0,
-                    "",
-                    0,
-                    false
-                )
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
             )
         ).thenReturn(
             flowOf(ViewState.Loading, ViewState.Success("quantity"))
@@ -219,19 +183,7 @@ class DetailProductViewModelTest {
 
         val actual = mutableListOf<ViewState<String>>()
         detailProductViewModel.addCart(
-            cartEntity = CartEntity(
-                "",
-                "",
-                "",
-                0,
-                "",
-                "",
-                0,
-                0,
-                "",
-                0,
-                false
-            )
+            cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
         )
         detailProductViewModel.resultAddCart.observeForever {
             actual.add(it)
@@ -251,19 +203,7 @@ class DetailProductViewModelTest {
     fun addCart_error() = runTest {
         whenever(
             cartRepository.insertCart(
-                cartEntity = CartEntity(
-                    "",
-                    "",
-                    "",
-                    0,
-                    "",
-                    "",
-                    0,
-                    0,
-                    "",
-                    0,
-                    false
-                )
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
             )
         ).thenReturn(
             flowOf(
@@ -276,19 +216,7 @@ class DetailProductViewModelTest {
 
         val actual = mutableListOf<ViewState<String>>()
         detailProductViewModel.addCart(
-            cartEntity = CartEntity(
-                "",
-                "",
-                "",
-                0,
-                "",
-                "",
-                0,
-                0,
-                "",
-                0,
-                false
-            )
+            cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
         )
         detailProductViewModel.resultAddCart.observeForever {
             actual.add(it)
@@ -320,22 +248,24 @@ class DetailProductViewModelTest {
     }
 
     @Test
+    fun getCartCompose_success_found() = runTest {
+        whenever(cartRepository.getCartById(id)).thenReturn(flowOf(DataDummy.dummyCartEntity))
+        val actual = detailProductViewModel.getCartCompose()
+        Assert.assertEquals(DataDummy.dummyCartEntity, actual)
+    }
+
+    @Test
+    fun getCartCompose_success_notFound() = runTest {
+        whenever(cartRepository.getCartById(id)).thenReturn(flowOf(null))
+        val actual = detailProductViewModel.getCartCompose()
+        Assert.assertEquals(null, actual)
+    }
+
+    @Test
     fun addCartCompose_success_insert() = runTest {
         whenever(
             cartRepository.insertCart(
-                cartEntity = CartEntity(
-                    "",
-                    "",
-                    "",
-                    0,
-                    "",
-                    "",
-                    0,
-                    0,
-                    "",
-                    0,
-                    false
-                )
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
             )
         ).thenReturn(
             flowOf(
@@ -345,36 +275,12 @@ class DetailProductViewModelTest {
 
         val actual = mutableListOf<ViewState<String>>()
         detailProductViewModel.addCart(
-            cartEntity = CartEntity(
-                "",
-                "",
-                "",
-                0,
-                "",
-                "",
-                0,
-                0,
-                "",
-                0,
-                false
-            )
+            cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
         )
 
         actual.add(
             detailProductViewModel.addCartCompose(
-                cartEntity = CartEntity(
-                    "",
-                    "",
-                    "",
-                    0,
-                    "",
-                    "",
-                    0,
-                    0,
-                    "",
-                    0,
-                    false
-                )
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
             )
         )
         Assert.assertEquals(
@@ -389,19 +295,7 @@ class DetailProductViewModelTest {
     fun addCartCompose_success_update() = runTest {
         whenever(
             cartRepository.insertCart(
-                cartEntity = CartEntity(
-                    "",
-                    "",
-                    "",
-                    0,
-                    "",
-                    "",
-                    0,
-                    0,
-                    "",
-                    0,
-                    false
-                )
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
             )
         ).thenReturn(
             flowOf(ViewState.Success("quantity"))
@@ -410,19 +304,7 @@ class DetailProductViewModelTest {
         val actual = mutableListOf<ViewState<String>>()
         actual.add(
             detailProductViewModel.addCartCompose(
-                cartEntity = CartEntity(
-                    "",
-                    "",
-                    "",
-                    0,
-                    "",
-                    "",
-                    0,
-                    0,
-                    "",
-                    0,
-                    false
-                )
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
             )
         )
         Assert.assertEquals(
@@ -437,19 +319,7 @@ class DetailProductViewModelTest {
     fun addCartCompose_error() = runTest {
         whenever(
             cartRepository.insertCart(
-                cartEntity = CartEntity(
-                    "",
-                    "",
-                    "",
-                    0,
-                    "",
-                    "",
-                    0,
-                    0,
-                    "",
-                    0,
-                    false
-                )
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
             )
         ).thenReturn(
             flowOf(
@@ -462,19 +332,7 @@ class DetailProductViewModelTest {
         val actual = mutableListOf<ViewState<String>>()
         actual.add(
             detailProductViewModel.addCartCompose(
-                cartEntity = CartEntity(
-                    "",
-                    "",
-                    "",
-                    0,
-                    "",
-                    "",
-                    0,
-                    0,
-                    "",
-                    0,
-                    false
-                )
+                cartEntity = CartEntity("", "", "", 0, "", "", 0, 0, "", 0, false)
             )
         )
         Assert.assertEquals(

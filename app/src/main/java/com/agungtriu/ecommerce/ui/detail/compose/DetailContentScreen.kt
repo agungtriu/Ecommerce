@@ -65,6 +65,7 @@ import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.core.room.entity.WishlistEntity
 import com.agungtriu.ecommerce.helper.Config
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
+import com.agungtriu.ecommerce.helper.Screen
 import com.agungtriu.ecommerce.helper.Utils.displayPrice
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.AppActivity
@@ -95,7 +96,25 @@ fun DetailContentScreen(
     var isWishlist by rememberSaveable { mutableStateOf(false) }
 
     LaunchedEffect(true) {
-        isWishlist = viewModel.getWishlistCompose() != null
+        val wishlist = viewModel.getWishlistCompose()
+        val cart = viewModel.getCartCompose()
+        isWishlist = wishlist != null
+
+        data.productVariant?.forEachIndexed { index, item ->
+            when (viewModel.stateDetail) {
+                Screen.WISHLIST.name -> {
+                    if (wishlist?.variantName == item.variantName) {
+                        selectedVariant = index
+                    }
+                }
+
+                Screen.CART.name -> {
+                    if (cart?.variantName == item.variantName) {
+                        selectedVariant = index
+                    }
+                }
+            }
+        }
     }
 
     val pagerState = rememberPagerState(pageCount = {
@@ -583,7 +602,10 @@ fun DetailContentScreen(
 
                                     "quantity" -> scope.launch {
                                         snackBarHostState.showSnackbar(
-                                            getString(context, R.string.all_success_update_quantity)
+                                            getString(
+                                                context,
+                                                R.string.all_success_update_quantity
+                                            )
                                         )
                                     }
                                 }
