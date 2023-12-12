@@ -75,8 +75,6 @@ class CheckoutRepositoryImp @Inject constructor(
             if (data != null) {
                 if (data.isNotEmpty()) {
                     emit(ViewState.Success(data))
-                } else {
-                    emit(ViewState.Error(ResponseError(code = 404, message = "Not Found")))
                 }
             }
         } catch (t: Throwable) {

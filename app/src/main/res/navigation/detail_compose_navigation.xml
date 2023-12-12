@@ -6,13 +6,26 @@
     <fragment
         android:id="@+id/reviewComposeFragment"
         android:name="com.agungtriu.ecommerce.ui.review.compose.ReviewComposeFragment"
-        android:label="fragment_review_compose" />
+        android:label="fragment_review_compose">
+        <argument
+            android:name="productId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/detailComposeFragment"
         android:name="com.agungtriu.ecommerce.ui.detail.compose.DetailFragment"
         android:label="DetailFragment">
+        <argument
+            android:name="productId"
+            app:argType="string" />
+
+        <argument
+            android:name="from"
+            android:defaultValue="STORE"
+            app:argType="string" />
         <action
             android:id="@+id/action_detailFragment_to_reviewComposeFragment"
             app:destination="@id/reviewComposeFragment" />
+        <deepLink app:uri="http://ecommerce.agungtriu.com/{productId}" />
     </fragment>
 </navigation>

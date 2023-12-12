@@ -29,6 +29,6 @@
         <action
             android:id="@+id/action_detailProductFragment_to_reviewFragment"
             app:destination="@id/reviewFragment" />
-        <deepLink app:uri="http://ecommerce.agungtriu.com/{productId}" />
+<!--        <deepLink app:uri="http://ecommerce.agungtriu.com/{productId}" />-->
     </fragment>
 </navigation>

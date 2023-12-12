@@ -54,13 +54,13 @@ class DetailProductViewModel @Inject constructor(
         wishlistRepository.getWishlistById(productId).asLiveData()
 
     fun insertWishlist(wishlistEntity: WishlistEntity) {
-        viewModelScope.launch {
+        runBlocking {
             wishlistRepository.insertWishlist(wishlistEntity)
         }
     }
 
     fun deleteWishlistById(id: String) {
-        viewModelScope.launch {
+        runBlocking {
             wishlistRepository.deleteWishlist(id)
         }
     }
