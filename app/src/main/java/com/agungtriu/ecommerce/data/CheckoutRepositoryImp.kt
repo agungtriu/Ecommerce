@@ -7,7 +7,6 @@ import com.agungtriu.ecommerce.core.remote.model.request.RequestRating
 import com.agungtriu.ecommerce.core.remote.model.response.DataFulfillment
 import com.agungtriu.ecommerce.core.remote.model.response.DataTransaction
 import com.agungtriu.ecommerce.core.remote.model.response.DataTypePayment
-import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
 import com.agungtriu.ecommerce.data.firebase.RemoteConfig
 import com.agungtriu.ecommerce.helper.Extension.toResponseError
 import com.agungtriu.ecommerce.helper.ViewState
