@@ -61,7 +61,7 @@ class DataStoreManager @Inject constructor(private val dataStore: DataStore<Pref
     fun getAuthorizedStatus(): Flow<AuthorizeModel> {
         return dataStore.data.map { preferences ->
             AuthorizeModel(
-                isAuthorized = preferences[AUTHORIZED_KEY] ?: false,
+                isAuthorized = preferences[AUTHORIZED_KEY],
             )
         }
     }

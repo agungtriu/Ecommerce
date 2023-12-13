@@ -42,8 +42,10 @@ class AppActivity : AppCompatActivity() {
 
     private fun observeData() {
         viewModel.getAuthorizedStatus().observe(this) {
-            if (!it.isAuthorized) {
-                navController.navigate(R.id.action_global_to_prelogin_navigation)
+            if (it.isAuthorized != null) {
+                if (!it.isAuthorized!!) {
+                    navController.navigate(R.id.action_global_to_prelogin_navigation)
+                }
             }
         }
         viewModel.getThemeLang().observe(this) {
