@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.remote.model.request.RequestRegister
 import com.agungtriu.ecommerce.core.remote.model.response.DataRegister
-import com.agungtriu.ecommerce.core.remote.model.response.ResponseError
 import com.agungtriu.ecommerce.data.PreLoginRepository
 import com.agungtriu.ecommerce.helper.Extension.toResponseError
 import com.agungtriu.ecommerce.helper.ViewState
@@ -34,7 +33,7 @@ class RegisterViewModel @Inject constructor(private val preLoginRepository: PreL
                 ).collect {
                     _resultRegister.value = it
                 }
-            } catch (t: Throwable){
+            } catch (t: Throwable) {
                 _resultRegister.value = ViewState.Error(t.toResponseError())
             }
         }
