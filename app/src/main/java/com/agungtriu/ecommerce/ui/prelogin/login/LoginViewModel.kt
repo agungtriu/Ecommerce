@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.remote.model.request.RequestLogin
 import com.agungtriu.ecommerce.core.remote.model.response.DataLogin
 import com.agungtriu.ecommerce.data.PreLoginRepository
+import com.agungtriu.ecommerce.helper.Extension.toResponseError
 import com.agungtriu.ecommerce.helper.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.first
@@ -28,14 +29,19 @@ class LoginViewModel @Inject constructor(private val preLoginRepository: PreLogi
 
     fun postLogin(email: String, password: String) {
         viewModelScope.launch {
-            preLoginRepository.postLogin(
-                RequestLogin(
-                    email = email,
-                    password = password,
-                    firebaseToken = preLoginRepository.getFirebaseToken()
-                )
-            ).collect {
-                _resultLogin.value = it
+            try {
+                val token = preLoginRepository.getFirebaseToken()
+                preLoginRepository.postLogin(
+                    RequestLogin(
+                        email = email,
+                        password = password,
+                        firebaseToken = token
+                    )
+                ).collect {
+                    _resultLogin.value = it
+                }
+            } catch (t: Throwable) {
+                _resultLogin.value = ViewState.Error(t.toResponseError())
             }
         }
     }
