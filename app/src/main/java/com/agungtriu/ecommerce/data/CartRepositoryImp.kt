@@ -40,7 +40,11 @@ class CartRepositoryImp @Inject constructor(private val appDatabase: AppDatabase
     }
 
     override suspend fun updateCart(cartEntity: CartEntity) {
-        appDatabase.cartDao().updateCart(cartEntity)
+        appDatabase.cartDao().updateCart(
+            id = cartEntity.id,
+            quantity = cartEntity.quantity ?: 1,
+            isSelected = cartEntity.isSelected ?: false
+        )
     }
 
     override suspend fun updateCartsSelected(isSelected: Boolean) {
