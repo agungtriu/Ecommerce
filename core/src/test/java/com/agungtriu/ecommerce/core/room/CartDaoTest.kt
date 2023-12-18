@@ -56,7 +56,11 @@ class CartDaoTest {
         cartDao.insertCart(
             cartEntity = DataDummy.dummyCartEntity
         )
-        cartDao.updateCart(DataDummy.dummyUpdateCartEntity)
+        cartDao.updateCart(
+            id = DataDummy.dummyUpdateCartEntity.id,
+            quantity = DataDummy.dummyUpdateCartEntity.quantity ?: 1,
+            isSelected = DataDummy.dummyUpdateCartEntity.isSelected ?: false
+        )
         val actual = cartDao.selectCartById(DataDummy.dummyCartEntity.id).first()
         assertEquals(DataDummy.dummyUpdateCartEntity, actual)
     }

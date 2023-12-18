@@ -5,7 +5,6 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import kotlinx.coroutines.flow.Flow
 
@@ -14,8 +13,8 @@ interface CartDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertCart(cartEntity: CartEntity)
 
-    @Update(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun updateCart(cartEntity: CartEntity)
+    @Query("UPDATE carts SET quantity=:quantity, isSelected=:isSelected WHERE id=:id")
+    suspend fun updateCart(id: String, quantity: Int, isSelected: Boolean)
 
     @Query("UPDATE carts SET isSelected=:isSelected")
     suspend fun updateCartsSelected(isSelected: Boolean)

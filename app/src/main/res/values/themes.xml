@@ -27,10 +27,6 @@
         <item name="fontFamily">@font/poppins_500</item>
     </style>
 
-    <style name="Theme.Ecommerce.TextAppearance.TitleSmall" parent="TextAppearance.Material3.TitleSmall">
-        <item name="fontFamily">@font/poppins_500</item>
-    </style>
-
     <style name="Theme.Ecommerce.TextAppearance.BodyLarge" parent="TextAppearance.Material3.BodyLarge">
         <item name="fontFamily">@font/poppins_400</item>
     </style>
@@ -67,27 +63,10 @@
         <item name="materialThemeOverlay">@style/ThemeOverlay.App.Chip</item>
     </style>
 
-    <style name="Widget.App.Button.TextButton" parent="Widget.Material3.Button.TextButton">
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="android:minHeight">10dp</item>
-        <item name="android:minWidth">0dp</item>
-    </style>
-
-    <style name="Widget.App.Button.OutlinedButton" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:insetTop">0dp</item>
-        <item name="android:insetBottom">0dp</item>
-        <item name="android:minHeight">20dp</item>
-    </style>
-
     <style name="Widget.App.Button" parent="Widget.Material3.Button">
         <item name="android:insetTop">0dp</item>
         <item name="android:insetBottom">0dp</item>
         <item name="android:minHeight">20dp</item>
-    </style>
-
-    <style name="Theme.Ecommerce.TextAppearance.HeadlineSmall" parent="TextAppearance.Material3.HeadlineSmall">
-        <item name="fontFamily">@font/poppins_400</item>
     </style>
 
     <style name="AlertDialogTheme" parent="MaterialAlertDialog.Material3">

@@ -40,7 +40,6 @@
     <string name="store_connection_title">Koneksi</string>
     <string name="all_refresh">Muat Ulang</string>
     <string name="store_filter" translatable="false">Filter</string>
-    <string name="all_label_hint" translatable="false">Label</string>
     <string name="item_title_hint" translatable="false">Lenovo Legion 7 16 I7 11800 16GB 1TB SSD RTX3070 8GB</string>
     <string name="item_price_hint" translatable="false">Rp23.499.000</string>
     <string name="item_store_hint" translatable="false">ProStoreComputer</string>
@@ -127,5 +126,4 @@
     <string name="nofitifaction_info">Info</string>
     <string name="wishlist_count_hint">3 Barang</string>
     <string name="main_permission_request_accepted">Permintaan izin diterima</string>
-    <string name="main_permission_request_denied">Permintaan izin ditolak</string>
 </resources>
