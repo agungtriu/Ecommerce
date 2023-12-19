@@ -62,20 +62,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setLayout()
-        listener()
-        resultListener()
-        observeData()
-        observeState()
-        observeFilter(filterModel = viewModel.requestProducts.toFilterModel())
-    }
-
-    private fun setLayout() {
-        viewType = if (viewModel.isGrid) 2 else 1
-
-        gridLayoutManager = GridLayoutManager(view?.context, viewType)
-        binding.rvStore.layoutManager = gridLayoutManager
-        storeAdapter.setItemViewType(viewType)
+        gridLayoutManager = GridLayoutManager(view.context, viewType)
         binding.rvStore.adapter = storeAdapter.withLoadStateFooter(
             footer = LoadingStateAdapter {
                 storeAdapter.retry()
@@ -87,6 +74,20 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
                 return if (position < storeAdapter.itemCount) 1 else gridLayoutManager.spanCount
             }
         }
+
+        setLayout()
+        listener()
+        resultListener()
+        observeData()
+        observeState()
+        observeFilter(filterModel = viewModel.requestProducts.toFilterModel())
+    }
+
+    private fun setLayout() {
+        viewType = if (viewModel.isGrid) 2 else 1
+        gridLayoutManager.spanCount = viewType
+        binding.rvStore.layoutManager = gridLayoutManager
+        storeAdapter.setItemViewType(viewType)
     }
 
     private fun listener() {
@@ -97,9 +98,7 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
             )
 
             viewModel.isGrid = !viewModel.isGrid
-            val position = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
             setLayout()
-            gridLayoutManager.scrollToPosition(position)
             binding.ibStoreView.setBackgroundResource(
                 if (viewModel.isGrid) R.drawable.ic_linear_view else R.drawable.ic_grid_view
             )
