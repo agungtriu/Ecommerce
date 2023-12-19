@@ -126,4 +126,6 @@
     <string name="nofitifaction_info">Info</string>
     <string name="wishlist_count_hint">3 Barang</string>
     <string name="main_permission_request_accepted">Permintaan izin diterima</string>
+    <string name="succes_added">Berhasil menambahkan</string>
+    <string name="to_cart">pada keranjang</string>
 </resources>

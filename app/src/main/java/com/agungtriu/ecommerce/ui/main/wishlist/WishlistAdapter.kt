@@ -115,6 +115,13 @@ class WishlistAdapter(
         itemView: View
     ) {
         binding.btnWishlistRemoveGrid.setOnClickListener {
+            Snackbar.make(
+                itemView,
+                itemView.context.getString(R.string.detail_success_remove)
+                    .plus(" ${item.productName} ")
+                    .plus(itemView.context.getString(R.string.detail_from_wishlist)),
+                Snackbar.LENGTH_LONG
+            ).show()
             viewModel.deleteWishlistById(item.id)
             viewModel.getWishlists()
         }
@@ -129,7 +136,9 @@ class WishlistAdapter(
                             "cart" -> {
                                 Snackbar.make(
                                     itemView,
-                                    itemView.context.getString(R.string.all_success_add_cart),
+                                    itemView.context.getString(R.string.succes_added)
+                                        .plus(" ${item.productName} ")
+                                        .plus(itemView.context.getString(R.string.to_cart)),
                                     Snackbar.LENGTH_LONG
                                 ).show()
                             }
@@ -137,7 +146,8 @@ class WishlistAdapter(
                             "quantity" -> {
                                 Snackbar.make(
                                     itemView,
-                                    itemView.context.getString(R.string.all_success_update_quantity),
+                                    itemView.context.getString(R.string.all_success_update_quantity)
+                                        .plus(" ${item.productName}"),
                                     Snackbar.LENGTH_LONG
                                 ).show()
                             }
@@ -175,6 +185,13 @@ class WishlistAdapter(
         itemView: View
     ) {
         binding.btnWishlistRemoveLinear.setOnClickListener {
+            Snackbar.make(
+                itemView,
+                itemView.context.getString(R.string.detail_success_remove)
+                    .plus(" ${item.productName} ")
+                    .plus(itemView.context.getString(R.string.detail_from_wishlist)),
+                Snackbar.LENGTH_LONG
+            ).show()
             viewModel.deleteWishlistById(item.id)
             viewModel.getWishlists()
         }
@@ -189,7 +206,9 @@ class WishlistAdapter(
                             "cart" -> {
                                 Snackbar.make(
                                     itemView,
-                                    itemView.context.getString(R.string.all_success_add_cart),
+                                    itemView.context.getString(R.string.succes_added)
+                                        .plus(" ${item.productName} ")
+                                        .plus(itemView.context.getString(R.string.to_cart)),
                                     Snackbar.LENGTH_LONG
                                 ).show()
                             }
@@ -197,7 +216,8 @@ class WishlistAdapter(
                             "quantity" -> {
                                 Snackbar.make(
                                     itemView,
-                                    itemView.context.getString(R.string.all_success_update_quantity),
+                                    itemView.context.getString(R.string.all_success_update_quantity)
+                                        .plus(" ${item.productName}"),
                                     Snackbar.LENGTH_LONG
                                 ).show()
                             }
