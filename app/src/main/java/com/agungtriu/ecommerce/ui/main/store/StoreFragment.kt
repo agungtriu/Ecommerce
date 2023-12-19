@@ -268,9 +268,11 @@ class StoreFragment : BaseFragment<FragmentStoreBinding>(FragmentStoreBinding::i
             )
         }
 
-        analytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
-            param(Param.ITEMS, bundles)
-            param(Param.ITEM_LIST_NAME, "Filter")
+        if (filterModel.sort != null || filterModel.category != null || filterModel.min != null || filterModel.max != null) {
+            analytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+                param(Param.ITEMS, bundles)
+                param(Param.ITEM_LIST_NAME, "Filter")
+            }
         }
     }
 
