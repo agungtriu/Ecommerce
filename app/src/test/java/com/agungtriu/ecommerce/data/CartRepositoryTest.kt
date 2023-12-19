@@ -1,5 +1,6 @@
 package com.agungtriu.ecommerce.data
 
+import com.agungtriu.ecommerce.core.remote.ApiService
 import com.agungtriu.ecommerce.core.room.AppDatabase
 import com.agungtriu.ecommerce.core.room.CartDao
 import com.agungtriu.ecommerce.utils.DataDummy
@@ -19,13 +20,15 @@ class CartRepositoryTest {
 
     private lateinit var cartRepository: CartRepository
     private lateinit var appDatabase: AppDatabase
+    private lateinit var apiService: ApiService
     private lateinit var cartDao: CartDao
 
     @Before
     fun setUp() {
         appDatabase = mock()
+        apiService = mock()
         cartDao = mock()
-        cartRepository = CartRepositoryImp(appDatabase)
+        cartRepository = CartRepositoryImp(appDatabase, apiService)
     }
 
     @Test

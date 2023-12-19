@@ -8,7 +8,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import kotlin.math.ceil
 import kotlin.math.floor
@@ -18,8 +17,6 @@ fun RatingBar(
     modifier: Modifier = Modifier,
     rating: Double = 0.0,
     stars: Int = 5,
-    activeColor: Color = MaterialTheme.colorScheme.onSurfaceVariant,
-    disableColor: Color = MaterialTheme.colorScheme.outlineVariant,
     size: Int = 20
 ) {
     val filledStars = floor(rating).toInt()
@@ -29,7 +26,7 @@ fun RatingBar(
             Icon(
                 imageVector = Icons.Outlined.Star,
                 contentDescription = null,
-                tint = activeColor,
+                tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(size.dp)
             )
         }
@@ -37,7 +34,7 @@ fun RatingBar(
             Icon(
                 imageVector = Icons.Outlined.Star,
                 contentDescription = null,
-                tint = disableColor,
+                tint = MaterialTheme.colorScheme.outlineVariant,
                 modifier = Modifier.size(size.dp)
             )
         }
