@@ -47,6 +47,7 @@ class CartFragment : BaseFragment<FragmentCartBinding>(FragmentCartBinding::infl
         adapter = CartAdapter(viewModel, requireActivity(), analytics)
         binding.rvCart.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCart.adapter = adapter
+        binding.rvCart.itemAnimator = null
     }
 
     private fun observeData() {
