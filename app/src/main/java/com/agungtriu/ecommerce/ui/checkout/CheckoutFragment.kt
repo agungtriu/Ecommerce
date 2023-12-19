@@ -51,6 +51,7 @@ class CheckoutFragment : BaseFragment<FragmentCheckoutBinding>(FragmentCheckoutB
         adapter = CheckoutAdapter(viewModel)
         binding.rvCheckout.layoutManager = LinearLayoutManager(requireContext())
         binding.rvCheckout.adapter = adapter
+        binding.rvCheckout.itemAnimator = null
     }
 
     private fun observeData() {

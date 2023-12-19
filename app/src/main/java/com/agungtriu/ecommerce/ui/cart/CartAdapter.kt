@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LifecycleOwner
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -15,6 +16,7 @@ import com.agungtriu.ecommerce.databinding.ItemCartBinding
 import com.agungtriu.ecommerce.helper.Extension.toRupiah
 import com.agungtriu.ecommerce.helper.Screen
 import com.agungtriu.ecommerce.helper.Utils.warningStock
+import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.AppActivity
 import com.agungtriu.ecommerce.ui.detail.DetailProductFragment
 import com.bumptech.glide.Glide
@@ -26,7 +28,8 @@ import com.google.firebase.analytics.logEvent
 class CartAdapter(
     private val viewModel: CartViewModel,
     private val activity: FragmentActivity,
-    private val analytics: FirebaseAnalytics
+    private val analytics: FirebaseAnalytics,
+    private val lifecycleOwner: LifecycleOwner
 ) :
     ListAdapter<CartEntity, CartAdapter.ViewHolder>(callback) {
 
@@ -69,28 +72,31 @@ class CartAdapter(
         }
 
         binding.cbItemCart.setOnClickListener {
-            updateCart(item, binding, true)
+            updateCart(item, null, binding.cbItemCart.isChecked)
         }
 
         binding.btnItemCartToggleMin.setOnClickListener {
             if ((binding.tvItemCartQuantity.text as String).toInt() > 1) {
                 binding.tvItemCartQuantity.text =
                     (binding.tvItemCartQuantity.text as String).toInt().minus(1).toString()
-                updateCart(item, binding, false)
+                updateCart(item, (binding.tvItemCartQuantity.text as String).toInt(), null)
             }
         }
 
         binding.btnItemCartTogglePlus.setOnClickListener {
-            if ((binding.tvItemCartQuantity.text as String).toInt() < item.stock!!) {
-                binding.tvItemCartQuantity.text =
-                    (binding.tvItemCartQuantity.text as String).toInt().plus(1).toString()
-                updateCart(item, binding, false)
-            } else {
-                Snackbar.make(
-                    itemView,
-                    itemView.context.getString(R.string.all_stock_not_available),
-                    Snackbar.LENGTH_LONG
-                ).show()
+            binding.tvItemCartQuantity.text = (binding.tvItemCartQuantity.text as String).toInt().plus(1).toString()
+            viewModel.getProductById(item.id).observe(lifecycleOwner) {
+                if (it is ViewState.Success) {
+                    if ((binding.tvItemCartQuantity.text as String).toInt() > (it.data.stock ?: 0)) {
+                        binding.tvItemCartQuantity.text = it.data.stock.toString()
+                        Snackbar.make(
+                            itemView,
+                            itemView.context.getString(R.string.all_stock_not_available),
+                            Snackbar.LENGTH_LONG
+                        ).show()
+                    }
+                    updateCart(item, (binding.tvItemCartQuantity.text as String).toInt(), null)
+                }
             }
         }
 
@@ -122,7 +128,7 @@ class CartAdapter(
         }
     }
 
-    private fun updateCart(item: CartEntity, binding: ItemCartBinding, isCheckBox: Boolean) {
+    private fun updateCart(item: CartEntity, quantity: Int?, isCheckBox: Boolean?) {
         viewModel.updateCart(
             cartEntity = CartEntity(
                 id = item.id,
@@ -134,8 +140,8 @@ class CartAdapter(
                 stock = item.stock,
                 variantPrice = item.variantPrice,
                 variantName = item.variantName,
-                quantity = (binding.tvItemCartQuantity.text as String).toInt(),
-                isSelected = if (isCheckBox) !item.isSelected!! else item.isSelected
+                quantity = quantity ?: item.quantity,
+                isSelected = isCheckBox ?: item.isSelected
             )
         )
     }

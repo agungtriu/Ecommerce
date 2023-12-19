@@ -143,16 +143,17 @@
         <ImageButton
             android:id="@+id/btn_wishlist_remove_linear"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
+            android:layout_height="0dp"
+            android:layout_marginVertical="4dp"
             android:layout_marginStart="8dp"
             android:background="@drawable/all_rectangle_rounded_outline"
+            android:minHeight="0dp"
             android:padding="8dp"
             android:src="@drawable/ic_delete"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/btn_wishlist_cart_linear"
             app:layout_constraintEnd_toStartOf="@id/btn_wishlist_cart_linear"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/iv_item_wishlist_linear_rating"
+            app:layout_constraintTop_toTopOf="@id/btn_wishlist_cart_linear"
             app:tint="?attr/colorPrimary" />
 
         <Button
@@ -163,8 +164,9 @@
             android:layout_marginHorizontal="8dp"
             android:layout_marginVertical="8dp"
             android:includeFontPadding="false"
+            android:minHeight="0dp"
             android:text="@string/detail_add_cart"
-            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
+            android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelMedium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/btn_wishlist_remove_linear"

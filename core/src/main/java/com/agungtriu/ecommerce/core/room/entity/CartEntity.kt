@@ -19,5 +19,5 @@ data class CartEntity(
     val variantPrice: Int? = null,
     val variantName: String? = null,
     val quantity: Int? = 1,
-    val isSelected: Boolean? = true
+    val isSelected: Boolean? = false
 ) : Parcelable

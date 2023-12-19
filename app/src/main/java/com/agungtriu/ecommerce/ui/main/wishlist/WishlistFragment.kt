@@ -30,6 +30,9 @@ class WishlistFragment : BaseFragment<FragmentWishlistBinding>(FragmentWishlistB
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         adapter = WishlistAdapter(viewModel, viewLifecycleOwner, requireActivity(), analytics)
+        gridLayoutManager = GridLayoutManager(view.context, viewType)
+        binding.rvWishlist.adapter = adapter
+
         setLayout()
         listener()
         observeData()
@@ -37,9 +40,8 @@ class WishlistFragment : BaseFragment<FragmentWishlistBinding>(FragmentWishlistB
 
     private fun setLayout() {
         viewType = if (viewModel.isGrid) 2 else 1
-        gridLayoutManager = GridLayoutManager(view?.context, viewType)
+        gridLayoutManager.spanCount = viewType
         binding.rvWishlist.layoutManager = gridLayoutManager
-        binding.rvWishlist.adapter = adapter
         adapter.setItemViewType(viewType)
     }
 
@@ -51,9 +53,7 @@ class WishlistFragment : BaseFragment<FragmentWishlistBinding>(FragmentWishlistB
                 analytics.logEvent("btn_wishlist_view_linear", null)
             }
             viewModel.isGrid = !viewModel.isGrid
-            val position = gridLayoutManager.findFirstCompletelyVisibleItemPosition()
             setLayout()
-            gridLayoutManager.scrollToPosition(position)
             binding.ibWishlistView.setBackgroundResource(
                 if (viewModel.isGrid) R.drawable.ic_linear_view else R.drawable.ic_grid_view
             )

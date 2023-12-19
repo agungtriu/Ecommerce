@@ -3,15 +3,20 @@ package com.agungtriu.ecommerce.ui.cart
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.agungtriu.ecommerce.core.room.entity.CartEntity
 import com.agungtriu.ecommerce.data.CartRepository
+import com.agungtriu.ecommerce.data.StoreRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CartViewModel @Inject constructor(private val cartRepository: CartRepository) : ViewModel() {
+class CartViewModel @Inject constructor(
+    private val cartRepository: CartRepository,
+    private val storeRepository: StoreRepository
+) : ViewModel() {
     private val _resultCarts = MutableLiveData<List<CartEntity>>()
     val resultCarts: LiveData<List<CartEntity>> get() = _resultCarts
 
@@ -22,6 +27,8 @@ class CartViewModel @Inject constructor(private val cartRepository: CartReposito
             }
         }
     }
+
+    fun getProductById(id: String) = storeRepository.getProductById(id).asLiveData()
 
     fun updateCart(cartEntity: CartEntity) {
         viewModelScope.launch {

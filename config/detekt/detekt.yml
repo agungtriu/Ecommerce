@@ -130,11 +130,11 @@ complexity:
   LongMethod:
     active: true
     ignoreAnnotated: [ 'Composable' ]
-    threshold: 70
+    threshold: 60
   LongParameterList:
     active: true
-    functionThreshold: 8
-    constructorThreshold: 8
+    functionThreshold: 6
+    constructorThreshold: 7
     ignoreDefaultParameters: false
     ignoreDataClasses: true
     ignoreAnnotatedParameter: [ ]
@@ -170,8 +170,8 @@ complexity:
     active: true
     excludes: [ '**/test/**', '**/androidTest/**', '**/commonTest/**', '**/jvmTest/**', '**/androidUnitTest/**', '**/androidInstrumentedTest/**', '**/jsTest/**', '**/iosTest/**' ]
     thresholdInFiles: 11
-    thresholdInClasses: 15
-    thresholdInInterfaces: 15
+    thresholdInClasses: 11
+    thresholdInInterfaces: 11
     thresholdInObjects: 11
     thresholdInEnums: 11
     ignoreDeprecated: false
