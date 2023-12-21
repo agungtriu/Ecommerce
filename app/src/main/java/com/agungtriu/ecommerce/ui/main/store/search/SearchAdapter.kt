@@ -2,12 +2,14 @@ package com.agungtriu.ecommerce.ui.main.store.search
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.os.bundleOf
 import androidx.fragment.app.findFragment
 import androidx.fragment.app.setFragmentResult
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.databinding.ItemSearchBinding
 import com.agungtriu.ecommerce.ui.main.store.search.SearchDialog.Companion.RESULT_SEARCH_KEY
 import com.agungtriu.ecommerce.ui.main.store.search.SearchDialog.Companion.SEARCH_KEY
@@ -27,6 +29,7 @@ class SearchAdapter :
     inner class ViewHolder(private val binding: ItemSearchBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: String) {
+            binding.tvItemSearch.startAnimation(AnimationUtils.loadAnimation(itemView.context, R.anim.anim_one))
             binding.tvItemSearch.text = item
             binding.tvItemSearch.setOnClickListener {
                 itemView.findFragment<SearchDialog>().setFragmentResult(

@@ -2,10 +2,12 @@ package com.agungtriu.ecommerce.ui.payment
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.navigation.NavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.remote.model.response.DataPayment
 import com.agungtriu.ecommerce.databinding.ItemPaymentChildBinding
 import com.agungtriu.ecommerce.helper.Utils.alfaSize
@@ -28,6 +30,13 @@ class PaymentChildAdapter(
     inner class ViewHolder(private val binding: ItemPaymentChildBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DataPayment) {
+            binding.constraintItemPaymentChild.startAnimation(
+                AnimationUtils.loadAnimation(
+                    itemView.context,
+                    R.anim.anim_one
+                )
+            )
+
             binding.tvItemPaymentChild.text = item.label
             Glide.with(itemView.context)
                 .load(item.image)

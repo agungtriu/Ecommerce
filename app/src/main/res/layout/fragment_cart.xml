@@ -66,6 +66,7 @@
             android:layout_marginEnd="16dp"
             android:text="@string/all_delete"
             android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@id/tv_cart_select_all"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@id/tv_cart_select_all" />
@@ -118,7 +119,6 @@
             android:layout_marginBottom="16dp"
             android:fontFamily="@font/poppins_600"
             android:includeFontPadding="false"
-            android:text="@string/item_price_hint"
             android:textColor="?attr/colorOnSurfaceVariant"
             android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -132,6 +132,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
+            android:enabled="false"
             android:includeFontPadding="false"
             android:text="@string/cart_buy"
             android:textAppearance="@style/Theme.Ecommerce.TextAppearance.LabelLarge"
