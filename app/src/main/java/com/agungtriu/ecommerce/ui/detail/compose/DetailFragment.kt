@@ -114,10 +114,6 @@ class DetailFragment : Fragment() {
                                     }
                                 }
 
-//                                AnimatedVisibility(
-//                                    visible = detailVisible,
-//                                    enter = slideInHorizontally() + fadeIn()
-//                                ) {
                                 DetailContentScreen(
                                     activity = requireActivity(),
                                     context = context,
@@ -128,7 +124,6 @@ class DetailFragment : Fragment() {
                                     analytics = analytics,
                                     visible = detailVisible
                                 )
-//                                }
                             }
                         }
                     }
