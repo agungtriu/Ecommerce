@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -117,20 +114,21 @@ class DetailFragment : Fragment() {
                                     }
                                 }
 
-                                AnimatedVisibility(
-                                    visible = detailVisible,
-                                    enter = slideInHorizontally() + fadeIn()
-                                ) {
-                                    DetailContentScreen(
-                                        activity = requireActivity(),
-                                        context = context,
-                                        data = data,
-                                        viewModel = viewModel,
-                                        findNavController = findNavController(),
-                                        snackBarHostState = snackBarHostState,
-                                        analytics = analytics
-                                    )
-                                }
+//                                AnimatedVisibility(
+//                                    visible = detailVisible,
+//                                    enter = slideInHorizontally() + fadeIn()
+//                                ) {
+                                DetailContentScreen(
+                                    activity = requireActivity(),
+                                    context = context,
+                                    data = data,
+                                    viewModel = viewModel,
+                                    findNavController = findNavController(),
+                                    snackBarHostState = snackBarHostState,
+                                    analytics = analytics,
+                                    visible = detailVisible
+                                )
+//                                }
                             }
                         }
                     }
