@@ -15,8 +15,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -64,6 +68,8 @@ class DetailFragment : Fragment() {
                             .background(MaterialTheme.colorScheme.surface)
                     ) {
                         val snackBarHostState = remember { SnackbarHostState() }
+                        var detailVisible by remember { mutableStateOf(false) }
+                        var data by rememberSaveable { mutableStateOf(DataDetailProduct()) }
                         Scaffold(
                             snackbarHost = {
                                 SnackbarHost(hostState = snackBarHostState)
@@ -93,15 +99,8 @@ class DetailFragment : Fragment() {
                                         ) { LoadingScreen() }
 
                                         is ViewState.Success -> {
-                                            DetailContentScreen(
-                                                activity = requireActivity(),
-                                                context = context,
-                                                data = it.data,
-                                                viewModel = viewModel,
-                                                findNavController = findNavController(),
-                                                snackBarHostState = snackBarHostState,
-                                                analytics = analytics
-                                            )
+                                            detailVisible = true
+                                            data = it.data
                                             analyticsViewItem(it.data)
                                         }
 
@@ -114,6 +113,17 @@ class DetailFragment : Fragment() {
                                         else -> {}
                                     }
                                 }
+
+                                DetailContentScreen(
+                                    activity = requireActivity(),
+                                    context = context,
+                                    data = data,
+                                    viewModel = viewModel,
+                                    findNavController = findNavController(),
+                                    snackBarHostState = snackBarHostState,
+                                    analytics = analytics,
+                                    visible = detailVisible
+                                )
                             }
                         }
                     }

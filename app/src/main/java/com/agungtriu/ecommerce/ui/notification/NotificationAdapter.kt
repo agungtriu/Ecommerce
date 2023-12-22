@@ -2,6 +2,7 @@ package com.agungtriu.ecommerce.ui.notification
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -9,7 +10,6 @@ import com.agungtriu.ecommerce.R
 import com.agungtriu.ecommerce.core.room.entity.NotificationEntity
 import com.agungtriu.ecommerce.databinding.ItemNotificationBinding
 import com.bumptech.glide.Glide
-import com.google.android.material.color.MaterialColors
 
 class NotificationAdapter(private val viewModel: NotificationViewModel) :
     ListAdapter<NotificationEntity, NotificationAdapter.ViewHolder>(callback) {
@@ -26,6 +26,12 @@ class NotificationAdapter(private val viewModel: NotificationViewModel) :
     inner class ViewHolder(private val binding: ItemNotificationBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: NotificationEntity) {
+            binding.constraintItemNotification.startAnimation(
+                AnimationUtils.loadAnimation(
+                    itemView.context,
+                    R.anim.anim_one
+                )
+            )
             Glide.with(itemView.context)
                 .load(item.image)
                 .into(binding.ivItemNotification)
@@ -34,14 +40,7 @@ class NotificationAdapter(private val viewModel: NotificationViewModel) :
             binding.tvItemNotificationDatetime.text = item.date.plus(", ${item.time}")
             binding.tvItemNotificationDesc.text = item.body
             binding.tvItemNotificationType.text = item.type
-            if (item.isRead) {
-                binding.constraintItemNotification.setBackgroundColor(
-                    MaterialColors.getColor(
-                        itemView,
-                        com.google.android.material.R.attr.colorSurface
-                    )
-                )
-            } else {
+            if (!item.isRead) {
                 binding.constraintItemNotification.setBackgroundColor(
                     itemView.context.getColor(R.color.colorNotificationNotRead)
                 )

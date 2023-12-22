@@ -2,6 +2,10 @@ package com.agungtriu.ecommerce.ui.detail.compose
 
 import android.content.Context
 import android.content.Intent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -89,11 +93,13 @@ fun DetailContentScreen(
     viewModel: DetailProductViewModel,
     findNavController: NavController,
     snackBarHostState: SnackbarHostState,
-    analytics: FirebaseAnalytics
+    analytics: FirebaseAnalytics,
+    visible: Boolean
 ) {
     val scope = rememberCoroutineScope()
     var selectedVariant by rememberSaveable { mutableIntStateOf(0) }
     var isWishlist by rememberSaveable { mutableStateOf(false) }
+    val delay = 100
 
     LaunchedEffect(true) {
         val wishlist = viewModel.getWishlistCompose()
@@ -127,194 +133,159 @@ fun DetailContentScreen(
                 .verticalScroll(rememberScrollState())
                 .weight(weight = 1f, fill = false)
         ) {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
+            AnimatedVisibility(
+                visible = visible,
+                enter = slideInHorizontally() + fadeIn()
             ) {
-                HorizontalPager(state = pagerState) {
-                    AsyncImage(
-                        model = data.image?.get(it),
-                        placeholder = painterResource(id = R.mipmap.ic_thumbnail),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(300.dp)
-                    )
-                }
-                if ((data.image?.size ?: 0) > 1) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.BottomCenter)
-                            .padding(bottom = 16.dp),
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        repeat(data.image?.size ?: 0) { iteration ->
-                            val color = if (pagerState.currentPage == iteration) {
-                                MaterialTheme.colorScheme.primary
-                            } else {
-                                MaterialTheme.colorScheme.outlineVariant
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                ) {
+                    HorizontalPager(state = pagerState) {
+                        AsyncImage(
+                            model = data.image?.get(it),
+                            placeholder = painterResource(id = R.mipmap.ic_thumbnail),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(300.dp)
+                        )
+                    }
+                    if ((data.image?.size ?: 0) > 1) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .align(Alignment.BottomCenter)
+                                .padding(bottom = 16.dp),
+                            horizontalArrangement = Arrangement.Center
+                        ) {
+                            repeat(data.image?.size ?: 0) { iteration ->
+                                val color = if (pagerState.currentPage == iteration) {
+                                    MaterialTheme.colorScheme.primary
+                                } else {
+                                    MaterialTheme.colorScheme.outlineVariant
+                                }
+                                Box(
+                                    modifier = Modifier
+                                        .padding(end = 8.dp)
+                                        .background(color, CircleShape)
+                                        .size(8.dp)
+                                )
                             }
-                            Box(
-                                modifier = Modifier
-                                    .padding(end = 8.dp)
-                                    .background(color, CircleShape)
-                                    .size(8.dp)
-                            )
                         }
                     }
                 }
             }
-            Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp)) {
-                Text(
-                    text = displayPrice(
-                        basePrice = data.productPrice,
-                        variantPrice = data.productVariant?.get(selectedVariant)?.variantPrice
-                    ).toRupiah(),
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_600)),
-                    style = TextStyle(
-                        platformStyle = PlatformTextStyle(
-                            includeFontPadding = false,
-                        )
-                    ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier
-                        .padding(end = 16.dp)
-                        .weight(1F)
+
+            AnimatedVisibility(
+                visible = visible,
+                enter = slideInHorizontally(animationSpec = tween(delayMillis = delay)) + fadeIn(
+                    animationSpec = tween(delayMillis = delay)
                 )
-                IconButton(
-                    onClick = {
-                        analytics.logEvent("btn_detail_share", null)
-                        intentShare(context = context, data = data)
-                    },
-                    modifier = Modifier
-                        .defaultMinSize(
-                            minWidth = 1.dp,
-                            minHeight = 1.dp
-                        )
-                        .size(24.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_share),
-                        contentDescription = null
-                    )
-                }
-                Spacer(modifier = Modifier.size(16.dp))
-                IconButton(
-                    onClick = {
-                        if (isWishlist) {
-                            analytics.logEvent("btn_detail_wishlist_delete", null)
-                            viewModel.deleteWishlistById(data.productId!!)
-                        } else {
-                            analytics.logEvent("btn_detail_wishlist_insert", null)
-                            analyticsEvent(
-                                analytics = analytics,
-                                firebaseEvent = FirebaseAnalytics.Event.ADD_TO_WISHLIST,
-                                item = data,
-                                selectedVariant = selectedVariant
-                            )
-                            viewModel.insertWishlist(data.toWishlist(selectedVariant))
-                        }
-
-                        viewModel.getWishlistCompose().let {
-                            isWishlist = it != null
-                            scope.launch {
-                                snackBarHostState.showSnackbar(
-                                    if (it != null) {
-                                        getString(context, R.string.detail_success_add)
-                                            .plus(" ${data.productName}")
-                                            .plus(
-                                                " ${
-                                                    getString(
-                                                        context,
-                                                        R.string.detail_to_wishlist
-                                                    )
-                                                }"
-                                            )
-                                    } else {
-                                        getString(context, R.string.detail_success_remove)
-                                            .plus(" ${data.productName}")
-                                            .plus(
-                                                " ${
-                                                    getString(
-                                                        context,
-                                                        R.string.detail_from_wishlist
-                                                    )
-                                                }"
-                                            )
-                                    }
-                                )
-                            }
-                        }
-                    },
-                    modifier = Modifier
-                        .defaultMinSize(
-                            minWidth = 1.dp,
-                            minHeight = 1.dp
-                        )
-                        .size(24.dp)
-                ) {
-                    Icon(
-                        painter = painterResource(
-                            id = if (isWishlist) R.drawable.ic_favorite else R.drawable.ic_favorite_border
-                        ),
-                        contentDescription = ""
-                    )
-                }
-            }
-            Text(
-                text = data.productName ?: "",
-                fontFamily = FontFamily(Font(R.font.poppins_400)),
-                style = MaterialTheme.typography.bodyMedium.plus(
-                    TextStyle(
-                        platformStyle = PlatformTextStyle(
-                            includeFontPadding = false,
-                        )
-                    )
-                ),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 16.dp, top = 8.dp, end = 16.dp)
-
-            )
-            Row(
-                modifier = Modifier.padding(start = 16.dp, top = 10.dp, end = 16.dp),
-                verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(
-                    text = stringResource(id = R.string.item_sold_title).plus(" ${data.sale}"),
-                    fontFamily = FontFamily(Font(R.font.poppins_400)),
-                    style = MaterialTheme.typography.bodySmall.plus(
-                        TextStyle(
-                            platformStyle = PlatformTextStyle(
-                                includeFontPadding = false,
+                Column {
+                    Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 12.dp)) {
+                        Text(
+                            text = displayPrice(
+                                basePrice = data.productPrice,
+                                variantPrice = data.productVariant?.get(selectedVariant)?.variantPrice
+                            ).toRupiah(),
+                            fontSize = 20.sp,
+                            fontFamily = FontFamily(Font(R.font.poppins_600)),
+                            style = TextStyle(
+                                platformStyle = PlatformTextStyle(
+                                    includeFontPadding = false,
+                                )
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier
+                                .padding(end = 16.dp)
+                                .weight(1F)
+                        )
+                        IconButton(
+                            onClick = {
+                                analytics.logEvent("btn_detail_share", null)
+                                intentShare(context = context, data = data)
+                            },
+                            modifier = Modifier
+                                .defaultMinSize(
+                                    minWidth = 1.dp,
+                                    minHeight = 1.dp
+                                )
+                                .size(24.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.ic_share),
+                                contentDescription = null
                             )
-                        )
-                    ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-                Row(
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .border(
-                            width = 1.dp,
-                            shape = MaterialTheme.shapes.extraSmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                        .padding(4.dp)
-                ) {
-                    Image(
-                        painter = painterResource(id = R.drawable.ic_star),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .size(width = 15.dp, height = 15.dp)
-                    )
+                        }
+                        Spacer(modifier = Modifier.size(16.dp))
+                        IconButton(
+                            onClick = {
+                                if (isWishlist) {
+                                    analytics.logEvent("btn_detail_wishlist_delete", null)
+                                    viewModel.deleteWishlistById(data.productId!!)
+                                } else {
+                                    analytics.logEvent("btn_detail_wishlist_insert", null)
+                                    analyticsEvent(
+                                        analytics = analytics,
+                                        firebaseEvent = FirebaseAnalytics.Event.ADD_TO_WISHLIST,
+                                        item = data,
+                                        selectedVariant = selectedVariant
+                                    )
+                                    viewModel.insertWishlist(data.toWishlist(selectedVariant))
+                                }
+
+                                viewModel.getWishlistCompose().let {
+                                    isWishlist = it != null
+                                    scope.launch {
+                                        snackBarHostState.showSnackbar(
+                                            if (it != null) {
+                                                getString(context, R.string.detail_success_add)
+                                                    .plus(" ${data.productName}")
+                                                    .plus(
+                                                        " ${
+                                                            getString(
+                                                                context,
+                                                                R.string.detail_to_wishlist
+                                                            )
+                                                        }"
+                                                    )
+                                            } else {
+                                                getString(context, R.string.detail_success_remove)
+                                                    .plus(" ${data.productName}")
+                                                    .plus(
+                                                        " ${
+                                                            getString(
+                                                                context,
+                                                                R.string.detail_from_wishlist
+                                                            )
+                                                        }"
+                                                    )
+                                            }
+                                        )
+                                    }
+                                }
+                            },
+                            modifier = Modifier
+                                .defaultMinSize(
+                                    minWidth = 1.dp,
+                                    minHeight = 1.dp
+                                )
+                                .size(24.dp)
+                        ) {
+                            Icon(
+                                painter = painterResource(
+                                    id = if (isWishlist) R.drawable.ic_favorite else R.drawable.ic_favorite_border
+                                ),
+                                contentDescription = ""
+                            )
+                        }
+                    }
                     Text(
-                        text = data.productRating.toString().plus(" (${data.totalRating})"),
+                        text = data.productName ?: "",
                         fontFamily = FontFamily(Font(R.font.poppins_400)),
-                        style = MaterialTheme.typography.bodySmall.plus(
+                        style = MaterialTheme.typography.bodyMedium.plus(
                             TextStyle(
                                 platformStyle = PlatformTextStyle(
                                     includeFontPadding = false,
@@ -322,219 +293,296 @@ fun DetailContentScreen(
                             )
                         ),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(start = 4.dp),
-                    )
-                }
-                Spacer(modifier = Modifier.weight(1F))
-            }
-            Divider(
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.outlineVariant,
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-            )
-            Text(
-                text = stringResource(id = R.string.detail_pick_variant),
-                fontFamily = FontFamily(Font(R.font.poppins_500)),
-                style = TextStyle(
-                    platformStyle = PlatformTextStyle(
-                        includeFontPadding = false,
-                    )
-                ),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 16.sp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            )
-            FlowRow(
-                modifier = Modifier.padding(horizontal = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                data.productVariant!!.forEachIndexed { index, productVariant ->
-                    InputChip(
-                        onClick = {
-                            selectedVariant = index
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 16.dp, top = 8.dp, end = 16.dp)
 
-                            analytics.logEvent("btn_detail_variant", null)
-                            analytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
-                                param(
-                                    FirebaseAnalytics.Param.ITEMS,
-                                    bundleOf(
-                                        FirebaseAnalytics.Param.ITEM_NAME to data.productVariant?.get(
-                                            index
-                                        )?.variantName
+                    )
+                    Row(
+                        modifier = Modifier.padding(start = 16.dp, top = 10.dp, end = 16.dp),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.item_sold_title).plus(" ${data.sale}"),
+                            fontFamily = FontFamily(Font(R.font.poppins_400)),
+                            style = MaterialTheme.typography.bodySmall.plus(
+                                TextStyle(
+                                    platformStyle = PlatformTextStyle(
+                                        includeFontPadding = false,
                                     )
                                 )
-                                param(FirebaseAnalytics.Param.ITEM_LIST_NAME, "Variant")
-                            }
-                        },
-                        label = {
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                        Row(
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp)
+                                .border(
+                                    width = 1.dp,
+                                    shape = MaterialTheme.shapes.extraSmall,
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                )
+                                .padding(4.dp)
+                        ) {
+                            Image(
+                                painter = painterResource(id = R.drawable.ic_star),
+                                contentDescription = "",
+                                modifier = Modifier
+                                    .size(width = 15.dp, height = 15.dp)
+                            )
                             Text(
-                                text = productVariant.variantName ?: "",
-                                style = MaterialTheme.typography.labelLarge.plus(
+                                text = data.productRating.toString().plus(" (${data.totalRating})"),
+                                fontFamily = FontFamily(Font(R.font.poppins_400)),
+                                style = MaterialTheme.typography.bodySmall.plus(
                                     TextStyle(
                                         platformStyle = PlatformTextStyle(
-                                            includeFontPadding = false
+                                            includeFontPadding = false,
                                         )
                                     )
                                 ),
-                                fontFamily = FontFamily(Font(R.font.poppins_500)),
-                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.padding(start = 4.dp),
                             )
-                        },
-                        selected = selectedVariant == index
+                        }
+                        Spacer(modifier = Modifier.weight(1F))
+                    }
+                    Divider(
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        modifier = Modifier
+                            .padding(vertical = 12.dp)
                     )
                 }
             }
-
-            Divider(
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.outlineVariant,
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-            )
-            Text(
-                text = stringResource(id = R.string.detail_description_product),
-                fontFamily = FontFamily(Font(R.font.poppins_500)),
-                style = TextStyle(
-                    platformStyle = PlatformTextStyle(
-                        includeFontPadding = false,
-                    )
-                ),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontSize = 16.sp,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            )
-            Text(
-                text = data.description ?: "",
-                fontFamily = FontFamily(Font(R.font.poppins_400)),
-                style = MaterialTheme.typography.bodyMedium.plus(
-                    TextStyle(
-                        platformStyle = PlatformTextStyle(
-                            includeFontPadding = false,
-                        )
-                    )
-                ),
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-            )
-            Divider(
-                thickness = 1.dp,
-                color = MaterialTheme.colorScheme.outlineVariant,
-                modifier = Modifier
-                    .padding(vertical = 12.dp)
-            )
-            Row {
-                Text(
-                    text = stringResource(id = R.string.all_review_buyer),
-                    fontFamily = FontFamily(Font(R.font.poppins_500)),
-                    style = TextStyle(
-                        platformStyle = PlatformTextStyle(
-                            includeFontPadding = false,
-                        )
-                    ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontSize = 16.sp,
-                    modifier = Modifier
-                        .padding(horizontal = 16.dp)
-                        .weight(1F)
-                )
-                TextButton(
-                    onClick = {
-                        analytics.logEvent("btn_detail_review_show_all", null)
-                        findNavController.navigate(
-                            R.id.action_detailFragment_to_reviewComposeFragment,
-                            bundleOf(
-                                ReviewFragment.REVIEW_KEY to data.productId
-                            )
-                        )
-                    },
-                    contentPadding = PaddingValues(0.dp),
-                    modifier = Modifier
-                        .padding(end = 16.dp)
-                        .size(height = 22.dp, width = 100.dp)
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.detail_show_all_review),
-                        fontFamily = FontFamily(Font(R.font.poppins_500)),
-                        style = MaterialTheme.typography.labelMedium.plus(
-                            TextStyle(
-                                platformStyle = PlatformTextStyle(
-                                    includeFontPadding = false,
-                                )
-                            )
-                        ),
-                    )
-                }
-            }
-            Row(
-                modifier = Modifier.padding(
-                    start = 16.dp,
-                    end = 16.dp,
-                    bottom = 18.dp,
-                    top = 8.dp
+            AnimatedVisibility(
+                visible = visible,
+                enter = slideInHorizontally(animationSpec = tween(delayMillis = delay * 2)) + fadeIn(
+                    animationSpec = tween(delayMillis = delay * 2)
                 )
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_star),
-                    contentDescription = "",
-                )
-                Text(
-                    text = data.productRating.toString(),
-                    fontSize = 20.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_600)),
-                    style = TextStyle(
-                        platformStyle = PlatformTextStyle(
-                            includeFontPadding = false,
-                        )
-                    ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier
-                        .padding(start = 2.dp)
-                        .alignByBaseline()
-                )
-                Text(
-                    text = stringResource(id = R.string.detail_rating_scala),
-                    fontSize = 10.sp,
-                    fontFamily = FontFamily(Font(R.font.poppins_400)),
-                    style = TextStyle(
-                        platformStyle = PlatformTextStyle(
-                            includeFontPadding = false,
-                        )
-                    ),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.alignByBaseline()
-                )
-                Column(modifier = Modifier.padding(start = 32.dp)) {
+                Column {
                     Text(
-                        text = data.totalSatisfaction.toString()
-                            .plus(stringResource(id = R.string.detail_satisfaction_desc)),
-                        fontSize = 12.sp,
-                        fontFamily = FontFamily(Font(R.font.poppins_600)),
+                        text = stringResource(id = R.string.detail_pick_variant),
+                        fontFamily = FontFamily(Font(R.font.poppins_500)),
                         style = TextStyle(
                             platformStyle = PlatformTextStyle(
                                 includeFontPadding = false,
                             )
                         ),
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
                     )
+                    FlowRow(
+                        modifier = Modifier.padding(horizontal = 16.dp),
+                        horizontalArrangement = Arrangement.spacedBy(8.dp)
+                    ) {
+                        data.productVariant?.forEachIndexed { index, productVariant ->
+                            InputChip(
+                                onClick = {
+                                    selectedVariant = index
+
+                                    analytics.logEvent("btn_detail_variant", null)
+                                    analytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM) {
+                                        param(
+                                            FirebaseAnalytics.Param.ITEMS,
+                                            bundleOf(
+                                                FirebaseAnalytics.Param.ITEM_NAME to data.productVariant?.get(
+                                                    index
+                                                )?.variantName
+                                            )
+                                        )
+                                        param(FirebaseAnalytics.Param.ITEM_LIST_NAME, "Variant")
+                                    }
+                                },
+                                label = {
+                                    Text(
+                                        text = productVariant.variantName ?: "",
+                                        style = MaterialTheme.typography.labelLarge.plus(
+                                            TextStyle(
+                                                platformStyle = PlatformTextStyle(
+                                                    includeFontPadding = false
+                                                )
+                                            )
+                                        ),
+                                        fontFamily = FontFamily(Font(R.font.poppins_500)),
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    )
+                                },
+                                selected = selectedVariant == index
+                            )
+                        }
+                    }
+                    Divider(
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        modifier = Modifier
+                            .padding(vertical = 12.dp)
+                    )
+                }
+            }
+            AnimatedVisibility(
+                visible = visible,
+                enter = slideInHorizontally(animationSpec = tween(delayMillis = delay * 3)) + fadeIn(
+                    animationSpec = tween(delayMillis = delay * 3)
+                )
+            ) {
+                Column {
                     Text(
-                        text = "${data.totalRating} ${stringResource(id = R.string.detail_rating_desc)}"
-                            .plus(" ${stringResource(id = R.string.detail_dot)} ")
-                            .plus("${data.totalReview} ${stringResource(id = R.string.detail_review_desc)}"),
-                        style = MaterialTheme.typography.bodySmall.plus(
-                            TextStyle(
-                                platformStyle = PlatformTextStyle(includeFontPadding = false)
+                        text = stringResource(id = R.string.detail_description_product),
+                        fontFamily = FontFamily(Font(R.font.poppins_500)),
+                        style = TextStyle(
+                            platformStyle = PlatformTextStyle(
+                                includeFontPadding = false,
                             )
                         ),
-                        fontFamily = FontFamily(Font(R.font.poppins_400)),
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        fontSize = 16.sp,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
                     )
+                    Text(
+                        text = data.description ?: "",
+                        fontFamily = FontFamily(Font(R.font.poppins_400)),
+                        style = MaterialTheme.typography.bodyMedium.plus(
+                            TextStyle(
+                                platformStyle = PlatformTextStyle(
+                                    includeFontPadding = false,
+                                )
+                            )
+                        ),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 16.dp)
+                    )
+                    Divider(
+                        thickness = 1.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        modifier = Modifier
+                            .padding(vertical = 12.dp)
+                    )
+                }
+            }
+            AnimatedVisibility(
+                visible = visible,
+                enter = slideInHorizontally(animationSpec = tween(delayMillis = delay * 4)) + fadeIn(
+                    animationSpec = tween(delayMillis = delay * 4)
+                )
+            ) {
+                Column {
+
+                    Row {
+                        Text(
+                            text = stringResource(id = R.string.all_review_buyer),
+                            fontFamily = FontFamily(Font(R.font.poppins_500)),
+                            style = TextStyle(
+                                platformStyle = PlatformTextStyle(
+                                    includeFontPadding = false,
+                                )
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            fontSize = 16.sp,
+                            modifier = Modifier
+                                .padding(horizontal = 16.dp)
+                                .weight(1F)
+                        )
+                        TextButton(
+                            onClick = {
+                                analytics.logEvent("btn_detail_review_show_all", null)
+                                findNavController.navigate(
+                                    R.id.action_detailFragment_to_reviewComposeFragment,
+                                    bundleOf(
+                                        ReviewFragment.REVIEW_KEY to data.productId
+                                    )
+                                )
+                            },
+                            contentPadding = PaddingValues(0.dp),
+                            modifier = Modifier
+                                .padding(end = 16.dp)
+                                .size(height = 22.dp, width = 100.dp)
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.detail_show_all_review),
+                                fontFamily = FontFamily(Font(R.font.poppins_500)),
+                                style = MaterialTheme.typography.labelMedium.plus(
+                                    TextStyle(
+                                        platformStyle = PlatformTextStyle(
+                                            includeFontPadding = false,
+                                        )
+                                    )
+                                ),
+                            )
+                        }
+                    }
+                    Row(
+                        modifier = Modifier.padding(
+                            start = 16.dp,
+                            end = 16.dp,
+                            bottom = 18.dp,
+                            top = 8.dp
+                        )
+                    ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_star),
+                            contentDescription = "",
+                        )
+                        Text(
+                            text = data.productRating.toString(),
+                            fontSize = 20.sp,
+                            fontFamily = FontFamily(Font(R.font.poppins_600)),
+                            style = TextStyle(
+                                platformStyle = PlatformTextStyle(
+                                    includeFontPadding = false,
+                                )
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier
+                                .padding(start = 2.dp)
+                                .alignByBaseline()
+                        )
+                        Text(
+                            text = stringResource(id = R.string.detail_rating_scala),
+                            fontSize = 10.sp,
+                            fontFamily = FontFamily(Font(R.font.poppins_400)),
+                            style = TextStyle(
+                                platformStyle = PlatformTextStyle(
+                                    includeFontPadding = false,
+                                )
+                            ),
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            modifier = Modifier.alignByBaseline()
+                        )
+                        Column(modifier = Modifier.padding(start = 32.dp)) {
+                            Text(
+                                text = data.totalSatisfaction.toString()
+                                    .plus(stringResource(id = R.string.detail_satisfaction_desc)),
+                                fontSize = 12.sp,
+                                fontFamily = FontFamily(Font(R.font.poppins_600)),
+                                style = TextStyle(
+                                    platformStyle = PlatformTextStyle(
+                                        includeFontPadding = false,
+                                    )
+                                ),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                            Text(
+                                text = "${data.totalRating} ${stringResource(id = R.string.detail_rating_desc)}"
+                                    .plus(" ${stringResource(id = R.string.detail_dot)} ")
+                                    .plus("${data.totalReview} ${stringResource(id = R.string.detail_review_desc)}"),
+                                style = MaterialTheme.typography.bodySmall.plus(
+                                    TextStyle(
+                                        platformStyle = PlatformTextStyle(includeFontPadding = false)
+                                    )
+                                ),
+                                fontFamily = FontFamily(Font(R.font.poppins_400)),
+                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                            )
+                        }
+                    }
                 }
             }
         }
