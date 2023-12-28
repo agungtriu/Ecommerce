@@ -2,7 +2,6 @@ package com.agungtriu.ecommerce.ui.main.store
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.paging.PagingDataAdapter
@@ -40,8 +39,6 @@ class StoreAdapter(
     private inner class ViewLinearHolder(private val binding: ItemStoreLinearBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Product) {
-            binding.cvItemStoreLinear.startAnimation(AnimationUtils.loadAnimation(itemView.context, R.anim.anim_one))
-
             Glide.with(itemView.context).load(item.image)
                 .placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemStoreLinear)
@@ -83,8 +80,6 @@ class StoreAdapter(
     private inner class ViewGridHolder(private val binding: ItemStoreGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: Product) {
-            binding.cvItemStoreGrid.startAnimation(AnimationUtils.loadAnimation(itemView.context, R.anim.anim_two))
-
             Glide.with(itemView.context)
                 .load(item.image)
                 .placeholder(R.mipmap.ic_thumbnail)

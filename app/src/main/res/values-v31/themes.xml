@@ -2,7 +2,8 @@
 <resources>
 
     <style name="Theme.Ecommerce.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenAnimatedIcon">@drawable/animated_logo</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splashscreen_animate</item>
         <item name="postSplashScreenTheme">@style/Theme.Ecommerce</item>
+        <item name="windowSplashScreenBackground">@color/colorSurface</item>
     </style>
 </resources>

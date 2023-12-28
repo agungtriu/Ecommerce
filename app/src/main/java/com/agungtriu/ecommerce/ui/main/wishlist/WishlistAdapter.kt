@@ -3,7 +3,6 @@ package com.agungtriu.ecommerce.ui.main.wishlist
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.core.os.bundleOf
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.LifecycleOwner
@@ -78,13 +77,6 @@ class WishlistAdapter(
     inner class ViewGridHolder(private val binding: ItemWishlistGridBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: WishlistEntity) {
-            binding.cvItemWishlistGrid.startAnimation(
-                AnimationUtils.loadAnimation(
-                    itemView.context,
-                    R.anim.anim_two
-                )
-            )
-
             Glide.with(itemView.context).load(item.image)
                 .placeholder(R.mipmap.ic_thumbnail)
                 .into(binding.ivItemWishlistGrid)
@@ -102,13 +94,6 @@ class WishlistAdapter(
     inner class ViewLinearHolder(private val binding: ItemWishlistLinearBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: WishlistEntity) {
-            binding.cvItemWishlistLinear.startAnimation(
-                AnimationUtils.loadAnimation(
-                    itemView.context,
-                    R.anim.anim_one
-                )
-            )
-
             Glide.with(itemView.context)
                 .load(item.image)
                 .placeholder(R.mipmap.ic_thumbnail)

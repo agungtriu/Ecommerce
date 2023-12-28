@@ -2,7 +2,6 @@ package com.agungtriu.ecommerce.ui.main.transaction
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.FragmentActivity
@@ -34,13 +33,6 @@ class TransactionAdapter(private val activity: FragmentActivity) :
     inner class ViewHolder(private val binding: ItemTransactionBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: DataTransaction) {
-            binding.cvItemTransaction.startAnimation(
-                AnimationUtils.loadAnimation(
-                    itemView.context,
-                    R.anim.anim_one
-                )
-            )
-
             Glide.with(itemView.context)
                 .load(item.image)
                 .placeholder(R.mipmap.ic_thumbnail)
