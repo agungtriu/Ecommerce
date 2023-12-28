@@ -2,7 +2,6 @@ package com.agungtriu.ecommerce.ui.notification
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -26,12 +25,6 @@ class NotificationAdapter(private val viewModel: NotificationViewModel) :
     inner class ViewHolder(private val binding: ItemNotificationBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(item: NotificationEntity) {
-            binding.constraintItemNotification.startAnimation(
-                AnimationUtils.loadAnimation(
-                    itemView.context,
-                    R.anim.anim_one
-                )
-            )
             Glide.with(itemView.context)
                 .load(item.image)
                 .into(binding.ivItemNotification)

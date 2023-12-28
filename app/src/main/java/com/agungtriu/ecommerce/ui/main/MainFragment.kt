@@ -129,11 +129,6 @@ class MainFragment : BaseFragment<FragmentMainBinding>(FragmentMainBinding::infl
                     true
                 }
 
-                R.id.btn_main_menu -> {
-                    analytics.logEvent("btn_main_menu", null)
-                    true
-                }
-
                 else -> false
             }
         }

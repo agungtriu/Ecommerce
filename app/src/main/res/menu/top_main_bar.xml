@@ -13,10 +13,4 @@
         android:title="@string/main_cart"
         app:showAsAction="ifRoom" />
 
-    <item
-        android:id="@+id/btn_main_menu"
-        android:icon="@drawable/ic_menu"
-        android:title="@string/main_menu"
-        app:showAsAction="ifRoom" />
-
 </menu>

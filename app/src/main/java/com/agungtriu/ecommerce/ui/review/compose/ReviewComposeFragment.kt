@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.slideInHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,12 +14,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
@@ -36,7 +28,6 @@ import com.agungtriu.ecommerce.compose.theme.theme
 import com.agungtriu.ecommerce.compose.ui.ErrorScreen
 import com.agungtriu.ecommerce.compose.ui.LoadingScreen
 import com.agungtriu.ecommerce.compose.ui.TopBarScreen
-import com.agungtriu.ecommerce.core.remote.model.response.DataReview
 import com.agungtriu.ecommerce.helper.ViewState
 import com.agungtriu.ecommerce.ui.review.ReviewViewModel
 import com.google.firebase.analytics.FirebaseAnalytics
@@ -76,9 +67,6 @@ class ReviewComposeFragment : Fragment() {
                                 )
                             },
                             content = { paddingValues ->
-                                var data by rememberSaveable { mutableStateOf(listOf(DataReview())) }
-                                var contentVisible by remember { mutableStateOf(false) }
-
                                 Column(
                                     modifier = Modifier
                                         .padding(paddingValues)
@@ -99,8 +87,7 @@ class ReviewComposeFragment : Fragment() {
                                             }
 
                                             is ViewState.Success -> {
-                                                contentVisible = true
-                                                data = it.data
+                                                ReviewsContent(reviews = it.data)
                                             }
 
                                             is ViewState.Error ->
@@ -112,15 +99,10 @@ class ReviewComposeFragment : Fragment() {
                                                     viewModel.getReviewsByProductId()
                                                 }
 
-                                            else -> {}
+                                            else -> {
+                                                viewModel.getReviewsByProductId()
+                                            }
                                         }
-                                    }
-
-                                    AnimatedVisibility(
-                                        visible = contentVisible,
-                                        enter = slideInHorizontally() + fadeIn()
-                                    ) {
-                                        ReviewsContent(reviews = data)
                                     }
                                 }
                             }
